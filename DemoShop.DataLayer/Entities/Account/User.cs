@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DemoShop.DataLayer.Entities.Account
 {
-	public class User : BaseEntities<long>
+	public class User : BaseEntities
 	{
 		#region Properties
 		#endregion
