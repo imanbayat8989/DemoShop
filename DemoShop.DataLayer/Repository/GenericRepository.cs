@@ -28,12 +28,17 @@ namespace DemoShop.DataLayer.Repository
 
 		public void DeleteEntity(TEntity entity)
 		{
-			_dbset.Update(entity);
+			entity.IsDeleted = true;
+			EditEntity(entity);
 		}
 
-		public void DeleteEntity(long entityId)
+		public async Task DeleteEntity(long entityId)
 		{
-			TEntity entity = (entityId);
+			TEntity entity = await GetEntityById(entityId);
+			if (entity != null)
+			{
+				DeleteEntity(entity);
+			}
 		}
 
 		public void DeletePermanent(TEntity entity)
@@ -45,7 +50,7 @@ namespace DemoShop.DataLayer.Repository
 		{
 			
 			TEntity entity = await GetEntityById(entityId);
-			DeletePermanent(entity);
+			if (entity != null) DeletePermanent(entity);
 		}
 
 		public async ValueTask DisposeAsync()
@@ -65,6 +70,11 @@ namespace DemoShop.DataLayer.Repository
 		public async Task<TEntity> GetEntityById(long entityId)
 		{
 			return await _dbset.SingleOrDefaultAsync(x => x.Id == entityId);
+		}
+
+		public IQueryable<TEntity> GetQuery()
+		{
+			return _dbset.AsQueryable();
 		}
 	}
 }

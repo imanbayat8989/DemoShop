@@ -9,6 +9,7 @@ namespace DemoShop.DataLayer.Repository
 {
 	public interface IGenericRepository<TEntity> : IAsyncDisposable where TEntity : BaseEntities
 	{
+		IQueryable<TEntity> GetQuery();
 		Task AddEntity(TEntity entity);
 		Task <TEntity> GetEntityById(long entityId);
 		void EditEntity(TEntity entity);

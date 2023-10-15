@@ -1,7 +1,15 @@
+using DemoShop.Application.Implementation;
+using DemoShop.Application.Interface;
+using DemoShop.DataLayer.Entities.Account;
+using DemoShop.DataLayer.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
