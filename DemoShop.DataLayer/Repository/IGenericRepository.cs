@@ -17,5 +17,6 @@ namespace DemoShop.DataLayer.Repository
 		Task DeleteEntity(long entityId);
 		void DeletePermanent(TEntity entity);
 		Task DeletePermanent(long entityId);
+		Task SaveChanges();
 	}
 }

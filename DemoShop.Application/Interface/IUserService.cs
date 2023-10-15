@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DemoShop.Application.Interface
 {
-	internal interface IUserService
+	public interface IUserService: IAsyncDisposable
 	{
 	}
 }

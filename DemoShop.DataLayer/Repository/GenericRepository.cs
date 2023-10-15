@@ -76,5 +76,10 @@ namespace DemoShop.DataLayer.Repository
 		{
 			return _dbset.AsQueryable();
 		}
+
+		public async Task SaveChanges()
+		{
+			await _context.SaveChangesAsync();
+		}
 	}
 }
