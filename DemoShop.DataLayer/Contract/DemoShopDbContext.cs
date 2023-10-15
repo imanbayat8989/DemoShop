@@ -10,8 +10,21 @@ namespace DemoShop.DataLayer.Contract
 {
 	public class DemoShopDbContext: DbContext
 	{
-		#region DbSets
-		public DbSet<User> Users { get; set; }
+        public DemoShopDbContext(DbContextOptions<DemoShopDbContext> options) : base(options) { }
+        #region DbSets
+        public DbSet<User> Users { get; set; }
+		#endregion
+
+		#region on model creating
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(s => s.GetForeignKeys()))
+			{
+				relationship.DeleteBehavior = DeleteBehavior.Cascade;
+			}
+
+			base.OnModelCreating(modelBuilder);
+		}
 		#endregion
 	}
 }

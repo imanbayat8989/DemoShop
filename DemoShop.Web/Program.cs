@@ -1,7 +1,9 @@
 using DemoShop.Application.Implementation;
 using DemoShop.Application.Interface;
+using DemoShop.DataLayer.Contract;
 using DemoShop.DataLayer.Entities.Account;
 using DemoShop.DataLayer.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,13 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserService, UserService>();
+
+#region
+builder.Services.AddDbContext<DemoShopDbContext>(options =>
+{
+	options.UseSqlServer(builder.Configuration.GetConnectionString("DemoShopConnection"));
+});
+#endregion
 
 var app = builder.Build();
 
