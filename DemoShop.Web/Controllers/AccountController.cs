@@ -21,6 +21,7 @@ namespace DemoShop.Web.Controllers
 		[HttpGet("register")]
 		public IActionResult Register()
 		{
+			TempData[ErrorMessage] = "تلفن همراه وارد شده تکراری است";
 			return View();
 		}
 
@@ -33,15 +34,15 @@ namespace DemoShop.Web.Controllers
 				switch (res)
 				{
 					case RegisterUserResult.MobileExists:
-						TempData["ErrorMessage"] = "تلفن همراه وارد شده تکراری است";
+						TempData[ErrorMessage] = "تلفن همراه وارد شده تکراری است";
 						ModelState.AddModelError("Mobile", "تلفن همراه وارد شده تکراری است");
 						break;
 					case RegisterUserResult.Success:
-						TempData["SuccessMessage"] = "ثبت نام شما با موفقیت انجام شد";
-						TempData["InfoMessage"] = "کد تایید تلفن همراه برای شما ارسال شد";
-						return RedirectToAction("Login");
+						TempData[SuccessMessage] = "ثبت نام شما با موفقیت انجام شد";
+						TempData[InfoMessage] = "کد تایید تلفن همراه برای شما ارسال شد";
+						return RedirectToAction("login");
 					case RegisterUserResult.Error:
-						TempData["ErrorMessage"] = "با خطا مواجه شدید";
+						TempData[ErrorMessage] = "با خطا مواجه شدید";
 						ModelState.AddModelError("", "با خطا مواجه شدید");
 						break;
 				}
