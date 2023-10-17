@@ -18,5 +18,14 @@ namespace DemoShop.DataLayer.DTO.Account
         [Required(ErrorMessage = "لطفاً {0} وارد کنید")]
         [MaxLength(200, ErrorMessage = "نمی تواند بیشتر از {1} کاراکتر باشد {0}")]
         public string Password { get; set; }
+
+        public bool RememberMe { get; set; }
+    }
+
+    public enum LoginUserResult
+    {
+        Success,
+        NotFound,
+        NotActiveted
     }
 }

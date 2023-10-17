@@ -1,49 +1,54 @@
-﻿
+﻿@model DemoShop.DataLayer.DTO.Account.LoginUserDTO
+
 @{
-    ViewData["Title"] = "ورود";
+    ViewData["Title"] = "ورود به حساب کاربری";
 }
-<!--breadcrumbs area start-->
+
+@section scripts
+    {
+    <partial name="_JqueryValidators" />
+}
+
 <div class="breadcrumbs_area">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="breadcrumb_content">
-					<ul>
-						<li><a href="index.html">خانه</a></li>
-						<li>حساب کاربری</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <li>ورود به حساب کاربری</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<!--breadcrumbs area end-->
-<!-- customer login start -->
+
 <div class="customer_login mt-60">
-	<div class="container">
-		<div class="row">
-			<!--register area start-->
-			<div class="col-lg-6 col-md-6 offset-lg-3 offset-md-3">
-				<div class="account_form register">
-					<h2>ثبت نام</h2>
-					
-					<form asp-controller="Account" asp-action="Login">
-						<p>
-							<label>آدرس ایمیل <span>*</span></label>
-							<input type="text">
-						</p>
-						<p>
-							<label>رمز عبور <span>*</span></label>
-							<input type="password">
-						</p>
-						<div class="login_submit">
-							<button type="submit">ثبت نام</button>
-						</div>
-					</form>
-				</div>
-			</div>
-			<!--register area end-->
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <!--register area start-->
+            <div class="col-lg-6 col-md-6 offset-lg-3 offset-md-3">
+                <div class="account_form register">
+                    <h2>لاگین</h2>
+                    <form asp-controller="Account" asp-action="login" method="post">
+                        <p>
+                            <label>تلفن همراه<span>*</span></label>
+                            <input type="text" asp-for="Mobile">
+                            <span class="text-danger" asp-validation-for="Mobile"></span>
+                        </p>
+                        <p>
+                            <label>رمز عبور <span>*</span></label>
+                            <input type="password" asp-for="Password">
+                            <span class="text-danger" asp-validation-for="Password"></span>
+                        </p>
+                        <div class="login_submit">
+                            <button type="submit">ورود</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--register area end-->
+        </div>
+    </div>
 </div>
-<!-- customer login end -->

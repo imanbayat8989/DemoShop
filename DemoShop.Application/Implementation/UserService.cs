@@ -71,5 +71,26 @@ namespace DemoShop.Application.Implementation
 		{
 			return await _userRepository.GetQuery().AsQueryable().AnyAsync(s => s.Mobile == mobileNumber);
 		}
+
+		public async Task<LoginUserResult> GetUserForLogin(LoginUserDTO loginUser)
+		{
+			var user = await _userRepository.GetQuery().AsQueryable()
+				.SingleOrDefaultAsync(x => x.Mobile == loginUser.Mobile);
+			if (user == null)
+			{
+				return LoginUserResult.NotFound;
+			}
+			if (!user.IsMobileActive)
+			{
+				return LoginUserResult.NotActiveted;
+			}
+			if (user.Password != _passwordHelper.EnCodePasswordMD5(loginUser.Password)) return LoginUserResult.NotFound;
+			return LoginUserResult.Success;
+		}
+
+		public async Task<User> GetUserByMobile(string mobileNumber)
+		{
+			return await _userRepository.GetQuery().AsQueryable().SingleOrDefaultAsync(x => x.Mobile == mobileNumber);
+		}
 	}
 }
