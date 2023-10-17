@@ -10,6 +10,12 @@ namespace DemoShop.DataLayer.DTO.Account
 {
 	public class RegisterUserDTO
 	{
+		[Display(Name = "ایمیل")]
+		[MaxLength(200, ErrorMessage = "نمی تواند بیشتر از {1} کاراکتر باشد {0}")]
+		[EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نمی باشد")]
+		[DataType(DataType.EmailAddress)]
+		public string? Email { get; set; }
+
 		[Display(Name = "موبایل")]
 		[Required(ErrorMessage = "لطفاً {0} وارد کنید")]
 		[MaxLength(200, ErrorMessage = "نمی تواند بیشتر از {1} کاراکتر باشد {0}")]

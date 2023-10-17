@@ -12,11 +12,10 @@ namespace DemoShop.DataLayer.Entities.Account
 	{
         #region Properties
         [Display(Name ="ایمیل")]
-        [Required(ErrorMessage ="لطفاً {0} وارد کنید")]
         [MaxLength(200, ErrorMessage = "نمی تواند بیشتر از {1} کاراکتر باشد {0}")]
         [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نمی باشد")]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
 		[Required(ErrorMessage = "لطفاً {0} وارد کنید")]
 		[MaxLength(200, ErrorMessage = "نمی تواند بیشتر از {1} کاراکتر باشد {0}")]
@@ -49,9 +48,8 @@ namespace DemoShop.DataLayer.Entities.Account
 		public string FirstName { get; set; }
 
 		[Display(Name = "آواتار")]
-		[Required(ErrorMessage = "لطفاً {0} وارد کنید")]
 		[MaxLength(200, ErrorMessage = "نمی تواند بیشتر از {1} کاراکتر باشد {0}")]
-		public string Avatar { get; set; }
+		public string? Avatar { get; set; }
 
 		[Display(Name = "فامیل")]
 		[Required(ErrorMessage = "لطفاً {0} وارد کنید")]

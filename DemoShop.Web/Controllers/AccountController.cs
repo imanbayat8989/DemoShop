@@ -21,7 +21,6 @@ namespace DemoShop.Web.Controllers
 		[HttpGet("register")]
 		public IActionResult Register()
 		{
-			TempData[ErrorMessage] = "تلفن همراه وارد شده تکراری است";
 			return View();
 		}
 
@@ -54,9 +53,16 @@ namespace DemoShop.Web.Controllers
 
 		#region Login
 
+		[HttpGet("login")]
 		public IActionResult Login()
 		{
 			return View();
+		}
+
+		public async Task<IActionResult> Login(LoginUserDTO loginUserDTO)
+		{
+			
+			return View(loginUserDTO);
 		}
 
 		#endregion

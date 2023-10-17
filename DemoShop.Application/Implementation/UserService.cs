@@ -38,7 +38,10 @@ namespace DemoShop.Application.Implementation
 						FirstName = register.FirstName,
 						LastName = register.LastName,
 						Mobile = register.Mobile,
+						Email = register.Email,
 						Password = _passwordHelper.EnCodePasswordMD5(register.Password),
+						MobileActiveCode = new Random().Next(10000, 999999).ToString(),
+						EmailActiveCode = Guid.NewGuid().ToString("N")
 					};
 					await _userRepository.AddEntity(user);
 					await _userRepository.SaveChanges();
