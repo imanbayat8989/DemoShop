@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DemoShop.DataLayer.DTO.Site;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Xml.Linq;
 
 namespace DemoShop.DataLayer.DTO.Account
 {
-	public class RegisterUserDTO
+	public class RegisterUserDTO : CaptchaViewModels
 	{
 		[Display(Name = "ایمیل")]
 		[MaxLength(200, ErrorMessage = "نمی تواند بیشتر از {1} کاراکتر باشد {0}")]

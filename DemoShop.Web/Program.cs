@@ -3,6 +3,8 @@ using DemoShop.Application.Interface;
 using DemoShop.DataLayer.Contract;
 using DemoShop.DataLayer.Entities.Account;
 using DemoShop.DataLayer.Repository;
+using GoogleReCaptcha.V3;
+using GoogleReCaptcha.V3.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Encodings.Web;
@@ -18,6 +20,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHelper, PasswordHelper>();
+builder.Services.AddHttpClient<ICaptchaValidator, GoogleReCaptchaValidator>();
 
 #endregion
 

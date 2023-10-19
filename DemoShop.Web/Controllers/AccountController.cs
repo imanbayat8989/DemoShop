@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
 using System.Security.Claims;
+using GoogleReCaptcha.V3.Interface;
 
 namespace DemoShop.Web.Controllers
 {
@@ -12,24 +13,28 @@ namespace DemoShop.Web.Controllers
 	{
 		#region Constructor
 		private readonly IUserService _userService;
+		private readonly ICaptchaValidator _captchaValidator;
 
-		public AccountController(IUserService userService)
-		{
-			_userService = userService;
-		}
+        public AccountController(IUserService userService, ICaptchaValidator captchaValidator)
+        {
+            _userService = userService;
+            _captchaValidator = captchaValidator;
+        }
 
-		#endregion
 
-		#region Register
 
-		[HttpGet("register")]
+        #endregion
+
+        #region Register
+
+        [HttpGet("register")]
 		public IActionResult Register()
 		{
-            if (User.Identity.IsAuthenticated)
-            {
-                return Redirect("/");
-            }
-            return View();
+			if (User.Identity.IsAuthenticated)
+			{
+				return Redirect("/");
+			}
+			return View();
 		}
 
 		[HttpPost("register"), ValidateAntiForgeryToken]
@@ -64,55 +69,73 @@ namespace DemoShop.Web.Controllers
 
 		[HttpGet("login")]
 		public IActionResult Login()
-        {
-			if(User.Identity.IsAuthenticated)
+		{
+			if (User.Identity.IsAuthenticated)
 			{
 				return Redirect("/");
 			}
-            return View();
-        }
+			return View();
+		}
 
 		[HttpPost("login"), ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(LoginUserDTO login)
 		{
-            if (ModelState.IsValid)
-            {
-                var res = await _userService.GetUserForLogin(login);
-                switch (res)
-                {
-                    case LoginUserResult.NotFound:
-                        TempData[ErrorMessage] = "کاربر مورد نظر یافت نشد";
-                        break;
-                    case LoginUserResult.NotActiveted:
-                        TempData[WarningMessage] = "حساب کاربری شما فعال نشده است";
-                        break;
-                    case LoginUserResult.Success:
+			if(!await _captchaValidator.IsCaptchaPassedAsync(login.Captcha))
+			{
+				TempData[ErrorMessage] = "کد امنیتی شما تایید نشد";
+				return View();
+			}
 
-                        var user = await _userService.GetUserByMobile(login.Mobile);
+			if (ModelState.IsValid)
+			{
+				var res = await _userService.GetUserForLogin(login);
+				switch (res)
+				{
+					case LoginUserResult.NotFound:
+						TempData[ErrorMessage] = "کاربر مورد نظر یافت نشد";
+						break;
+					case LoginUserResult.NotActiveted:
+						TempData[WarningMessage] = "حساب کاربری شما فعال نشده است";
+						break;
+					case LoginUserResult.Success:
 
-                        var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name,user.Mobile),
-                            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
-                        };
+						var user = await _userService.GetUserByMobile(login.Mobile);
 
-                        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        var principal = new ClaimsPrincipal(identity);
-                        var properties = new AuthenticationProperties
-                        {
-                            IsPersistent = login.RememberMe
-                        };
+						var claims = new List<Claim>
+						{
+							new Claim(ClaimTypes.Name,user.Mobile),
+							new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
+						};
 
-                        await HttpContext.SignInAsync(principal, properties);
+						var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+						var principal = new ClaimsPrincipal(identity);
+						var properties = new AuthenticationProperties
+						{
+							IsPersistent = login.RememberMe
+						};
 
-                        TempData[SuccessMessage] = "عملیات ورود با موفقیت انجام شد";
-                        return Redirect("/");
-                }
-            }
+						await HttpContext.SignInAsync(principal, properties);
+
+						TempData[SuccessMessage] = "عملیات ورود با موفقیت انجام شد";
+						return Redirect("/");
+				}
+			}
 
 
-            return View(login);
-        }
+			return View(login);
+		}
+
+		#endregion
+
+		#region Logout
+
+		[HttpGet("log-out")]
+		public async Task<IActionResult> Logout()
+		{
+			await HttpContext.SignOutAsync();
+
+			return Redirect("/");
+		}
 
 		#endregion
 	}

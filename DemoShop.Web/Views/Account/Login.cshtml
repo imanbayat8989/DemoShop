@@ -1,12 +1,14 @@
-﻿@model DemoShop.DataLayer.DTO.Account.LoginUserDTO
+﻿@using DemoShop.DataLayer.DTO.Site;
+@model DemoShop.DataLayer.DTO.Account.LoginUserDTO
 
 @{
     ViewData["Title"] = "ورود به حساب کاربری";
 }
 
 @section scripts
-    {
+{
     <partial name="_JqueryValidators" />
+    <partial name="_CaptchaScripts"/>
 }
 
 <div class="breadcrumbs_area">
@@ -31,7 +33,8 @@
             <div class="col-lg-6 col-md-6 offset-lg-3 offset-md-3">
                 <div class="account_form register">
                     <h2>لاگین</h2>
-                    <form asp-controller="Account" asp-action="login" method="post">
+                    <form asp-controller="Account" asp-action="Login" method="post">
+                        <partial name="_CaptchaInput" />
                         <p>
                             <label>تلفن همراه<span>*</span></label>
                             <input type="text" asp-for="Mobile">
