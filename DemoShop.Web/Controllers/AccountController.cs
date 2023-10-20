@@ -40,8 +40,13 @@ namespace DemoShop.Web.Controllers
 		[HttpPost("register"), ValidateAntiForgeryToken]
 		public async Task<IActionResult> Register(RegisterUserDTO register)
 		{
+            if (!await _captchaValidator.IsCaptchaPassedAsync(register.Captcha))
+            {
+                TempData[ErrorMessage] = "کد امنیتی شما تایید نشد";
+                return View(register);
+            }
 
-			if (ModelState.IsValid)
+            if (ModelState.IsValid)
 			{
 				var res = await _userService.RegisterUser(register);
 				switch (res)
@@ -127,9 +132,49 @@ namespace DemoShop.Web.Controllers
 
 		#endregion
 
-		#region Logout
+		#region Forgot Password
 
-		[HttpGet("log-out")]
+		[HttpGet("forgot-password")]
+		public IActionResult ForgotPassword()
+		{
+			return View();
+		}
+		[HttpPost("forgot-password"), ValidateAntiForgeryToken]
+		public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO forgotPassword)
+		{
+            if (!await _captchaValidator.IsCaptchaPassedAsync(forgotPassword.Captcha))
+            {
+                TempData[ErrorMessage] = "کد امنیتی شما تایید نشد";
+                return View(forgotPassword);
+            }
+			if(ModelState.IsValid)
+			{
+				var result = await _userService.RecoverUserPassword(forgotPassword);
+                switch (result)
+                {
+                    case ForgotPasswordResult.Success:
+						TempData[SuccessMessage] = "کلمه عبور جدید برای شما ارسال شد";
+						TempData[InfoMessage] = "لطفا پس از ورود کلمه عبور خود را تغییر دهید";
+						return RedirectToAction("Login");
+                    case ForgotPasswordResult.NotFound:
+						TempData[WarningMessage] = "کاربر مورد نظر یافت نشد";
+                        break;
+                    case ForgotPasswordResult.Error:
+						TempData[ErrorMessage] = "شما با خطا مواجه شدید";
+                        break;
+						default:
+						break;
+                }
+            }
+
+            return View(forgotPassword);
+        }
+
+        #endregion
+
+        #region Logout
+
+        [HttpGet("log-out")]
 		public async Task<IActionResult> Logout()
 		{
 			await HttpContext.SignOutAsync();
@@ -137,6 +182,6 @@ namespace DemoShop.Web.Controllers
 			return Redirect("/");
 		}
 
-		#endregion
-	}
+        #endregion
+    }
 }

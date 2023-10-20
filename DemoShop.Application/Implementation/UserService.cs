@@ -57,7 +57,7 @@ namespace DemoShop.Application.Implementation
 			{
 				return RegisterUserResult.Error;
 			}
-			return RegisterUserResult.Success;
+			
 		}
 
 		#endregion
@@ -92,5 +92,30 @@ namespace DemoShop.Application.Implementation
 		{
 			return await _userRepository.GetQuery().AsQueryable().SingleOrDefaultAsync(x => x.Mobile == mobileNumber);
 		}
-	}
+
+        public async Task<ForgotPasswordResult> RecoverUserPassword(ForgotPasswordDTO forgotPassword)
+        {
+			try
+			{
+				var user = await _userRepository.GetQuery().SingleOrDefaultAsync(x => x.Mobile == forgotPassword.Mobile);
+				if (user == null)
+				{
+					return ForgotPasswordResult.NotFound;
+				};
+				var newpassword = new Random().Next(1000000, 99999999).ToString();
+
+				user.Password = _passwordHelper.EnCodePasswordMD5(newpassword);
+				_userRepository.EditEntity(user);
+				//send new password to user via SMS
+				await _userRepository.SaveChanges();
+
+				return ForgotPasswordResult.Success;
+			}
+			catch (Exception ex)
+			{
+				return ForgotPasswordResult.Error;
+			}
+			
+        }
+    }
 }
