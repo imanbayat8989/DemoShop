@@ -21,6 +21,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHelper, PasswordHelper>();
 builder.Services.AddHttpClient<ICaptchaValidator, GoogleReCaptchaValidator>();
+builder.Services.AddScoped<ISiteService, SiteService>();
 
 #endregion
 

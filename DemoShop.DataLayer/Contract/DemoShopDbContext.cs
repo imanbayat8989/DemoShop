@@ -1,4 +1,5 @@
 ﻿using DemoShop.DataLayer.Entities.Account;
+using DemoShop.DataLayer.Entities.Site;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace DemoShop.DataLayer.Contract
         public DemoShopDbContext(DbContextOptions<DemoShopDbContext> options) : base(options) { }
         #region DbSets
         public DbSet<User> Users { get; set; }
+		public DbSet<SiteSettings> SiteSettings { get; set; }
 		#endregion
 
 		#region on model creating

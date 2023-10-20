@@ -1,4 +1,7 @@
-﻿
+﻿@using DemoShop.DataLayer.Entities.Site
+@{
+	var siteSetting = ViewBag.SiteSetting as SiteSettings;
+}
 <!--header area start-->
 <!--Offcanvas menu area start-->
 <div class="off_canvars_overlay">
@@ -15,7 +18,7 @@
 						<a href="javascript:void(0)"><i class="ion-android-close"></i></a>
 					</div>
 					<div class="support_info">
-						<p>تلفن تماس: <a class="ltr-text" href="tel:+989123456789">+(98) 123 456 789</a></p>
+						<p>تلفن تماس: <a class="ltr-text" href="tel:+989123456789">@siteSetting.Mobile</a></p>
 					</div>
 					<div class="top_right text-right">
 						@if(User.Identity.IsAuthenticated)
@@ -230,7 +233,7 @@
 				<div class="row align-items-center">
 					<div class="col-lg-6 col-md-6">
 						<div class="support_info">
-							<p>تلفن تماس: <a class="ltr-text" href="tel:+989123456789">+(98) 123 456 789</a></p>
+							<p>تلفن تماس: <a class="ltr-text" href="tel:+989123456789">@siteSetting.Mobile</a></p>
 						</div>
 					</div>
 					<div class="col-lg-6 col-md-6">
