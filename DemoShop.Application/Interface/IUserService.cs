@@ -17,6 +17,7 @@ namespace DemoShop.Application.Interface
 		Task<LoginUserResult> GetUserForLogin(LoginUserDTO loginUser);
 		Task<User> GetUserByMobile(string mobileNumber);
 		Task<ForgotPasswordResult> RecoverUserPassword(ForgotPasswordDTO forgotPassword);
+		Task<bool> ActivateMobile(ActivateMobileDTO activateMobile);
 
 		#endregion
 	}

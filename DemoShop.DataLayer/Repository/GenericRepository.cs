@@ -23,6 +23,7 @@ namespace DemoShop.DataLayer.Repository
         public async Task AddEntity(TEntity entity)
         {
             entity.CreateDate = DateTime.Now;
+			entity.LastUpdateDate = entity.CreateDate;
             await _dbset.AddAsync(entity);
         }
 

@@ -16,12 +16,17 @@ namespace DemoShop.Application.Implementation
 		#region Constructor
 		private readonly IGenericRepository<User> _userRepository;
 		private readonly IPasswordHelper _passwordHelper;
+		private readonly ISmsService _smsService;
 
-		public UserService(IGenericRepository<User> userRepository, IPasswordHelper passwordHelper)
+		public UserService(IGenericRepository<User> userRepository, IPasswordHelper passwordHelper, ISmsService smsService)
 		{
 			_userRepository = userRepository;
 			_passwordHelper = passwordHelper;
+			_smsService = smsService;
 		}
+
+
+
 
 		#endregion
 
@@ -45,6 +50,8 @@ namespace DemoShop.Application.Implementation
 					};
 					await _userRepository.AddEntity(user);
 					await _userRepository.SaveChanges();
+
+					//await _smsService.SendVerificationSms(user.Mobile, user.MobileActiveCode);
 
 					return RegisterUserResult.Success;
 				}
@@ -116,6 +123,23 @@ namespace DemoShop.Application.Implementation
 				return ForgotPasswordResult.Error;
 			}
 			
+        }
+
+        public async Task<bool> ActivateMobile(ActivateMobileDTO activateMobile)
+        {
+			var user = await _userRepository.GetQuery().AsQueryable()
+				.SingleOrDefaultAsync(s=> s.Mobile == activateMobile.Mobile);
+			if (user != null)
+			{
+				if(user.MobileActiveCode == activateMobile.MobileActiveCode)
+				{
+					user.IsMobileActive = true;
+					user.MobileActiveCode = new Random().Next(100000, 99999999).ToString();
+					await _userRepository.SaveChanges();
+					return true;
+				}
+			}
+			return false;
         }
     }
 }

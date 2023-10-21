@@ -21,13 +21,49 @@ namespace DemoShop.Web.Controllers
             _captchaValidator = captchaValidator;
         }
 
+		#endregion
 
+		#region activate mobile
 
-        #endregion
+		[HttpGet("activateMobile/{mobile}")]
+		public IActionResult ActivateMobile(string mobile)
+		{
+			if (User.Identity.IsAuthenticated)
+			{
+				return Redirect("/");
+			}
+			var activateMobileDTO = new ActivateMobileDTO { Mobile = mobile };
+			return View(activateMobileDTO);
+		}
 
-        #region Register
+		[HttpPost("activateMobile/{mobile}"), ValidateAntiForgeryToken]
+		public async Task<IActionResult> ActivateMobile(ActivateMobileDTO activateMobileDTO)
+		{
+			if (!await _captchaValidator.IsCaptchaPassedAsync(activateMobileDTO.Captcha))
+			{
+				TempData[ErrorMessage] = "کد امنیتی شما تایید نشد";
+				return View(activateMobileDTO);
+			}
 
-        [HttpGet("register")]
+			if (ModelState.IsValid)
+			{
+				var res = await _userService.ActivateMobile(activateMobileDTO);
+				if(res)
+				{
+					TempData[SuccessMessage] = "حساب کاربری شما با موفقیت فعال شد";
+					return RedirectToAction("Login");
+				}
+				
+				TempData[ErrorMessage] = "کاربری با مشخصات وارد شده یافت نشد";
+				
+			}
+			return View(activateMobileDTO);
+		}
+
+		#endregion
+		#region Register
+
+		[HttpGet("register")]
 		public IActionResult Register()
 		{
 			if (User.Identity.IsAuthenticated)
@@ -58,7 +94,8 @@ namespace DemoShop.Web.Controllers
 					case RegisterUserResult.Success:
 						TempData[SuccessMessage] = "ثبت نام شما با موفقیت انجام شد";
 						TempData[InfoMessage] = "کد تایید تلفن همراه برای شما ارسال شد";
-						return RedirectToAction("login");
+						return RedirectToAction("ActivateMobile", "Account", new {mobile = register.Mobile});
+						
 					case RegisterUserResult.Error:
 						TempData[ErrorMessage] = "با خطا مواجه شدید";
 						ModelState.AddModelError("", "با خطا مواجه شدید");
