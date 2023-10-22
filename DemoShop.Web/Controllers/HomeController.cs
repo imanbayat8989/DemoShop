@@ -59,7 +59,7 @@ namespace DemoShop.Web.Controllers
         #region Index
         public async Task<IActionResult> Index(string mobile)
 		{
-            var banner = await _siteService.GetSiteBannerByPlacement(new List<BannerPlacement>
+            ViewBag.banners = await _siteService.GetSiteBannerByPlacement(new List<BannerPlacement>
             {
                     BannerPlacement.Home_1,
                     BannerPlacement.Home_2,

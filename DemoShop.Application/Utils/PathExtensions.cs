@@ -12,6 +12,12 @@ namespace DemoShop.Application.Utils
 
         public static string SliderOrigin = "/img/slider/";
 
-        #endregion
-    }
+		#endregion
+
+		#region banner
+
+		public static string BannerOrigin = "/img/bg/";
+
+		#endregion
+	}
 }

@@ -67,7 +67,7 @@ namespace DemoShop.Application.Implementation
 		public async Task<List<SiteBanner>> GetSiteBannerByPlacement(List<BannerPlacement> placements)
 		{
 			return await _siteBannerRepository.GetQuery().AsQueryable()
-                .Where(y => placements.Any(f => f == y.BannerPlacement)).ToListAsync();
+                .Where(y => placements.Contains(y.BannerPlacement)).ToListAsync();
 		}
 
 
