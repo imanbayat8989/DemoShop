@@ -1,4 +1,5 @@
 ﻿using DemoShop.DataLayer.Entities.Account;
+using DemoShop.DataLayer.Entities.Contacts;
 using DemoShop.DataLayer.Entities.Site;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,6 +16,7 @@ namespace DemoShop.DataLayer.Contract
         #region DbSets
         public DbSet<User> Users { get; set; }
 		public DbSet<SiteSettings> SiteSettings { get; set; }
+		public DbSet<ContactUs> ContactUs { get; set; }
 		#endregion
 
 		#region on model creating

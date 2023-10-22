@@ -2,6 +2,7 @@ using DemoShop.Application.Implementation;
 using DemoShop.Application.Interface;
 using DemoShop.DataLayer.Contract;
 using DemoShop.DataLayer.Entities.Account;
+using DemoShop.DataLayer.Entities.Contacts;
 using DemoShop.DataLayer.Repository;
 using GoogleReCaptcha.V3;
 using GoogleReCaptcha.V3.Interface;
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IPasswordHelper, PasswordHelper>();
 builder.Services.AddHttpClient<ICaptchaValidator, GoogleReCaptchaValidator>();
 builder.Services.AddScoped<ISiteService, SiteService>();
 builder.Services.AddScoped<ISmsService, SmsService>();
+builder.Services.AddScoped<IContactusService, ContactusService>();
 
 #endregion
 

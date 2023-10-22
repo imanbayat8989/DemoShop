@@ -1,4 +1,5 @@
 ﻿using DemoShop.DataLayer.Entities.common;
+using DemoShop.DataLayer.Entities.Contacts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -62,6 +63,8 @@ namespace DemoShop.DataLayer.Entities.Account
         #endregion
 
         #region Relations
+
+		public ICollection<ContactUs> ContactUses { get; set; }
         #endregion
     }
 }
