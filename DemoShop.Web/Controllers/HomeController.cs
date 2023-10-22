@@ -2,6 +2,7 @@
 using DemoShop.Application.Interface;
 using DemoShop.DataLayer.DTO.Account;
 using DemoShop.DataLayer.DTO.Contacts;
+using DemoShop.DataLayer.Entities.Site;
 using DemoShop.Web.Models;
 using DemoShop.Web.PresentationExtensions;
 using GoogleReCaptcha.V3.Interface;
@@ -16,18 +17,20 @@ namespace DemoShop.Web.Controllers
 
 		private readonly IContactusService _contactusService;
         private readonly ICaptchaValidator _captchaValidator;
+        private readonly ISiteService _siteService;
 
-        public HomeController(IContactusService contactusService, ICaptchaValidator captchaValidator)
-        {
-            _contactusService = contactusService;
-            _captchaValidator = captchaValidator;
-        }
+		public HomeController(IContactusService contactusService, ICaptchaValidator captchaValidator,
+            ISiteService siteService)
+		{
+			_contactusService = contactusService;
+			_captchaValidator = captchaValidator;
+			_siteService = siteService;
+		}
 
+		#endregion
 
-        #endregion
-
-        #region Contact Us
-        [HttpGet("contact-us")]
+		#region Contact Us
+		[HttpGet("contact-us")]
         public IActionResult ContactUs()
         {
             return View();
@@ -53,9 +56,15 @@ namespace DemoShop.Web.Controllers
 
         #endregion
 
-        #region register
+        #region Index
         public async Task<IActionResult> Index(string mobile)
 		{
+            var banner = await _siteService.GetSiteBannerByPlacement(new List<BannerPlacement>
+            {
+                    BannerPlacement.Home_1,
+                    BannerPlacement.Home_2,
+                    BannerPlacement.Home_3
+            });
 			
 			return View();
 		}

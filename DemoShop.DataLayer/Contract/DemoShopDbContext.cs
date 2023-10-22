@@ -18,6 +18,7 @@ namespace DemoShop.DataLayer.Contract
 		public DbSet<SiteSettings> SiteSettings { get; set; }
 		public DbSet<ContactUs> ContactUs { get; set; }
 		public DbSet<Slider> Slider { get; set; }
+		public DbSet<SiteBanner> SiteBanner { get; set; }
 		#endregion
 
 		#region on model creating

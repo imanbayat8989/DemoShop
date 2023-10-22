@@ -16,21 +16,26 @@ namespace DemoShop.Application.Implementation
 
         private readonly IGenericRepository<SiteSettings> _siteSettingsRepository;
         private readonly IGenericRepository<Slider> _siteService;
+        private readonly IGenericRepository<SiteBanner> _siteBannerRepository;
 
-        public SiteService(IGenericRepository<SiteSettings> siteSettingsRepository, IGenericRepository<Slider> siteService)
-        {
-            _siteSettingsRepository = siteSettingsRepository;
-            _siteService = siteService;
-        }
+		public SiteService(IGenericRepository<SiteSettings> siteSettingsRepository,
+            IGenericRepository<Slider> siteService, IGenericRepository<SiteBanner> siteBannerRepository)
+		{
+			_siteSettingsRepository = siteSettingsRepository;
+			_siteService = siteService;
+			_siteBannerRepository = siteBannerRepository;
+		}
 
-        #endregion
 
-        #region Dispose
+		#endregion
 
-        public async ValueTask DisposeAsync()
+		#region Dispose
+
+		public async ValueTask DisposeAsync()
         {
             if (_siteSettingsRepository != null) await _siteSettingsRepository.DisposeAsync();
             if (_siteService != null) await _siteService.DisposeAsync(); 
+            if(_siteBannerRepository !=null) await _siteBannerRepository.DisposeAsync();
             
         }
 
@@ -55,7 +60,17 @@ namespace DemoShop.Application.Implementation
                 .Where(x => x.IsActive && !x.IsDeleted).ToListAsync();
         }
 
+		#endregion
 
-        #endregion
-    }
+		#region SiteBanner
+
+		public async Task<List<SiteBanner>> GetSiteBannerByPlacement(List<BannerPlacement> placements)
+		{
+			return await _siteBannerRepository.GetQuery().AsQueryable()
+                .Where(y => placements.Any(f => f == y.BannerPlacement)).ToListAsync();
+		}
+
+
+		#endregion
+	}
 }
