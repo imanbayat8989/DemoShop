@@ -28,7 +28,7 @@ namespace DemoShop.Web.Controllers
 
         #region Contact Us
         [HttpGet("contact-us")]
-        public async Task<IActionResult> ContactUs()
+        public IActionResult ContactUs()
         {
             return View();
         }

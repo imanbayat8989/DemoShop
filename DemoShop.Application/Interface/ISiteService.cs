@@ -10,5 +10,7 @@ namespace DemoShop.Application.Interface
     public interface ISiteService : IAsyncDisposable
     {
         Task<SiteSettings> GetDefaultSiteSettings();
+
+        Task<List<Slider>> GetAllActiveSliders();
     }
 }

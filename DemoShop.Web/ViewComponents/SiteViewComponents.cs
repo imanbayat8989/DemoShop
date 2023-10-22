@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemoShop.Web.ViewComponents
 {
-	public class SiteHeaderViewComponent : ViewComponent
+    #region Site Header
+    public class SiteHeaderViewComponent : ViewComponent
 	{
 		private readonly ISiteService _siteService;
 
@@ -19,8 +20,10 @@ namespace DemoShop.Web.ViewComponents
 			return View("SiteHeader");
 		}
 	}
+    #endregion
 
-	public class SiteFooterViewComponent : ViewComponent
+    #region Site Footer
+    public class SiteFooterViewComponent : ViewComponent
 	{
 		private readonly ISiteService _siteService;
 
@@ -33,7 +36,24 @@ namespace DemoShop.Web.ViewComponents
 			ViewBag.SiteSetting = await _siteService.GetDefaultSiteSettings();
 			return View("SiteFooter");
 		}
-
-
 	}
+    #endregion
+    #region home sliders
+
+    public class HomeSliderViewComponent : ViewComponent
+    {
+        private readonly ISiteService _siteService;
+
+        public HomeSliderViewComponent(ISiteService siteService)
+        {
+            _siteService = siteService;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var sliders = await _siteService.GetAllActiveSliders();
+            return View("HomeSlider", sliders);
+        }
+    }
+    #endregion
 }

@@ -15,10 +15,12 @@ namespace DemoShop.Application.Implementation
         #region Constructor
 
         private readonly IGenericRepository<SiteSettings> _siteSettingsRepository;
+        private readonly IGenericRepository<Slider> _siteService;
 
-        public SiteService(IGenericRepository<SiteSettings> siteSettingsRepository)
+        public SiteService(IGenericRepository<SiteSettings> siteSettingsRepository, IGenericRepository<Slider> siteService)
         {
             _siteSettingsRepository = siteSettingsRepository;
+            _siteService = siteService;
         }
 
         #endregion
@@ -27,9 +29,12 @@ namespace DemoShop.Application.Implementation
 
         public async ValueTask DisposeAsync()
         {
-            await _siteSettingsRepository.DisposeAsync();
+            if (_siteSettingsRepository != null) await _siteSettingsRepository.DisposeAsync();
+            if (_siteService != null) await _siteService.DisposeAsync(); 
+            
         }
 
+        
         #endregion
 
         #region siteSettings
@@ -39,6 +44,17 @@ namespace DemoShop.Application.Implementation
             return await _siteSettingsRepository.GetQuery().AsQueryable()
                 .SingleOrDefaultAsync(x => x.IsDefault && !x.IsDeleted);
         }
+
+        #endregion
+
+        #region Slider
+
+        public async Task<List<Slider>> GetAllActiveSliders()
+        {
+            return await _siteService.GetQuery().AsQueryable()
+                .Where(x => x.IsActive && !x.IsDeleted).ToListAsync();
+        }
+
 
         #endregion
     }
