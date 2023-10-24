@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="IPE.SmsIr" Version="1.0.5" />
+    <PackageReference Include="LazZiya.ImageResize" Version="4.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>

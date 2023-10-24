@@ -1,5 +1,6 @@
 ﻿using DemoShop.DataLayer.DTO.Account;
 using DemoShop.DataLayer.Entities.Account;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,8 @@ namespace DemoShop.Application.Interface
 		Task<bool> ActivateMobile(ActivateMobileDTO activateMobile);
         Task<bool> ChangeUserPassword(ChangePasswordDTO changePass, long currentUserId);
         Task<EditUserProfileDTO> GetProfileForEdit(long userId);
-        Task<EditUserProfileResult> EditUserProfile(EditUserProfileDTO profile, long userId);
+        
+        Task<EditUserProfileResult> EditUserProfile(EditUserProfileDTO profile, long userId, IFormFile avatarImage);
 
         #endregion
     }

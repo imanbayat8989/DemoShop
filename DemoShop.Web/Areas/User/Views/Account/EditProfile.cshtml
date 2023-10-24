@@ -40,7 +40,7 @@
                             <div class="login">
                                 <div class="login_form_container">
                                     <div class="account_login_form">
-                                        <form asp-area="User" asp-controller="Account" asp-action="EditProfile">
+                                        <form asp-area="User" asp-controller="Account" asp-action="EditProfile" enctype="multipart/form-data">
                                             <label>نام</label>
                                             <input type="text" asp-for="FirstName">
                                             <span class="text-danger" asp-validation-for="FirstName"></span>

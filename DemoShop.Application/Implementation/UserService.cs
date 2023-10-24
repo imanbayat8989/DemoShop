@@ -1,7 +1,10 @@
-﻿using DemoShop.Application.Interface;
+﻿using DemoShop.Application.Extensions;
+using DemoShop.Application.Interface;
+using DemoShop.Application.Utils;
 using DemoShop.DataLayer.DTO.Account;
 using DemoShop.DataLayer.Entities.Account;
 using DemoShop.DataLayer.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -172,7 +175,7 @@ namespace DemoShop.Application.Implementation
             };
         }
 
-        public async Task<EditUserProfileResult> EditUserProfile(EditUserProfileDTO profile, long userId)
+        public async Task<EditUserProfileResult> EditUserProfile(EditUserProfileDTO profile, long userId, IFormFile avatarImage)
         {
             var user = await _userRepository.GetEntityById(userId);
             if (user == null) return EditUserProfileResult.NotFound;
@@ -182,6 +185,14 @@ namespace DemoShop.Application.Implementation
 
             user.FirstName = profile.FirstName;
             user.LastName = profile.LastName;
+
+            if (avatarImage != null && avatarImage.IsImage())
+            {
+                var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(avatarImage.FileName);
+                avatarImage.AddImageToServer(imageName, PathExtensions.UserAvatarOriginServer, 100, 100, PathExtensions.UserAvatarThumbServer, user.Avatar);
+                user.Avatar = imageName;
+            }
+
             _userRepository.EditEntity(user);
             await _userRepository.SaveChanges();
 
