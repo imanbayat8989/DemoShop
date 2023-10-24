@@ -68,6 +68,17 @@ namespace DemoShop.Web.Controllers
 			
 			return View();
 		}
-		#endregion
-	}
+        #endregion
+
+        #region a bout us
+
+        [HttpGet("about-us")]
+        public async Task<IActionResult> AboutUs()
+        {
+            var siteSetting = await _siteService.GetDefaultSiteSettings();
+            return View(siteSetting);
+        }
+
+        #endregion
+    }
 }

@@ -14,5 +14,7 @@ namespace DemoShop.Application.Interface
         Task<List<Slider>> GetAllActiveSliders();
 
         Task<List<SiteBanner>> GetSiteBannerByPlacement(List<BannerPlacement> placements);
+
+        
     }
 }
