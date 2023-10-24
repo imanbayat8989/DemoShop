@@ -25,9 +25,6 @@ namespace DemoShop.Application.Implementation
 			_smsService = smsService;
 		}
 
-
-
-
 		#endregion
 
 		#region Account
@@ -143,5 +140,28 @@ namespace DemoShop.Application.Implementation
 			}
 			return false;
         }
+
+        #region change user Password
+
+        public async Task<bool> ChangeUserPassword(ChangePasswordDTO changePass, long currentUserId)
+        {
+            var user = await _userRepository.GetEntityById(currentUserId);
+            if (user != null)
+            {
+                var newPassword = _passwordHelper.EnCodePasswordMD5(changePass.NewPassword);
+                if (newPassword != user.Password)
+                {
+                    user.Password = newPassword;
+                    _userRepository.EditEntity(user);
+                    await _userRepository.SaveChanges();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        #endregion
     }
 }

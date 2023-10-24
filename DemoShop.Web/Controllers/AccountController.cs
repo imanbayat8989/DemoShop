@@ -61,6 +61,7 @@ namespace DemoShop.Web.Controllers
 		}
 
 		#endregion
+
 		#region Register
 
 		[HttpGet("register")]
