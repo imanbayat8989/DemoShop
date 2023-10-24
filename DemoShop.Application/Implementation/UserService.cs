@@ -113,7 +113,9 @@ namespace DemoShop.Application.Implementation
 
 				user.Password = _passwordHelper.EnCodePasswordMD5(newpassword);
 				_userRepository.EditEntity(user);
-				//send new password to user via SMS
+				
+				await _smsService.SendUserPassword(user.Mobile, newpassword);
+
 				await _userRepository.SaveChanges();
 
 				return ForgotPasswordResult.Success;
