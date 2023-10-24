@@ -26,4 +26,8 @@
     <ProjectReference Include="..\DemoShop.DataLayer\DemoShop.DataLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Content\Images\UserAvatar\" />
+  </ItemGroup>
+
 </Project>
