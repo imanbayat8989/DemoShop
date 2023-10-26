@@ -142,10 +142,6 @@ namespace DemoShop.Application.Implementation
         }
         #endregion
 
-
-
-
-
         #region Dispose
 
         public async ValueTask DisposeAsync()

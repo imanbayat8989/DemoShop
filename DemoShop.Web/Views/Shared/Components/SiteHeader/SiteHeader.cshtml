@@ -1,7 +1,11 @@
 ﻿@using DemoShop.DataLayer.Entities.Site
+@using DemoShop.DataLayer.Entities.Account
+@using DemoShop.Application.EntiiesExtensions
 @{
     var siteSetting = ViewBag.siteSetting as SiteSettings;
+    var user = ViewBag.user as User;
 }
+
 
 <!--header area start-->
 <!--Offcanvas menu area start-->
@@ -32,7 +36,7 @@
                         else
                         {
                             <ul>
-                                <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @User.Identity.Name، خوش آمدید </a></li>
+                                <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @user.GetUserShowName()، خوش آمدید </a></li>
                                 <li><a asp-controller="Account" asp-action="LogOut"> خروج </a></li>
                             </ul>
                         }
@@ -250,7 +254,7 @@
                             else
                             {
                                 <ul>
-                                    <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @User.Identity.Name، خوش آمدید </a></li>
+                                    <li><a asp-area="User" asp-controller="Home" asp-action="Dashboard"> @user.GetUserShowName()، خوش آمدید </a></li>
                                     <li><a asp-controller="Account" asp-action="LogOut"> خروج </a></li>
                                 </ul>
                             }
