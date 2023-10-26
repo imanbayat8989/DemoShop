@@ -12,5 +12,8 @@ namespace DemoShop.Application.Interface
         Task CreateContactUs(CreateContactUsDTO contact, string userIp, long? userId);
 
         Task<AddTicketResult> AddUserTicket(AddTicketNewModel ticket, long userId);
+
+        Task<FilterTicketDTO> FilterTickets(FilterTicketDTO filter);
+
     }
 }
