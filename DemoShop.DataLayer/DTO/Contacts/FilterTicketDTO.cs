@@ -1,4 +1,5 @@
-﻿using DemoShop.DataLayer.Entities.Contacts;
+﻿using DemoShop.DataLayer.DTO.Paging;
+using DemoShop.DataLayer.Entities.Contacts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DemoShop.DataLayer.DTO.Contacts
 {
-    public class FilterTicketDTO
+    public class FilterTicketDTO : BasePaging
     {
         #region properties
 
@@ -24,6 +25,29 @@ namespace DemoShop.DataLayer.DTO.Contacts
         public FilterTicketOrder OrderBy { get; set; }
 
         public List<Ticket> Tickets { get; set; }
+
+        #endregion
+
+        #region methods
+
+        public FilterTicketDTO SetTickets(List<Ticket> tickets)
+        {
+            this.Tickets = tickets;
+            return this;
+        }
+
+        public FilterTicketDTO SetPaging(BasePaging paging)
+        {
+            this.PageId = paging.PageId;
+            this.AllEntitiesCount = paging.AllEntitiesCount;
+            this.StartPage = paging.StartPage;
+            this.EndPage = paging.EndPage;
+            this.HowManyShowPageAfterAndBefore = paging.HowManyShowPageAfterAndBefore;
+            this.TakeEntity = paging.TakeEntity;
+            this.SkipEntity = paging.SkipEntity;
+            this.PageCount = paging.PageCount;
+            return this;
+        }
 
         #endregion
     }

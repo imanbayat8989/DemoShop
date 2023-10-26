@@ -1,5 +1,6 @@
 ﻿using DemoShop.Application.Interface;
 using DemoShop.DataLayer.DTO.Contacts;
+using DemoShop.DataLayer.DTO.Paging;
 using DemoShop.DataLayer.Entities.Contacts;
 using DemoShop.DataLayer.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -129,10 +130,19 @@ namespace DemoShop.Application.Implementation
 
             #endregion
 
-            return filter;
-        }
+            #region paging
 
+            var pager = Pager.Build(filter.PageId, await query.CountAsync(),
+                filter.TakeEntity, filter.HowManyShowPageAfterAndBefore);
+            var allEntities = await query.Paging(pager).ToListAsync();
+
+            #endregion
+
+            return filter.SetPaging(pager).SetTickets(allEntities);
+        }
         #endregion
+
+
 
 
 
