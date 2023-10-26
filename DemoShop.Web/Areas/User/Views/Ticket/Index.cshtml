@@ -55,7 +55,7 @@
                                                             @ticket.TicketState.GetEnumName()
                                                         </span>
                                                     </td>
-                                                    <td><a href="#" class="view">نمایش جزییات</a></td>
+                                                    <td><a asp-area="User" asp-controller="Ticket" asp-action="TicketDetail" asp-route-ticketId="@ticket.Id" class="view">نمایش جزییات</a></td>
                                                 </tr>
                                             }
                                         </tbody>
