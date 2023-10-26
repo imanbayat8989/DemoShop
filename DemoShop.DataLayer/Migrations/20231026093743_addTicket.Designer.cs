@@ -4,6 +4,7 @@ using DemoShop.DataLayer.Contract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoShop.DataLayer.Migrations
 {
     [DbContext(typeof(DemoShopDbContext))]
-    partial class DemoShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231026093743_addTicket")]
+    partial class addTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,89 +144,6 @@ namespace DemoShop.DataLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ContactUs");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Contacts.Ticket", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReadByAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReadByOwner")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("OwnerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TicketPriority")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TicketSection")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TicketState")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("Ticket");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Contacts.TicketMessage", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("SenderId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("TicketId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SenderId");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("TicketMessages");
                 });
 
             modelBuilder.Entity("DemoShop.DataLayer.Entities.Site.SiteBanner", b =>
@@ -379,53 +298,14 @@ namespace DemoShop.DataLayer.Migrations
                     b.HasOne("DemoShop.DataLayer.Entities.Account.User", "user")
                         .WithMany("ContactUses")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("user");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Contacts.Ticket", b =>
-                {
-                    b.HasOne("DemoShop.DataLayer.Entities.Account.User", "Owner")
-                        .WithMany("Tickets")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Contacts.TicketMessage", b =>
-                {
-                    b.HasOne("DemoShop.DataLayer.Entities.Account.User", "Sender")
-                        .WithMany("TicketMessages")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DemoShop.DataLayer.Entities.Contacts.Ticket", "Ticket")
-                        .WithMany("TicketMessages")
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Sender");
-
-                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("DemoShop.DataLayer.Entities.Account.User", b =>
                 {
                     b.Navigation("ContactUses");
-
-                    b.Navigation("TicketMessages");
-
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Contacts.Ticket", b =>
-                {
-                    b.Navigation("TicketMessages");
                 });
 #pragma warning restore 612, 618
         }
