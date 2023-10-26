@@ -1,4 +1,5 @@
-﻿@model DemoShop.DataLayer.DTO.Contacts.FilterTicketDTO
+﻿@using DemoShop.Application.Extensions
+@model DemoShop.DataLayer.DTO.Contacts.FilterTicketDTO
 @{
     ViewData["Title"] = "تیکت ها";
 }
@@ -49,7 +50,11 @@
                                                 <tr>
                                                     <td>@ticket.Id</td>
                                                     <td>@ticket.Title</td>
-                                                    <td><span class="danger"></span></td>
+                                                    <td>
+                                                        <span class="danger">
+                                                            @ticket.TicketState.GetEnumName()
+                                                        </span>
+                                                    </td>
                                                     <td><a href="#" class="view">نمایش جزییات</a></td>
                                                 </tr>
                                             }
