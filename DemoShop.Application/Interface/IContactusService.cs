@@ -10,5 +10,7 @@ namespace DemoShop.Application.Interface
     public interface IContactusService : IAsyncDisposable
     {
         Task CreateContactUs(CreateContactUsDTO contact, string userIp, long? userId);
+
+        Task<AddTicketResult> AddUserTicket(AddTicketNewModel ticket, long userId);
     }
 }
