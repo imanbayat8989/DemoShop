@@ -17,5 +17,7 @@ namespace DemoShop.Application.Interface
 
         Task<TicketDetailDTO> GetTicketForShow(long ticketId, long userId);
 
+        Task<AnswerTicketResult> AnswerTicket(AnswerTicketDTO answer, long userId);
+
     }
 }

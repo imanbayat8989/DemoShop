@@ -14,6 +14,12 @@ namespace DemoShop.Application.Utils
 
         #endregion 
 
+        #region uploader
+
+        public static string UploadImage = "/img/upload/";
+        public static string UploadImageServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/upload/");
+
+        #endregion
 
         #region user avatar
 
