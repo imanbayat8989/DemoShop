@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace DemoShop.DataLayer.DTO.Contacts
 {
-    public class AddTicketNewModel
+    public class AddTicketDTO
     {
         [Display(Name = "عنوان")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]

@@ -41,7 +41,7 @@ namespace DemoShop.Web.Areas.User.Controllers
         }
 
         [HttpPost("add-ticket"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTicket(AddTicketNewModel ticket)
+        public async Task<IActionResult> AddTicket(AddTicketDTO ticket)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,11 @@ namespace DemoShop.Web.Areas.User.Controllers
         [HttpGet("tickets/{ticketId}")]
         public async Task<IActionResult> TicketDetail(long ticketId)
         {
-            return View();
+            var ticket = await _contactService.GetTicketForShow(ticketId, User.GetUserId());
+
+            if (ticket == null) return NotFound();
+
+            return View(ticket);
         }
 
         #endregion
