@@ -1,4 +1,5 @@
 ﻿using DemoShop.Application.Interface;
+using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Seller;
 using DemoShop.Web.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,27 @@ namespace DemoShop.Web.Areas.Admin.Controllers
                     JsonResponseStatusType.Success,
                     "درخواست مورد نظر با موفقیت تایید شد",
                     null);
+            }
+
+            return JsonResponseStatus.SendStatus(JsonResponseStatusType.Danger,
+                "اطلاعاتی با این مشخصات یافت نشد", null);
+        }
+
+        #endregion
+
+        #region reject seller request
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectSellerRequest(RejectItemDTO reject)
+        {
+            var result = await _sellerService.RejectSellerRequest(reject);
+
+            if (result)
+            {
+                return JsonResponseStatus.SendStatus(
+                    JsonResponseStatusType.Success,
+                    "درخواست مورد نظر با موفقیت رد شد شد",
+                    reject);
             }
 
             return JsonResponseStatus.SendStatus(JsonResponseStatusType.Danger,

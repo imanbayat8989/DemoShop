@@ -97,3 +97,13 @@ $('[ajax-url-button]').on('click', function (e) {
         }
     });
 });
+
+function OnSuccessRejectItem(res) {
+    if (res.status === 'Success') {
+        ShowMessage('اعلان موفقیت', res.message);
+        $('#ajax-url-item-' + res.data.id).hide(300);
+        $('#reject-modal-' + res.data.id).modal('toggle');
+        $('#reject-modal-' + res.data.id).modal().hide();
+        $('.close').click();
+    }
+}

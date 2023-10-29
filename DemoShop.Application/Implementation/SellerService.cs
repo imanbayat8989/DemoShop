@@ -1,4 +1,5 @@
 ﻿using DemoShop.Application.Interface;
+using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Paging;
 using DemoShop.DataLayer.DTO.Seller;
 using DemoShop.DataLayer.Entities.Account;
@@ -151,9 +152,25 @@ namespace DemoShop.Application.Implementation
             if (sellerRequest != null)
             {
                 sellerRequest.StoreAcceptanceState = StoreAcceptanceState.Accepted;
+                sellerRequest.StoreAcceptanceDescription = "اطلاعات پنل فروشندگی شما تایید شده است";
                 _sellerRepository.EditEntity(sellerRequest);
                 await _sellerRepository.SaveChanges();
 
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> RejectSellerRequest(RejectItemDTO reject)
+        {
+            var seller = await _sellerRepository.GetEntityById(reject.Id);
+            if (seller != null)
+            {
+                seller.StoreAcceptanceState = StoreAcceptanceState.Rejected;
+                seller.StoreAcceptanceDescription = reject.RejectMessage;
+                _sellerRepository.EditEntity(seller);
+                await _sellerRepository.SaveChanges();
                 return true;
             }
 
