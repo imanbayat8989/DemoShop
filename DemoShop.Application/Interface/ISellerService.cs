@@ -13,6 +13,8 @@ namespace DemoShop.Application.Interface
 
         Task<RequestSellerResult> AddNewSellerRequest(RequestSellerDTO seller, long userId);
 
+        Task<FilterSellerDTO> FilterSellers(FilterSellerDTO filter);
+
         #endregion
     }
 }

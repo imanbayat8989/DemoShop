@@ -58,9 +58,13 @@ namespace DemoShop.Web.Areas.User.Controllers
         #region seller requests
 
         [HttpGet("seller-requests")]
-        public async Task<IActionResult> SellerRequests()
+        public async Task<IActionResult> SellerRequests(FilterSellerDTO filter)
         {
-            return View();
+            filter.TakeEntity = 5;
+            filter.UserId = User.GetUserId();
+            filter.State = FilterSellerState.All;
+
+            return View(await _sellerService.FilterSellers(filter));
         }
 
         #endregion
