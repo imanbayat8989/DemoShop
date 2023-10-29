@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 #region Config Services
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHelper, PasswordHelper>();
@@ -26,6 +26,8 @@ builder.Services.AddScoped<ISiteService, SiteService>();
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IContactusService, ContactusService>();
 builder.Services.AddScoped<ISellerService, SellerService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
 
 #endregion
 
