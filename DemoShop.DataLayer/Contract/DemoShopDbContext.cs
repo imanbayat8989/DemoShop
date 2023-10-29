@@ -1,5 +1,6 @@
 ﻿using DemoShop.DataLayer.Entities.Account;
 using DemoShop.DataLayer.Entities.Contacts;
+using DemoShop.DataLayer.Entities.Product;
 using DemoShop.DataLayer.Entities.Site;
 using DemoShop.DataLayer.Entities.Store;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,15 @@ namespace DemoShop.DataLayer.Contract
 		public DbSet<Ticket> Ticket { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
 		public DbSet<Seller> Seller { get; set; }
+        #region products
+
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductSelectedCategory> ProductSelectedCategories { get; set; }
+
+        #endregion
 
         #endregion
 
