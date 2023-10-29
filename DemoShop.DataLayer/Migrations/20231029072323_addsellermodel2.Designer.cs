@@ -4,6 +4,7 @@ using DemoShop.DataLayer.Contract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoShop.DataLayer.Migrations
 {
     [DbContext(typeof(DemoShopDbContext))]
-    partial class DemoShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231029072323_addsellermodel2")]
+    partial class addsellermodel2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -394,6 +396,7 @@ namespace DemoShop.DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -403,6 +406,7 @@ namespace DemoShop.DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Mobile")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -412,6 +416,7 @@ namespace DemoShop.DataLayer.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("StoreAcceptanceDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StoreAcceptanceState")

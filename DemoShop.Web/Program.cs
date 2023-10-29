@@ -25,6 +25,7 @@ builder.Services.AddHttpClient<ICaptchaValidator, GoogleReCaptchaValidator>();
 builder.Services.AddScoped<ISiteService, SiteService>();
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IContactusService, ContactusService>();
+builder.Services.AddScoped<ISellerService, SellerService>();
 
 #endregion
 
