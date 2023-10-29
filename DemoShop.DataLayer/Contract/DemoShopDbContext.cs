@@ -1,6 +1,7 @@
 ﻿using DemoShop.DataLayer.Entities.Account;
 using DemoShop.DataLayer.Entities.Contacts;
 using DemoShop.DataLayer.Entities.Site;
+using DemoShop.DataLayer.Entities.Store;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace DemoShop.DataLayer.Contract
 		public DbSet<SiteBanner> SiteBanner { get; set; }
 		public DbSet<Ticket> Ticket { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
+		public DbSet<Seller> Seller { get; set; }
+
         #endregion
 
         #region on model creating
