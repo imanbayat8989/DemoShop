@@ -1,0 +1,88 @@
+﻿@using DemoShop.Application.Extensions
+@model DemoShop.DataLayer.DTO.Seller.FilterSellerDTO
+@{
+    ViewData["Title"] = "درخواست های فروشندگی";
+}
+
+<div class="col-xs-4">
+    <div class="well with-header">
+        <div class="header bordered-sky">
+            فیلتر
+        </div>
+
+    </div>
+</div>
+
+
+<div class="col-xs-8">
+    <div class="well with-header with-footer">
+        <div class="header bordered-sky">
+            @ViewData["Title"]
+        </div>
+        @if (Model.Sellers != null && Model.Sellers.Any())
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            شناسه
+                        </th>
+                        <th>
+                            نام فروشگاه
+                        </th>
+                        <th>
+                            تلفن
+                        </th>
+                        <th>
+                            وضعیت
+                        </th>
+                        <th>
+                            دستورات
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var seller in Model.Sellers)
+                    {
+                        <tr>
+                            <td>
+                                @seller.Id
+                            </td>
+                            <td>
+                                @seller.StoreName
+                            </td>
+                            <td>
+                                @seller.Phone
+                            </td>
+                            <td>
+                                @seller.StoreAcceptanceState.GetEnumName()
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                <p>
+                    هیچ اطلاعاتی یافت نشد
+                </p>
+            </div>
+        }
+        <div class="footer">
+            <ul class="pagination">
+                <li class="disabled"><a href="#">«</a></li>
+                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">»</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
