@@ -15,6 +15,9 @@ namespace DemoShop.Application.Interface
 
         Task<FilterSellerDTO> FilterSellers(FilterSellerDTO filter);
 
+        Task<EditRequestSellerDTO> GetRequestSellerForEdit(long id, long currentUserId);
+        Task<EditRequestSellerResult> EditRequestSeller(EditRequestSellerDTO request, long currentUserId);
+
         #endregion
     }
 }

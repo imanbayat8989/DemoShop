@@ -68,5 +68,38 @@ namespace DemoShop.Web.Areas.User.Controllers
         }
 
         #endregion
+
+        #region edit request
+
+        [HttpGet("edit-request-seller/{id}")]
+        public async Task<IActionResult> EditRequestSeller(long id)
+        {
+            var requestSeller = await _sellerService.GetRequestSellerForEdit(id, User.GetUserId());
+            if (requestSeller == null) return NotFound();
+            return View(requestSeller);
+        }
+
+        [HttpPost("edit-request-seller/{id}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditRequestSeller(EditRequestSellerDTO request)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await _sellerService.EditRequestSeller(request, User.GetUserId());
+                switch (res)
+                {
+                    case EditRequestSellerResult.NotFound:
+                        TempData[ErrorMessage] = "اطلاعات مورد نظر یافت نشد";
+                        break;
+                    case EditRequestSellerResult.Success:
+                        TempData[SuccessMessage] = "اطلاعات مورد نظر با موفقیت ویرایش شد";
+                        TempData[InfoMessage] = "فرآیند تایید اطلاعات از سر گرفته شد";
+                        return RedirectToAction("SellerRequests");
+                }
+            }
+
+            return View(request);
+        }
+
+        #endregion
     }
 }
