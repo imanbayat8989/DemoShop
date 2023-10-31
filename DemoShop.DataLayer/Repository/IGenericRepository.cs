@@ -11,7 +11,8 @@ namespace DemoShop.DataLayer.Repository
 	{
 		IQueryable<TEntity> GetQuery();
 		Task AddEntity(TEntity entity);
-		Task <TEntity> GetEntityById(long entityId);
+        Task AddRangeEntities(List<TEntity> entities);
+        Task <TEntity> GetEntityById(long entityId);
 		void EditEntity(TEntity entity);
 		void DeleteEntity(TEntity entity);
 		Task DeleteEntity(long entityId);

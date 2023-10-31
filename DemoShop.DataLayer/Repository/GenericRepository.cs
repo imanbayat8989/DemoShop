@@ -27,7 +27,15 @@ namespace DemoShop.DataLayer.Repository
             await _dbset.AddAsync(entity);
         }
 
-		public void DeleteEntity(TEntity entity)
+        public async Task AddRangeEntities(List<TEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                await AddEntity(entity);
+            }
+        }
+
+        public void DeleteEntity(TEntity entity)
 		{
 			entity.IsDeleted = true;
 			EditEntity(entity);

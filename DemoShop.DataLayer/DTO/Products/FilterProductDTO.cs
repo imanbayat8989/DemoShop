@@ -48,6 +48,7 @@ namespace DemoShop.DataLayer.DTO.Products
 
     public enum FilterProductState
     {
+        All,
         UnderProgress,
         Accepted,
         Rejected,

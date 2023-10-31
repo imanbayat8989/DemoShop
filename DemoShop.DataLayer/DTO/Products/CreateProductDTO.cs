@@ -33,4 +33,11 @@ namespace DemoShop.DataLayer.DTO.Products
         public List<CreateProductColorDTO> ProductColors { get; set; }
         public List<long> SelectedCategories { get; set; }
     }
+
+    public enum CreateProductResult
+    {
+        Success,
+        HasNoImage,
+        Error,
+    }
 }

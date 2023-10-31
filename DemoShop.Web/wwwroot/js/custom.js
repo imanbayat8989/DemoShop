@@ -62,7 +62,54 @@ $(document).ready(function () {
         });
     }
 });
+
 function FillPageId(pageId) {
     $('#PageId').val(pageId);
     $('#filter-form').submit();
+}
+
+$("[main_category_checkbox]").on('change',
+    function (e) {
+        var isChecked = $(this).is(':checked');
+        var selectedCategoryId = $(this).attr('main_category_checkbox');
+        if (isChecked) {
+            $('#sub_categories_' + selectedCategoryId).slideDown(300);
+        } else {
+            $('#sub_categories_' + selectedCategoryId).slideUp(300);
+            $('[parent-category-id="' + selectedCategoryId + '"]').prop('checked', false);
+        }
+    });
+
+
+$('#add_color_button').on('click',
+    function (e) {
+        e.preventDefault();
+        var colorName = $('#product_color_name_input').val();
+        var colorPrice = $('#product_color_price_input').val();
+        console.log(colorName, colorPrice);
+        if (colorName !== '' && colorPrice !== '') {
+            var currentColorsCount = $('#list_of_product_colors tr');
+            var index = currentColorsCount.length;
+            var colorNameNode = `<input type="hidden" value="${colorName}"  name="ProductColors[${index}].ColorName" color-name-hidden-input="${index}">`;
+            var colorPriceNode = `<input type="hidden" value="${colorPrice}"  name="ProductColors[${index}].Price" color-price-hidden-input="${index}" >`;
+            $('#create_product_form').append(colorNameNode);
+            $('#create_product_form').append(colorPriceNode);
+
+            var colorTableNode = `<tr color-table-item="${index}"> <td> ${colorName} </td>  <td> ${colorPrice} </td>  <td> <a class="btn btn-danger text-white" onclick="removeProductColor(${index})">حذف</a> </td>  </tr>`;
+            $('#list_of_product_colors').append(colorTableNode);
+
+
+            $('#product_color_name_input').val('');
+            $('#product_color_price_input').val('');
+        } else {
+            ShowMessage('اخطار', 'لطفا نام رنگ و قیمت آن را به درستی وارد نمایید', 'warning');
+        }
+
+    }
+);
+
+function removeProductColor(index) {
+    $('[color-name-hidden-input="' + index + '"]').remove();
+    $('[color-price-hidden-input="' + index + '"]').remove();
+    $('[color-table-item="' + index + '"]').remove();
 }

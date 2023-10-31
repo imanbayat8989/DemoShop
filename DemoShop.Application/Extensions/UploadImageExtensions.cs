@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using DemoShop.Application.Utils;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace DemoShop.Application.Extensions
 {
-    public static class UploadImageExtensions
+    public static class UploadImageExtension
     {
-        public static void AddImageToServer(this IFormFile image, string fileName, string orginalPath, int? width, int? height, string thumbPath = null, string deletefileName = null)
+        public static bool AddImageToServer(this IFormFile image, string fileName, string orginalPath, int? width, int? height, string thumbPath = null, string deletefileName = null)
         {
             if (image != null && image.IsImage())
             {
@@ -48,7 +45,11 @@ namespace DemoShop.Application.Extensions
                     if (width != null && height != null)
                         resizer.ImageResizer(orginalPath + fileName, thumbPath + fileName, width, height);
                 }
+
+                return true;
             }
+
+            return false;
         }
 
         public static void DeleteImage(this string imageName, string OriginPath, string ThumbPath)

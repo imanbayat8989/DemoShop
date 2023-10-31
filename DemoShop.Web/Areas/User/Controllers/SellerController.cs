@@ -60,7 +60,7 @@ namespace DemoShop.Web.Areas.User.Controllers
         [HttpGet("seller-requests")]
         public async Task<IActionResult> SellerRequests(FilterSellerDTO filter)
         {
-            filter.TakeEntity = 1;
+            filter.TakeEntity = 5;
             filter.UserId = User.GetUserId();
             filter.State = FilterSellerState.All;
 

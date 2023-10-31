@@ -1,8 +1,12 @@
-﻿using DemoShop.Application.Interface;
+﻿using DemoShop.Application.Extensions;
+using DemoShop.Application.Interface;
+using DemoShop.Application.Utils;
 using DemoShop.DataLayer.DTO.Paging;
 using DemoShop.DataLayer.DTO.Products;
 using DemoShop.DataLayer.Entities.Product;
 using DemoShop.DataLayer.Repository;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,17 +23,81 @@ namespace DemoShop.Application.Implementation
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IGenericRepository<ProductCategory> _productCategoryRepository;
         private readonly IGenericRepository<ProductSelectedCategory> _productSelectedCategoryRepository;
+        private readonly IGenericRepository<ProductColor> _productColorRepository;
 
-        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository)
+        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository)
         {
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
             _productSelectedCategoryRepository = productSelectedCategoryRepository;
+            _productColorRepository = productColorRepository;
         }
 
         #endregion
 
         #region products
+
+        public async Task<CreateProductResult> CreateProduct(CreateProductDTO product, long sellerId, IFormFile productImage)
+        {
+            if (productImage == null) return CreateProductResult.HasNoImage;
+
+            var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(productImage.FileName);
+            var res = productImage.AddImageToServer(imageName, PathExtensions.ProductImageImageServer, 150, 150, PathExtensions.ProductThumbnailImageImageServer);
+
+            if (res)
+            {
+                // create product
+                var newProduct = new Product
+                {
+                    Title = product.Title,
+                    Price = product.Price,
+                    ShortDescription = product.ShortDescription,
+                    Description = product.Description,
+                    IsActive = product.IsActive,
+                    SellerId = sellerId,
+                    ImageName = imageName,
+                    ProductAcceptOrRejectDescription = ""
+                };
+
+                await _productRepository.AddEntity(newProduct);
+                await _productRepository.SaveChanges();
+
+                // create product categories
+                var productSelectedCategories = new List<ProductSelectedCategory>();
+
+                foreach (var categoryId in product.SelectedCategories)
+                {
+                    productSelectedCategories.Add(new ProductSelectedCategory
+                    {
+                        ProductCategoryId = categoryId,
+                        ProductId = newProduct.Id
+                    });
+                }
+
+                await _productSelectedCategoryRepository.AddRangeEntities(productSelectedCategories);
+                await _productSelectedCategoryRepository.SaveChanges();
+
+                // create product colors
+                var productSelectedColors = new List<ProductColor>();
+
+                foreach (var productColor in product.ProductColors)
+                {
+                    productSelectedColors.Add(new ProductColor
+                    {
+                        ColorName = productColor.ColorName,
+                        Price = productColor.Price,
+                        ProductId = newProduct.Id
+                    });
+                }
+
+                await _productColorRepository.AddRangeEntities(productSelectedColors);
+                await _productSelectedCategoryRepository.SaveChanges();
+
+                return CreateProductResult.Success;
+            }
+
+            return CreateProductResult.Error;
+        }
 
         public async Task<FilterProductDTO> FilterProducts(FilterProductDTO filter)
         {
@@ -39,6 +107,8 @@ namespace DemoShop.Application.Implementation
 
             switch (filter.FilterProductState)
             {
+                case FilterProductState.All:
+                    break;
                 case FilterProductState.Active:
                     query = query.Where(s => s.IsActive && s.ProductAcceptanceState == ProductAcceptanceState.Accepted);
                     break;

@@ -1,5 +1,6 @@
 ﻿using DemoShop.DataLayer.DTO.Products;
 using DemoShop.DataLayer.Entities.Product;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace DemoShop.Application.Interface
         #region products
 
         Task<FilterProductDTO> FilterProducts(FilterProductDTO filter);
+        Task<CreateProductResult> CreateProduct(CreateProductDTO product, long sellerId, IFormFile productImage);
 
         #endregion
 
