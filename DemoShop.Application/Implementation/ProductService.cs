@@ -1,6 +1,7 @@
 ﻿using DemoShop.Application.Extensions;
 using DemoShop.Application.Interface;
 using DemoShop.Application.Utils;
+using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Paging;
 using DemoShop.DataLayer.DTO.Products;
 using DemoShop.DataLayer.Entities.Product;
@@ -98,6 +99,38 @@ namespace DemoShop.Application.Implementation
 
             return CreateProductResult.Error;
         }
+
+        public async Task<bool> AcceptSellerProduct(long productId)
+        {
+            var product = await _productRepository.GetEntityById(productId);
+            if (product != null)
+            {
+                product.ProductAcceptanceState = ProductAcceptanceState.Accepted;
+                product.ProductAcceptOrRejectDescription = $"محصول مورد نظر در تاریخ {DateTime.Now.ToShamsiDate()} مورد تایید سایت قرار گرفت";
+                _productRepository.EditEntity(product);
+                await _productRepository.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> RejectSellerProduct(RejectItemDTO reject)
+        {
+            var product = await _productRepository.GetEntityById(reject.Id);
+            if (product != null)
+            {
+                product.ProductAcceptanceState = ProductAcceptanceState.Rejected;
+                product.ProductAcceptOrRejectDescription = reject.RejectMessage;
+                _productRepository.EditEntity(product);
+                await _productRepository.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
 
         public async Task<FilterProductDTO> FilterProducts(FilterProductDTO filter)
         {

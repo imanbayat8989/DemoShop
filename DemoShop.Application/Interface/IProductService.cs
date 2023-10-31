@@ -1,4 +1,5 @@
-﻿using DemoShop.DataLayer.DTO.Products;
+﻿using DemoShop.DataLayer.DTO.Common;
+using DemoShop.DataLayer.DTO.Products;
 using DemoShop.DataLayer.Entities.Product;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -15,6 +16,8 @@ namespace DemoShop.Application.Interface
 
         Task<FilterProductDTO> FilterProducts(FilterProductDTO filter);
         Task<CreateProductResult> CreateProduct(CreateProductDTO product, long sellerId, IFormFile productImage);
+        Task<bool> AcceptSellerProduct(long productId);
+        Task<bool> RejectSellerProduct(RejectItemDTO reject);
 
         #endregion
 

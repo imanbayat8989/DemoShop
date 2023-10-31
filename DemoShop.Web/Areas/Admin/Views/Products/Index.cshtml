@@ -2,6 +2,7 @@
 @using DemoShop.Application.Utils
 @using DemoShop.DataLayer.Entities.Store
 @using DemoShop.Application.Extensions
+@using DemoShop.DataLayer.DTO.Common
 @using DemoShop.DataLayer.Entities.Product
 @model DemoShop.DataLayer.DTO.Products.FilterProductDTO
 @{
@@ -9,6 +10,10 @@
 }
 
 
+@section scripts
+    {
+    <partial name="_JqueryValidators" />
+}
 
 
 <div class="col-xs-4">
@@ -82,7 +87,7 @@
                                 @product.Title
                             </td>
                             <td>
-                                @product.Price
+                                @product.Price.ToString("#,0")
                             </td>
                             <td>
                                 @product.ProductAcceptanceState.GetEnumName()
@@ -90,7 +95,7 @@
                             <td>
                                 @if (product.ProductAcceptanceState != ProductAcceptanceState.Accepted)
                                 {
-                                    <a class="btn btn-success" ajax-url-button="@product.Id" asp-area="Admin" asp-controller="Seller" asp-action="AcceptSellerRequest" asp-route-requestId="@product.Id">تایید اطلاعات</a>
+                                    <a class="btn btn-success" ajax-url-button="@product.Id" asp-area="Admin" asp-controller="Products" asp-action="AcceptSellerProduct" asp-route-id="@product.Id">تایید اطلاعات</a>
                                 }
 
                                 @if (product.ProductAcceptanceState != ProductAcceptanceState.Rejected)
@@ -118,28 +123,27 @@
 </div>
 
 
-@*
-    @if (Model.Sellers != null && Model.Sellers.Any())
+@if (Model.Products != null && Model.Products.Any())
+{
+    foreach (var product in Model.Products)
     {
-        foreach (var seller in Model.Sellers)
-        {
-            <div class="modal fade reject-modal-@seller.Id" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+        <div class="modal fade reject-modal-@product.Id" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
 
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title" id="myLargeModalLabel">رد کردن اطلاعات</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form asp-area="Admin" asp-controller="Seller" asp-action="RejectSellerRequest" asp-antiforgery="true" data-ajax="true" data-method="post" data-ajax-success="OnSuccessRejectItem">
-                                <partial name="_RejectItemPartial" model="@(new RejectItemDTO {Id = seller.Id})" />
-                                <hr />
-                                <button class="btn btn-danger" type="submit">رد کردن اطلاعات</button>
-                            </form>
-                        </div>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">رد کردن اطلاعات</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form asp-area="Admin" asp-controller="Products" asp-action="RejectProduct" asp-antiforgery="true" data-ajax="true" data-method="post" data-ajax-success="OnSuccessRejectItem">
+                            <partial name="_RejectItemPartial" model="@(new RejectItemDTO {Id = product.Id})" />
+                            <hr />
+                            <button class="btn btn-danger" type="submit">رد کردن اطلاعات</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        }
-    }*@
+        </div>
+    }
+}
