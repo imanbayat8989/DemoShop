@@ -6,11 +6,6 @@
 }
 
 
-@section scripts
-    {
-    <partial name="_JqueryValidators" />
-}
-
 <div class="breadcrumbs_area">
     <div class="container">
         <div class="row">
@@ -74,20 +69,18 @@
                                                     <ul>
                                                         <li>
                                                             <label>
-                                                                <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@category.Id" /> @category.Title
+                                                                <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@category.Id" main_category_checkbox="@category.Id" /> @category.Title
                                                             </label>
-                                                            @if (categories.Any(s => s.ParentId == category.Id))
-                                                            {
-                                                                <div>
 
-                                                                    @foreach (var subCategory in categories.Where(s => s.ParentId == category.Id))
-                                                                    {
-                                                                        <label>
-                                                                            <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@subCategory.Id" /> @subCategory.Title
-                                                                        </label>
-                                                                    }
-                                                                </div>
-                                                            }
+                                                            <div id="first_sub_categories_@category.Id">
+
+                                                                @foreach (var subCategory in categories.Where(s => s.ParentId == category.Id))
+                                                                {
+                                                                    @*<label>
+                                                        <input type="checkbox" name="@nameof(Model.SelectedCategories)" value="@subCategory.Id" /> @subCategory.Title
+                                                        </label>*@
+                                                                }
+                                                            </div>
                                                         </li>
 
                                                     </ul>
@@ -109,3 +102,16 @@
     </div>
 </section>
 
+@section scripts {
+    <partial name="_JqueryValidators" />
+    <script>
+        $("[main_category_checkbox]").on('change', function (e) {
+            var isChecked = $(this).is(':checked');
+            var selectedCategoryId = $(this).attr('main_category_checkbox');
+            console.log(selectedCategoryId);
+            $.get('/seller/product-categories/' + selectedCategoryId).then(result => {
+                console.log(result);
+            });
+        });
+    </script>
+}

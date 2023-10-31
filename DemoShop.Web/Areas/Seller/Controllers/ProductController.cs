@@ -1,6 +1,7 @@
 ﻿using DemoShop.Application.Implementation;
 using DemoShop.Application.Interface;
 using DemoShop.DataLayer.DTO.Products;
+using DemoShop.Web.Http;
 using DemoShop.Web.PresentationExtensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ namespace DemoShop.Web.Areas.Seller.Controllers
 
         #region list
 
-        [HttpGet("list")]
+        [HttpGet("products-list")]
         public async Task<IActionResult> Index(FilterProductDTO filter)
         {
             var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
@@ -54,6 +55,18 @@ namespace DemoShop.Web.Areas.Seller.Controllers
 
             ViewBag.Categories = await _productService.GetAllActiveProductCategories();
             return View(product);
+        }
+
+        #endregion
+
+        #region product categories
+
+        [HttpGet("product-categories/{parentId}")]
+        public async Task<IActionResult> GetProductCategoriesByParent(long parentId)
+        {
+            var categories = await _productService.GetAllProductCategoriesByParentId(parentId);
+
+            return JsonResponseStatus.SendStatus(JsonResponseStatusType.Success, "اطلاعات دسته بندی ها", categories);
         }
 
         #endregion
