@@ -7,6 +7,7 @@ using DemoShop.DataLayer.Repository;
 using GoogleReCaptcha.V3;
 using GoogleReCaptcha.V3.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -28,6 +29,14 @@ builder.Services.AddScoped<IContactusService, ContactusService>();
 builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+
+#endregion
+
+#region Data Protection
+
+builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory() + "\\wwwroot\\Auth\\"))
+                .SetApplicationName("MarketPlaceProject")
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
 #endregion
 
