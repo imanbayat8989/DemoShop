@@ -19,6 +19,7 @@ namespace DemoShop.Application.Interface
         #region product categories
 
         Task<List<ProductCategory>> GetAllProductCategoriesByParentId(long? parentId);
+        Task<List<ProductCategory>> GetAllActiveProductCategories();
 
         #endregion
     }

@@ -97,6 +97,11 @@ namespace DemoShop.Application.Implementation
                 .Where(s => !s.IsDeleted && s.IsActive && s.ParentId == parentId)
                 .ToListAsync();
         }
+        public async Task<List<ProductCategory>> GetAllActiveProductCategories()
+        {
+            return await _productCategoryRepository.GetQuery().AsQueryable()
+                .Where(s => s.IsActive && !s.IsDeleted).ToListAsync();
+        }
 
         #endregion
 

@@ -31,5 +31,6 @@ namespace DemoShop.DataLayer.DTO.Products
         public bool IsActive { get; set; }
 
         public List<CreateProductColorDTO> ProductColors { get; set; }
+        public List<long> SelectedCategories { get; set; }
     }
 }
