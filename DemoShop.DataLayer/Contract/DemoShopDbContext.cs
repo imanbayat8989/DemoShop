@@ -32,6 +32,8 @@ namespace DemoShop.DataLayer.Contract
 
         public DbSet<ProductSelectedCategory> ProductSelectedCategories { get; set; }
 
+        public DbSet<ProductColor> ProductColors { get; set; }
+
         #endregion
 
         #endregion

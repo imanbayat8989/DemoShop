@@ -1,4 +1,5 @@
 ﻿using DemoShop.DataLayer.DTO.Products;
+using DemoShop.DataLayer.Entities.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,12 @@ namespace DemoShop.Application.Interface
         #region products
 
         Task<FilterProductDTO> FilterProducts(FilterProductDTO filter);
+
+        #endregion
+
+        #region product categories
+
+        Task<List<ProductCategory>> GetAllProductCategoriesByParentId(long? parentId);
 
         #endregion
     }
