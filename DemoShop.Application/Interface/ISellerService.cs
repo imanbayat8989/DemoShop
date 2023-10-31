@@ -1,5 +1,6 @@
 ﻿using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Seller;
+using DemoShop.DataLayer.Entities.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace DemoShop.Application.Interface
         Task<EditRequestSellerResult> EditRequestSeller(EditRequestSellerDTO request, long currentUserId);
         Task<bool> AcceptSellerRequest(long requestId);
         Task<bool> RejectSellerRequest(RejectItemDTO reject);
+        Task<Seller> GetLastActiveSellerByUserId(long userId);
 
         #endregion
     }
