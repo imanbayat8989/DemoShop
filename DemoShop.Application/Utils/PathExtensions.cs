@@ -12,7 +12,7 @@ namespace DemoShop.Application.Utils
 
         public static string DefaultAvatar = "/img/defaults/avatar.jpg";
 
-        #endregion 
+        #endregion
 
         #region uploader
 
@@ -21,14 +21,31 @@ namespace DemoShop.Application.Utils
 
         #endregion
 
+        #region products
+
+        public static string ProductImage = "/content/images/product/origin/";
+
+        public static string ProductImageImageServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/product/origin/");
+
+        public static string ProductThumbnailImage = "/content/images/product/thumb/";
+
+        public static string ProductThumbnailImageImageServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/product/thumb/");
+
+        #endregion
+
         #region user avatar
 
         public static string UserAvatarOrigin = "/Content/Images/UserAvatar/origin/";
-        public static string UserAvatarOriginServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Content/Images/UserAvatar/origin/");
+
+        public static string UserAvatarOriginServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Content/Images/UserAvatar/origin/");
 
         public static string UserAvatarThumb = "/Content/Images/UserAvatar/Thumb/";
-        public static string UserAvatarThumbServer = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Content/Images/UserAvatar/Thumb/");
 
+        public static string UserAvatarThumbServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Content/Images/UserAvatar/Thumb/");
 
         #endregion
 
