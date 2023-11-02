@@ -178,34 +178,43 @@ namespace DemoShop.Application.Implementation
 
         public async Task AddProductSelectedColors(long productId, List<CreateProductColorDTO> colors)
         {
-            var productSelectedColors = new List<ProductColor>();
-
-            foreach (var productColor in colors)
+            if (colors != null && colors.Any())
             {
-                productSelectedColors.Add(new ProductColor
-                {
-                    ColorName = productColor.ColorName,
-                    Price = productColor.Price,
-                    ProductId = productId
-                });
-            }
+                var productSelectedColors = new List<ProductColor>();
 
-            await _productColorRepository.AddRangeEntities(productSelectedColors);
+                foreach (var productColor in colors)
+                {
+                    if (!productSelectedColors.Any(s => s.ColorName == productColor.ColorName))
+                    {
+                        productSelectedColors.Add(new ProductColor
+                        {
+                            ColorName = productColor.ColorName,
+                            Price = productColor.Price,
+                            ProductId = productId
+                        });
+                    }
+                }
+
+                await _productColorRepository.AddRangeEntities(productSelectedColors);
+            }
         }
 
         public async Task AddProductSelectedCategories(long productId, List<long> selectedCategories)
         {
-            var productSelectedCategories = new List<ProductSelectedCategory>();
-
-            foreach (var categoryId in selectedCategories)
+            if (selectedCategories != null && selectedCategories.Any())
             {
-                productSelectedCategories.Add(new ProductSelectedCategory
+                var productSelectedCategories = new List<ProductSelectedCategory>();
+
+                foreach (var categoryId in selectedCategories)
                 {
-                    ProductCategoryId = categoryId,
-                    ProductId = productId
-                });
+                    productSelectedCategories.Add(new ProductSelectedCategory
+                    {
+                        ProductCategoryId = categoryId,
+                        ProductId = productId
+                    });
+                }
+                await _productSelectedCategoryRepository.AddRangeEntities(productSelectedCategories);
             }
-            await _productSelectedCategoryRepository.AddRangeEntities(productSelectedCategories);
         }
 
         public async Task<FilterProductDTO> FilterProducts(FilterProductDTO filter)
