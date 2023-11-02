@@ -19,6 +19,11 @@ namespace DemoShop.Application.Interface
         Task<bool> AcceptSellerProduct(long productId);
         Task<bool> RejectSellerProduct(RejectItemDTO reject);
         Task<EditProductDTO> GetProductForEdit(long productId);
+        Task<EditProductResult> EditSellerProduct(EditProductDTO product, long userId, IFormFile productImage);
+        Task RemoveAllProductSelectedCategories(long productId);
+        Task RemoveAllProductSelectedColors(long productId);
+        Task AddProductSelectedColors(long productId, List<CreateProductColorDTO> colors);
+        Task AddProductSelectedCategories(long productId, List<long> selectedCategories);
 
         #endregion
 

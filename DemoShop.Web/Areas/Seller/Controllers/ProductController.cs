@@ -53,8 +53,6 @@ namespace DemoShop.Web.Areas.Seller.Controllers
                 var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
                 var res = await _productService.CreateProduct(product, seller.Id, productImage);
 
-
-
                 switch (res)
                 {
                     case CreateProductResult.HasNoImage:
@@ -83,6 +81,33 @@ namespace DemoShop.Web.Areas.Seller.Controllers
         {
             var product = await _productService.GetProductForEdit(productId);
             if (product == null) return NotFound();
+            ViewBag.Categories = await _productService.GetAllActiveProductCategories();
+            return View(product);
+        }
+
+        [HttpPost("edit-product/{productId}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProduct(EditProductDTO product, IFormFile productImage)
+        {
+
+        
+                if (!ModelState.IsValid)
+                {
+                    var res = await _productService.EditSellerProduct(product, User.GetUserId(), productImage);
+
+                    switch (res)
+                    {
+                        case EditProductResult.NotForUser:
+                            TempData[ErrorMessage] = "در ویرایش اطلاعات خطایی رخ داد";
+                            break;
+                        case EditProductResult.NotFound:
+                            TempData[WarningMessage] = "اطلاعات وارد شده یافت نشد";
+                            break;
+                        case EditProductResult.Success:
+                            TempData[SuccessMessage] = "عملیات با موفقیت انجام شد";
+                            return RedirectToAction("Index");
+                    }
+                }
+            
             ViewBag.Categories = await _productService.GetAllActiveProductCategories();
             return View(product);
         }
