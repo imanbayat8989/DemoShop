@@ -18,6 +18,7 @@ namespace DemoShop.Application.Interface
         Task<CreateProductResult> CreateProduct(CreateProductDTO product, long sellerId, IFormFile productImage);
         Task<bool> AcceptSellerProduct(long productId);
         Task<bool> RejectSellerProduct(RejectItemDTO reject);
+        Task<EditProductDTO> GetProductForEdit(long productId);
 
         #endregion
 

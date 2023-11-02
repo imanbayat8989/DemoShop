@@ -43,6 +43,7 @@ namespace DemoShop.Application.Implementation
             if (productImage == null) return CreateProductResult.HasNoImage;
 
             var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(productImage.FileName);
+
             var res = productImage.AddImageToServer(imageName, PathExtensions.ProductImageImageServer, 150, 150, PathExtensions.ProductThumbnailImageImageServer);
 
             if (res)
@@ -106,7 +107,7 @@ namespace DemoShop.Application.Implementation
             if (product != null)
             {
                 product.ProductAcceptanceState = ProductAcceptanceState.Accepted;
-                product.ProductAcceptOrRejectDescription = $"محصول مورد نظر در تاریخ {DateTime.Now.ToShamsiDate()} مورد تایید سایت قرار گرفت";
+                product.ProductAcceptOrRejectDescription = $"محصول مورد نظر در تاریخ {DateTime.Now.ToShamsi()} مورد تایید سایت قرار گرفت";
                 _productRepository.EditEntity(product);
                 await _productRepository.SaveChanges();
                 return true;
@@ -131,6 +132,27 @@ namespace DemoShop.Application.Implementation
             return false;
         }
 
+        public async Task<EditProductDTO> GetProductForEdit(long productId)
+        {
+            var product = await _productRepository.GetEntityById(productId);
+            if (product == null) return null;
+
+            return new EditProductDTO
+            {
+                Id = productId,
+                Description = product.Description,
+                ShortDescription = product.ShortDescription,
+                Price = product.Price,
+                IsActive = product.IsActive,
+                Title = product.Title,
+                ProductColors = await _productColorRepository
+                    .GetQuery().AsQueryable()
+                    .Where(s => !s.IsDeleted && s.ProductId == productId)
+                    .Select(s => new CreateProductColorDTO { Price = s.Price, ColorName = s.ColorName }).ToListAsync(),
+                SelectedCategories = await _productSelectedCategoryRepository.GetQuery().AsQueryable()
+                    .Where(s => s.ProductId == productId).Select(s => s.ProductCategoryId).ToListAsync()
+            };
+        }
 
         public async Task<FilterProductDTO> FilterProducts(FilterProductDTO filter)
         {
@@ -191,7 +213,7 @@ namespace DemoShop.Application.Implementation
             {
                 return await _productCategoryRepository.GetQuery()
                     .AsQueryable()
-                    .Where(s => !s.IsDeleted && s.IsActive)
+                    .Where(s => !s.IsDeleted && s.IsActive && s.ParentId == null)
                     .ToListAsync();
             }
 
@@ -200,11 +222,14 @@ namespace DemoShop.Application.Implementation
                 .Where(s => !s.IsDeleted && s.IsActive && s.ParentId == parentId)
                 .ToListAsync();
         }
+
         public async Task<List<ProductCategory>> GetAllActiveProductCategories()
         {
             return await _productCategoryRepository.GetQuery().AsQueryable()
                 .Where(s => s.IsActive && !s.IsDeleted).ToListAsync();
         }
+
+
 
         #endregion
 

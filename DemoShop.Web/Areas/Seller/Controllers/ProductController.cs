@@ -76,6 +76,19 @@ namespace DemoShop.Web.Areas.Seller.Controllers
 
         #endregion
 
+        #region edit product
+
+        [HttpGet("edit-product/{productId}")]
+        public async Task<IActionResult> EditProduct(long productId)
+        {
+            var product = await _productService.GetProductForEdit(productId);
+            if (product == null) return NotFound();
+            ViewBag.Categories = await _productService.GetAllActiveProductCategories();
+            return View(product);
+        }
+
+        #endregion
+
         #region product categories
 
         [HttpGet("product-categories/{parentId}")]
