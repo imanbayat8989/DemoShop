@@ -30,7 +30,7 @@ namespace DemoShop.Application.Interface
         #region product gallery
 
         Task<List<ProductGallery>> GetAllProductGalleries(long productId);
-
+        Task<Product> GetProductBySellerOwnerId(long productId, long userId);
         Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long userId);
 
 

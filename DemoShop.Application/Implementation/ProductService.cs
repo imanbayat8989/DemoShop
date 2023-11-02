@@ -278,6 +278,13 @@ namespace DemoShop.Application.Implementation
                 .Where(s => s.ProductId == productId).ToListAsync();
         }
 
+        public async Task<Product> GetProductBySellerOwnerId(long productId, long userId)
+        {
+            return await _productRepository.GetQuery()
+                .Include(s => s.Seller)
+                .SingleOrDefaultAsync(s => s.Id == productId && s.Seller.UserId == userId);
+        }
+
         public async Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long userId)
         {
             return await _productGalleryRepository.GetQuery()

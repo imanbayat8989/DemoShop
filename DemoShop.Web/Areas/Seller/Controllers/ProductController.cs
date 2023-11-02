@@ -123,12 +123,27 @@ namespace DemoShop.Web.Areas.Seller.Controllers
         [HttpGet("product-galleries/{id}")]
         public async Task<IActionResult> GetProductGalleries(long id)
         {
-            return View(await _productService.GetAllProductGalleriesInSellerPanel(id));
+            ViewBag.productId = id;
+            return View(await _productService.GetAllProductGalleriesInSellerPanel(id, User.GetUserId()));
+        }
+
+        #endregion
+
+        #region create
+
+        [HttpGet("create-product-gallery/{productId}")]
+        public async Task<IActionResult> CreateProductGallery(long productId)
+        {
+            var product = await _productService.GetProductBySellerOwnerId(productId, User.GetUserId());
+            if (product == null) return NotFound();
+            ViewBag.product = product;
+            return View();
         }
 
         #endregion
 
         #endregion
+
 
         #region product categories
 
