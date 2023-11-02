@@ -141,6 +141,7 @@ namespace DemoShop.Application.Implementation
             mainProduct.Description = product.Description;
             mainProduct.IsActive = product.IsActive;
             mainProduct.Price = product.Price;
+            mainProduct.ProductAcceptanceState = ProductAcceptanceState.UnderProgress;
 
             if (productImage != null)
             {

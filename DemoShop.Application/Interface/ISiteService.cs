@@ -9,12 +9,24 @@ namespace DemoShop.Application.Interface
 {
     public interface ISiteService : IAsyncDisposable
     {
-        Task<SiteSettings> GetDefaultSiteSettings();
+        #region site settings
+
+        Task<SiteSettings> GetDefaultSiteSetting();
+
+        #endregion
+
+        #region slider
 
         Task<List<Slider>> GetAllActiveSliders();
 
-        Task<List<SiteBanner>> GetSiteBannerByPlacement(List<BannerPlacement> placements);
+        #endregion
 
-        
+        #region site banners
+
+        Task<List<SiteBanner>> GetSiteBannersByPlacement(List<BannerPlacement> placements);
+
+        #endregion
+
+
     }
 }

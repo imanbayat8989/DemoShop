@@ -12,65 +12,60 @@ namespace DemoShop.Application.Implementation
 {
     public class SiteService : ISiteService
     {
-        #region Constructor
+        #region constructor
 
-        private readonly IGenericRepository<SiteSettings> _siteSettingsRepository;
-        private readonly IGenericRepository<Slider> _siteService;
-        private readonly IGenericRepository<SiteBanner> _siteBannerRepository;
+        private readonly IGenericRepository<SiteSettings> _siteSettingRepository;
+        private readonly IGenericRepository<Slider> _sliderRepository;
+        private readonly IGenericRepository<SiteBanner> _bannerRepository;
 
-		public SiteService(IGenericRepository<SiteSettings> siteSettingsRepository,
-            IGenericRepository<Slider> siteService, IGenericRepository<SiteBanner> siteBannerRepository)
-		{
-			_siteSettingsRepository = siteSettingsRepository;
-			_siteService = siteService;
-			_siteBannerRepository = siteBannerRepository;
-		}
-
-
-		#endregion
-
-		#region Dispose
-
-		public async ValueTask DisposeAsync()
+        public SiteService(IGenericRepository<SiteSettings> siteSettingRepository, IGenericRepository<Slider> sliderRepository, IGenericRepository<SiteBanner> bannerRepository)
         {
-            if (_siteSettingsRepository != null) await _siteSettingsRepository.DisposeAsync();
-            if (_siteService != null) await _siteService.DisposeAsync(); 
-            if(_siteBannerRepository !=null) await _siteBannerRepository.DisposeAsync();
-            
-        }
-
-        
-        #endregion
-
-        #region siteSettings
-
-        public async Task<SiteSettings> GetDefaultSiteSettings()
-        {
-            return await _siteSettingsRepository.GetQuery().AsQueryable()
-                .SingleOrDefaultAsync(x => x.IsDefault && !x.IsDeleted);
+            _siteSettingRepository = siteSettingRepository;
+            _sliderRepository = sliderRepository;
+            _bannerRepository = bannerRepository;
         }
 
         #endregion
 
-        #region Slider
+        #region site settings
+
+        public async Task<SiteSettings> GetDefaultSiteSetting()
+        {
+            return await _siteSettingRepository.GetQuery().AsQueryable()
+                .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDeleted);
+        }
+
+        #endregion
+
+        #region slider
 
         public async Task<List<Slider>> GetAllActiveSliders()
         {
-            return await _siteService.GetQuery().AsQueryable()
-                .Where(x => x.IsActive && !x.IsDeleted).ToListAsync();
+            return await _sliderRepository.GetQuery().AsQueryable()
+                .Where(s => s.IsActive && !s.IsDeleted).ToListAsync();
         }
 
-		#endregion
+        #endregion
 
-		#region SiteBanner
+        #region site banners
 
-		public async Task<List<SiteBanner>> GetSiteBannerByPlacement(List<BannerPlacement> placements)
-		{
-			return await _siteBannerRepository.GetQuery().AsQueryable()
-                .Where(y => placements.Contains(y.BannerPlacement)).ToListAsync();
-		}
+        public async Task<List<SiteBanner>> GetSiteBannersByPlacement(List<BannerPlacement> placements)
+        {
+            return await _bannerRepository.GetQuery().AsQueryable()
+                .Where(s => placements.Contains(s.BannerPlacement)).ToListAsync();
+        }
 
+        #endregion
 
-		#endregion
-	}
+        #region dispose
+
+        public async ValueTask DisposeAsync()
+        {
+            if (_siteSettingRepository != null) await _siteSettingRepository.DisposeAsync();
+            if (_sliderRepository != null) await _sliderRepository.DisposeAsync();
+            if (_bannerRepository != null) await _bannerRepository.DisposeAsync();
+        }
+
+        #endregion
+    }
 }

@@ -13,69 +13,74 @@ namespace DemoShop.Web.Controllers
 {
 	public class HomeController : SiteBaseController
 	{
-        #region Constructor
+        #region constructor
 
-		private readonly IContactusService _contactusService;
+        private readonly IContactusService _contactService;
         private readonly ICaptchaValidator _captchaValidator;
         private readonly ISiteService _siteService;
 
-		public HomeController(IContactusService contactusService, ICaptchaValidator captchaValidator,
-            ISiteService siteService)
-		{
-			_contactusService = contactusService;
-			_captchaValidator = captchaValidator;
-			_siteService = siteService;
-		}
+        public HomeController(IContactusService contactService, ICaptchaValidator captchaValidator, ISiteService siteService)
+        {
+            _contactService = contactService;
+            _captchaValidator = captchaValidator;
+            _siteService = siteService;
+        }
 
-		#endregion
+        #endregion
 
-		#region Contact Us
-		[HttpGet("contact-us")]
+        #region index
+
+        public async Task<IActionResult> Index()
+        {
+            ViewBag.banners = await _siteService
+                .GetSiteBannersByPlacement(new List<BannerPlacement>
+                {
+                    BannerPlacement.Home_1,
+                    BannerPlacement.Home_2,
+                    BannerPlacement.Home_3
+                });
+
+            return View();
+        }
+
+        #endregion
+
+        #region contact us
+
+        [HttpGet("contact-us")]
         public IActionResult ContactUs()
         {
             return View();
         }
+
         [HttpPost("contact-us"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> ContactUs(CreateContactUsDTO createContactUsDTO)
+        public async Task<IActionResult> ContactUs(CreateContactUsDTO contact)
         {
-            if (!await _captchaValidator.IsCaptchaPassedAsync(createContactUsDTO.Captcha))
+            if (!await _captchaValidator.IsCaptchaPassedAsync(contact.Captcha))
             {
                 TempData[ErrorMessage] = "کد کپچای شما تایید نشد";
-                return View(createContactUsDTO);
+                return View(contact);
             }
+
             if (ModelState.IsValid)
             {
-                var Ip = HttpContext.GetUserIp();
-                await _contactusService.CreateContactUs(createContactUsDTO,HttpContext.GetUserIp(), User.GetUserId());
+                var ip = HttpContext.GetUserIp();
+                await _contactService.CreateContactUs(contact, HttpContext.GetUserIp(), User.GetUserId());
                 TempData[SuccessMessage] = "پیام شما با موفقیت ارسال شد";
                 return RedirectToAction("ContactUs");
-
             }
-            return View(createContactUsDTO);
+
+            return View(contact);
         }
 
         #endregion
 
-        #region Index
-        public async Task<IActionResult> Index(string mobile)
-		{
-            ViewBag.banners = await _siteService.GetSiteBannerByPlacement(new List<BannerPlacement>
-            {
-                    BannerPlacement.Home_1,
-                    BannerPlacement.Home_2,
-                    BannerPlacement.Home_3
-            });
-			
-			return View();
-		}
-        #endregion
-
-        #region a bout us
+        #region about us
 
         [HttpGet("about-us")]
         public async Task<IActionResult> AboutUs()
         {
-            var siteSetting = await _siteService.GetDefaultSiteSettings();
+            var siteSetting = await _siteService.GetDefaultSiteSetting();
             return View(siteSetting);
         }
 

@@ -3,48 +3,59 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemoShop.Web.ViewComponents
 {
-    #region Site Header
-    public class SiteHeaderViewComponent : ViewComponent
-	{
-		private readonly ISiteService _siteService;
-        private readonly IUserService _userService;
+    #region site header
 
-        public SiteHeaderViewComponent(ISiteService siteService, IUserService userService)
+    public class SiteHeaderViewComponent : ViewComponent
+    {
+        private readonly ISiteService _siteService;
+        private readonly IUserService _userService;
+        private readonly IProductService _productService;
+
+        public SiteHeaderViewComponent(ISiteService siteService, IUserService userService, IProductService productService)
         {
             _siteService = siteService;
             _userService = userService;
+            _productService = productService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
-		{
-            ViewBag.siteSetting = await _siteService.GetDefaultSiteSettings();
+        {
+            ViewBag.siteSetting = await _siteService.GetDefaultSiteSetting();
             ViewBag.user = await _userService.GetUserByMobile(User.Identity.Name);
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.user = await _userService.GetUserByMobile(User.Identity.Name);
             }
 
+            ViewBag.ProductCategories = await _productService.GetAllActiveProductCategories();
+
             return View("SiteHeader");
         }
-	}
+    }
+
     #endregion
 
-    #region Site Footer
+    #region site footer
+
     public class SiteFooterViewComponent : ViewComponent
-	{
-		private readonly ISiteService _siteService;
+    {
+        private readonly ISiteService _siteService;
 
-		public SiteFooterViewComponent(ISiteService siteService)
-		{
-			_siteService = siteService;
-		}
-		public async Task<IViewComponentResult> InvokeAsync()
-		{
-			ViewBag.SiteSetting = await _siteService.GetDefaultSiteSettings();
-			return View("SiteFooter");
-		}
-	}
+        public SiteFooterViewComponent(ISiteService siteService)
+        {
+            _siteService = siteService;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            ViewBag.siteSetting = await _siteService.GetDefaultSiteSetting();
+
+            return View("SiteFooter");
+        }
+    }
+
     #endregion
+
     #region home sliders
 
     public class HomeSliderViewComponent : ViewComponent
@@ -62,5 +73,6 @@ namespace DemoShop.Web.ViewComponents
             return View("HomeSlider", sliders);
         }
     }
+
     #endregion
 }
