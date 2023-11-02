@@ -72,17 +72,14 @@ namespace DemoShop.Application.Implementation
                     query = query.Where(s => !s.IsDeleted);
                     break;
                 case FilterSellerState.Accepted:
-                    query = query.Where(s => s.StoreAcceptanceState == StoreAcceptanceState.Accepted
-                    && !s.IsDeleted);
+                    query = query.Where(s => s.StoreAcceptanceState == StoreAcceptanceState.Accepted && !s.IsDeleted);
                     break;
 
                 case FilterSellerState.UnderProgress:
-                    query = query.Where(s => s.StoreAcceptanceState == StoreAcceptanceState.UnderProgress
-                    && !s.IsDeleted);
+                    query = query.Where(s => s.StoreAcceptanceState == StoreAcceptanceState.UnderProgress && !s.IsDeleted);
                     break;
                 case FilterSellerState.Rejected:
-                    query = query.Where(s => s.StoreAcceptanceState == StoreAcceptanceState.Rejected
-                    && !s.IsDeleted);
+                    query = query.Where(s => s.StoreAcceptanceState == StoreAcceptanceState.Rejected && !s.IsDeleted);
                     break;
             }
 
@@ -182,6 +179,14 @@ namespace DemoShop.Application.Implementation
             return await _sellerRepository.GetQuery()
                 .OrderByDescending(s => s.CreateDate)
                 .FirstOrDefaultAsync(s =>
+                    s.UserId == userId && s.StoreAcceptanceState == StoreAcceptanceState.Accepted);
+        }
+
+        public async Task<bool> HasUserAnyActiveSellerPanel(long userId)
+        {
+            return await _sellerRepository.GetQuery()
+                .OrderByDescending(s => s.CreateDate)
+                .AnyAsync(s =>
                     s.UserId == userId && s.StoreAcceptanceState == StoreAcceptanceState.Accepted);
         }
 

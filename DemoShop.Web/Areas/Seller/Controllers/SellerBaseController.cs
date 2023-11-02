@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DemoShop.Web.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoShop.Web.Areas.Seller.Controllers
@@ -6,6 +7,7 @@ namespace DemoShop.Web.Areas.Seller.Controllers
     [Authorize]
     [Area("Seller")]
     [Route("seller")]
+    [CheckSellerStateAtribute]
     public class SellerBaseController : Controller 
     {
         protected string ErrorMessage = "ErrorMessage";
