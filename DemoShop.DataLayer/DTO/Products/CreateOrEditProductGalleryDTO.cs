@@ -9,17 +9,19 @@ using System.Xml.Linq;
 
 namespace DemoShop.DataLayer.DTO.Products
 {
-    public class CreateProductGalleryDTO
+    public class CreateOrEditProductGalleryDTO
     {
         [Display(Name = "اولویت نمایش")]
         [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
         public int DisplayPriority { get; set; }
 
         [Display(Name = "تصویر")]
-        [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
         public IFormFile Image { get; set; }
+
+        public string ImageName { get; set; }
     }
-    public enum CreateProductGalleryResult
+
+    public enum CreateOrEditProductGalleryResult
     {
         Success,
         NotForUserProduct,

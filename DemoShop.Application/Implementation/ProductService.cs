@@ -292,12 +292,12 @@ namespace DemoShop.Application.Implementation
                 .Where(s => s.ProductId == productId && s.Product.SellerId == sellerId).ToListAsync();
         }
 
-        public async Task<CreateProductGalleryResult> CreateProductGallery(CreateProductGalleryDTO gallery, long productId, long sellerId)
+        public async Task<CreateOrEditProductGalleryResult> CreateProductGallery(CreateOrEditProductGalleryDTO gallery, long productId, long sellerId)
         {
             var product = await _productRepository.GetEntityById(productId);
-            if (product == null) return CreateProductGalleryResult.ProductNotFound;
-            if (product.SellerId != sellerId) return CreateProductGalleryResult.NotForUserProduct;
-            if (gallery.Image == null || !gallery.Image.IsImage()) return CreateProductGalleryResult.ImageIsNull;
+            if (product == null) return CreateOrEditProductGalleryResult.ProductNotFound;
+            if (product.SellerId != sellerId) return CreateOrEditProductGalleryResult.NotForUserProduct;
+            if (gallery.Image == null || !gallery.Image.IsImage()) return CreateOrEditProductGalleryResult.ImageIsNull;
 
             var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(gallery.Image.FileName);
             gallery.Image.AddImageToServer(imageName, PathExtensions.ProductGalleryImageServer, 100, 100,
@@ -312,7 +312,46 @@ namespace DemoShop.Application.Implementation
 
             await _productGalleryRepository.SaveChanges();
 
-            return CreateProductGalleryResult.Success;
+            return CreateOrEditProductGalleryResult.Success;
+        }
+
+        public async Task<CreateOrEditProductGalleryDTO> GetProductGalleryForEdit(long galleryId, long sellerId)
+        {
+            var gallery = await _productGalleryRepository.GetQuery()
+                .Include(s => s.Product)
+                .SingleOrDefaultAsync(s => s.Id == galleryId && s.Product.SellerId == sellerId);
+
+            if (gallery == null) return null;
+
+            return new CreateOrEditProductGalleryDTO
+            {
+                ImageName = gallery.ImageName,
+                DisplayPriority = gallery.DisplayPriority
+            };
+        }
+
+        public async Task<CreateOrEditProductGalleryResult> EditProductGallery(long galleryId, long sellerId, CreateOrEditProductGalleryDTO gallery)
+        {
+            var mainGallery = await _productGalleryRepository.GetQuery()
+                .Include(s => s.Product)
+                .SingleOrDefaultAsync(s => s.Id == galleryId);
+
+            if (mainGallery == null) return CreateOrEditProductGalleryResult.ProductNotFound;
+
+            if (mainGallery.Product.SellerId != sellerId) return CreateOrEditProductGalleryResult.NotForUserProduct;
+
+            if (gallery.Image != null && gallery.Image.IsImage())
+            {
+                var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(gallery.Image.FileName);
+                var result = gallery.Image.AddImageToServer(imageName, PathExtensions.ProductGalleryImageServer, 100, 100,
+                     PathExtensions.ProductGalleryThumbnailImageServer, mainGallery.ImageName);
+                mainGallery.ImageName = imageName;
+            }
+
+            mainGallery.DisplayPriority = gallery.DisplayPriority;
+            _productGalleryRepository.EditEntity(mainGallery);
+            await _productGalleryRepository.SaveChanges();
+            return CreateOrEditProductGalleryResult.Success;
         }
 
         #endregion

@@ -142,7 +142,7 @@ namespace DemoShop.Web.Areas.Seller.Controllers
         }
 
         [HttpPost("create-product-gallery/{productId}")]
-        public async Task<IActionResult> CreateProductGallery(long productId, CreateProductGalleryDTO gallery)
+        public async Task<IActionResult> CreateProductGallery(long productId, CreateOrEditProductGalleryDTO gallery)
         {
             if (ModelState.IsValid)
             {
@@ -150,16 +150,16 @@ namespace DemoShop.Web.Areas.Seller.Controllers
                 var result = await _productService.CreateProductGallery(gallery, productId, seller.Id);
                 switch (result)
                 {
-                    case CreateProductGalleryResult.ImageIsNull:
+                    case CreateOrEditProductGalleryResult.ImageIsNull:
                         TempData[WarningMessage] = "تصویر مربوطه را وارد نمایید";
                         break;
-                    case CreateProductGalleryResult.NotForUserProduct:
+                    case CreateOrEditProductGalleryResult.NotForUserProduct:
                         TempData[ErrorMessage] = "محصول مورد نظر در لیست محصولات شما یافت نشد";
                         break;
-                    case CreateProductGalleryResult.ProductNotFound:
+                    case CreateOrEditProductGalleryResult.ProductNotFound:
                         TempData[WarningMessage] = "محصول مورد نظر یافت نشد";
                         break;
-                    case CreateProductGalleryResult.Success:
+                    case CreateOrEditProductGalleryResult.Success:
                         TempData[SuccessMessage] = "عملیات ثبت گالری محصول با موفقیت انجام شد";
                         return RedirectToAction("GetProductGalleries", "Product", new { id = productId });
                 }
@@ -169,6 +169,43 @@ namespace DemoShop.Web.Areas.Seller.Controllers
             if (product == null) return NotFound();
             ViewBag.product = product;
 
+            return View(gallery);
+        }
+
+        #endregion
+
+        #region edit
+
+        [HttpGet("product_{productId}/edit-gallery/{galleryId}")]
+        public async Task<IActionResult> EditGallery(long productId, long galleryId)
+        {
+            var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+            var mainGallery = await _productService.GetProductGalleryForEdit(galleryId, seller.Id);
+            if (mainGallery == null) return NotFound();
+
+            return View(mainGallery);
+        }
+
+        [HttpPost("product_{productId}/edit-gallery/{galleryId}")]
+        public async Task<IActionResult> EditGallery(long productId, long galleryId, CreateOrEditProductGalleryDTO gallery)
+        {
+            if (ModelState.IsValid)
+            {
+                var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+                var res = await _productService.EditProductGallery(galleryId, seller.Id, gallery);
+                switch (res)
+                {
+                    case CreateOrEditProductGalleryResult.ProductNotFound:
+                        TempData[WarningMessage] = "اطلاعات مورد نظر یافت نشد";
+                        break;
+                    case CreateOrEditProductGalleryResult.NotForUserProduct:
+                        TempData[ErrorMessage] = "این اطلاعات برای شما غیر قابل دسترس می باشد";
+                        break;
+                    case CreateOrEditProductGalleryResult.Success:
+                        TempData[SuccessMessage] = "اطلاعات مورد نظر با موفقیت ویرایش شد";
+                        return RedirectToAction("GetProductGalleries", "Product", new { id = productId });
+                }
+            }
             return View(gallery);
         }
 
