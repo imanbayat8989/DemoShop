@@ -19,4 +19,11 @@ namespace DemoShop.DataLayer.DTO.Products
         [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
         public IFormFile Image { get; set; }
     }
+    public enum CreateProductGalleryResult
+    {
+        Success,
+        NotForUserProduct,
+        ImageIsNull,
+        ProductNotFound
+    }
 }

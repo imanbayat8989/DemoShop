@@ -25,13 +25,27 @@ namespace DemoShop.Application.Utils
 
         public static string ProductImage = "/content/images/product/origin/";
 
-        public static string ProductImageImageServer =
+        public static string ProductImageServer =
             Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/product/origin/");
 
         public static string ProductThumbnailImage = "/content/images/product/thumb/";
 
         public static string ProductThumbnailImageImageServer =
             Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/product/thumb/");
+
+        #endregion
+
+        #region products
+
+        public static string ProductGalleryImage = "/content/images/product-gallery/origin/";
+
+        public static string ProductGalleryImageServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/product-gallery/origin/");
+
+        public static string ProductGalleryThumbnailImage = "/content/images/product-gallery/thumb/";
+
+        public static string ProductGalleryThumbnailImageServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/content/images/product-gallery/thumb/");
 
         #endregion
 

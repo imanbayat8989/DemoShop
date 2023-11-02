@@ -52,13 +52,13 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        <img src="@(PathExtensions.ProductThumbnailImage + gallery.ImageName)" width="75" />
+                                                        <img src="@(PathExtensions.ProductGalleryThumbnailImage + gallery.ImageName)" width="75" />
                                                     </td>
                                                     <td>
-                                                        @gallery.ImageName
+                                                        @gallery.DisplayPriority
                                                     </td>
                                                     <td>
-                                                        <a asp-area="Seller" asp-controller="Product" asp-action="EditProduct" asp-route-productId="@gallery.Id" class="view">ویرایش محصول</a>
+                                                        <a asp-area="Seller" asp-controller="Product" asp-action="EditProduct" asp-route-productId="@gallery.Id" class="view">ویرایش تصویر</a>
                                                     </td>
                                                 </tr>
                                             }

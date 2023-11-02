@@ -46,7 +46,7 @@ namespace DemoShop.Application.Implementation
 
             var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(productImage.FileName);
 
-            var res = productImage.AddImageToServer(imageName, PathExtensions.ProductImageImageServer, 150, 150, PathExtensions.ProductThumbnailImageImageServer);
+            var res = productImage.AddImageToServer(imageName, PathExtensions.ProductImageServer, 150, 150, PathExtensions.ProductThumbnailImageImageServer);
 
             if (res)
             {
@@ -149,7 +149,7 @@ namespace DemoShop.Application.Implementation
             {
                 var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(productImage.FileName);
 
-                var res = productImage.AddImageToServer(imageName, PathExtensions.ProductImageImageServer, 150, 150,
+                var res = productImage.AddImageToServer(imageName, PathExtensions.ProductImageServer, 150, 150,
                     PathExtensions.ProductThumbnailImageImageServer, mainProduct.ImageName);
 
                 if (res)
@@ -285,11 +285,34 @@ namespace DemoShop.Application.Implementation
                 .SingleOrDefaultAsync(s => s.Id == productId && s.Seller.UserId == userId);
         }
 
-        public async Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long userId)
+        public async Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long sellerId)
         {
             return await _productGalleryRepository.GetQuery()
                 .Include(s => s.Product)
-                .Where(s => s.ProductId == productId && s.Product.SellerId == userId).ToListAsync();
+                .Where(s => s.ProductId == productId && s.Product.SellerId == sellerId).ToListAsync();
+        }
+
+        public async Task<CreateProductGalleryResult> CreateProductGallery(CreateProductGalleryDTO gallery, long productId, long sellerId)
+        {
+            var product = await _productRepository.GetEntityById(productId);
+            if (product == null) return CreateProductGalleryResult.ProductNotFound;
+            if (product.SellerId != sellerId) return CreateProductGalleryResult.NotForUserProduct;
+            if (gallery.Image == null || !gallery.Image.IsImage()) return CreateProductGalleryResult.ImageIsNull;
+
+            var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(gallery.Image.FileName);
+            gallery.Image.AddImageToServer(imageName, PathExtensions.ProductGalleryImageServer, 100, 100,
+                PathExtensions.ProductGalleryThumbnailImageServer);
+
+            await _productGalleryRepository.AddEntity(new ProductGallery
+            {
+                ProductId = productId,
+                ImageName = imageName,
+                DisplayPriority = gallery.DisplayPriority
+            });
+
+            await _productGalleryRepository.SaveChanges();
+
+            return CreateProductGalleryResult.Success;
         }
 
         #endregion
