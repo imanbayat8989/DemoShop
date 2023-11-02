@@ -22,6 +22,8 @@ namespace DemoShop.Web.Areas.Seller.Controllers
 
         #endregion
 
+        #region product
+
         #region list
 
         [HttpGet("products-list")]
@@ -109,6 +111,22 @@ namespace DemoShop.Web.Areas.Seller.Controllers
             ViewBag.Categories = await _productService.GetAllActiveProductCategories();
             return View(product);
         }
+
+        #endregion
+
+        #endregion
+
+        #region product galleries
+
+        #region list
+
+        [HttpGet("product-galleries/{id}")]
+        public async Task<IActionResult> GetProductGalleries(long id)
+        {
+            return View(await _productService.GetAllProductGalleriesInSellerPanel(id));
+        }
+
+        #endregion
 
         #endregion
 

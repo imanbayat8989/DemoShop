@@ -25,13 +25,15 @@ namespace DemoShop.Application.Implementation
         private readonly IGenericRepository<ProductCategory> _productCategoryRepository;
         private readonly IGenericRepository<ProductSelectedCategory> _productSelectedCategoryRepository;
         private readonly IGenericRepository<ProductColor> _productColorRepository;
+        private readonly IGenericRepository<ProductGallery> _productGalleryRepository;
 
-        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository)
+        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository)
         {
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
             _productSelectedCategoryRepository = productSelectedCategoryRepository;
             _productColorRepository = productColorRepository;
+            _productGalleryRepository = productGalleryRepository;
         }
 
         #endregion
@@ -268,6 +270,23 @@ namespace DemoShop.Application.Implementation
 
         #endregion
 
+        #region product gallery
+
+        public async Task<List<ProductGallery>> GetAllProductGalleries(long productId)
+        {
+            return await _productGalleryRepository.GetQuery().AsQueryable()
+                .Where(s => s.ProductId == productId).ToListAsync();
+        }
+
+        public async Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long userId)
+        {
+            return await _productGalleryRepository.GetQuery()
+                .Include(s => s.Product)
+                .Where(s => s.ProductId == productId && s.Product.SellerId == userId).ToListAsync();
+        }
+
+        #endregion
+
         #region product categories
 
         public async Task<List<ProductCategory>> GetAllProductCategoriesByParentId(long? parentId)
@@ -304,6 +323,7 @@ namespace DemoShop.Application.Implementation
             await _productRepository.DisposeAsync();
             await _productSelectedCategoryRepository.DisposeAsync();
         }
+
 
         #endregion
     }

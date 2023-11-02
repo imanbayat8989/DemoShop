@@ -84,7 +84,7 @@ $("[main_category_checkbox]").on('change',
 $('#add_color_button').on('click',
     function (e) {
         e.preventDefault();
-        var colorName = $('#product_color_name_input').val();
+        var colorName = $('#product_color_name_input').val().trim();
         var colorPrice = $('#product_color_price_input').val();
         if (colorName !== '' && colorPrice !== '') {
             var currentColorsCount = $('#list_of_product_colors tr');

@@ -27,6 +27,15 @@ namespace DemoShop.Application.Interface
 
         #endregion
 
+        #region product gallery
+
+        Task<List<ProductGallery>> GetAllProductGalleries(long productId);
+
+        Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long userId);
+
+
+        #endregion
+
         #region product categories
 
         Task<List<ProductCategory>> GetAllProductCategoriesByParentId(long? parentId);
