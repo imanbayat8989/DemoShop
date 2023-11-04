@@ -35,7 +35,7 @@ namespace DemoShop.Application.Utils
 
         #endregion
 
-        #region products
+        #region product gallery
 
         public static string ProductGalleryImage = "/content/images/product-gallery/origin/";
 

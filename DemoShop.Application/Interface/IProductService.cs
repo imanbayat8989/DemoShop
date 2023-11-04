@@ -34,7 +34,6 @@ namespace DemoShop.Application.Interface
         Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long sellerId);
         Task<CreateOrEditProductGalleryResult> CreateProductGallery(CreateOrEditProductGalleryDTO gallery, long productId, long sellerId);
         Task<CreateOrEditProductGalleryDTO> GetProductGalleryForEdit(long galleryId, long sellerId);
-
         Task<CreateOrEditProductGalleryResult> EditProductGallery(long galleryId, long sellerId,
             CreateOrEditProductGalleryDTO gallery);
         Task<ProductDetailDTO> GetProductDetailById(long productId);
@@ -49,3 +48,4 @@ namespace DemoShop.Application.Interface
         #endregion
     }
 }
+
