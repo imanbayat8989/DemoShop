@@ -22,6 +22,7 @@ namespace DemoShop.Web.Controllers
         [HttpGet("products")]
         public async Task<IActionResult> FilterProducts(FilterProductDTO filter)
         {
+            filter.TakeEntity = 9;
             var products = await _productService.FilterProducts(filter);
             ViewBag.ProductCategories = await _productService.GetAllActiveProductCategories();
 
