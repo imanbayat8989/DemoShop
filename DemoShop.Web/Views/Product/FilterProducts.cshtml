@@ -1,7 +1,9 @@
 ﻿@using DemoShop.Application.Utils
+@using DemoShop.DataLayer.Entities.Product
 @model DemoShop.DataLayer.DTO.Products.FilterProductDTO
 @{
     ViewData["Title"] = "فیلتر محصولات";
+    var productCategories = ViewBag.ProductCategories as List<ProductCategory>;
 }
 
 <div class="breadcrumbs_area">
@@ -30,30 +32,35 @@
                     <div class="widget_inner">
                         <div class="widget_list widget_categories">
                             <h2>دسته های محصولات</h2>
-                            <ul>
-                                <li><a href="#">دوربین عکاسی و فیلمبرداری</a></li>
-                                <li class="widget_sub_categories">
-                                    <a href="javascript:void(0)">کامپیوتر و شبکه</a>
-                                    <ul class="widget_dropdown_categories">
-                                        <li><a href="#">کامپیوتر</a></li>
-                                        <li><a href="#">ابزار شبکه</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">بازی و کنسول</a></li>
-                                <li><a href="#">هدفون و اسپیکر</a></li>
-                                <li><a href="#">فیلم و بازی ویدئویی</a></li>
-                                <li><a href="#">گوشی هوشمند</a> </li>
-                                <li><a href="#">بدون دسته</a></li>
-                            </ul>
+                            @if (productCategories != null && productCategories.Any())
+                            {
+                                <ul>
+                                    @foreach (var mainCategory in productCategories.Where(s => s.ParentId == null))
+                                    {
+                                        <li class="widget_sub_categories">
+                                            <a href="javascript:void(0)" category-dropdown-button="@mainCategory.Id">@mainCategory.Title</a>
+                                            @if (productCategories.Any(s => s.ParentId == mainCategory.Id))
+                                            {
+                                                <ul class="widget_dropdown_categories" category-dropdown-list="@mainCategory.Id">
+                                                    @foreach (var subCategory in productCategories.Where(s => s.ParentId == mainCategory.Id))
+                                                    {
+                                                        <li><a href="#">@subCategory.Title</a></li>
+                                                    }
+                                                </ul>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            }
                         </div>
                         <div class="widget_list widget_filter">
                             <h2>فیلتر با قیمت</h2>
                             <form action="">
-                                <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 14%; width: 66%;"></div><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 14%;"></span><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 80%;"></span></div>
+                                <div id="slider-range"></div>
                                 <input type="text" id="amount">
                                 <button type="submit">فیلتر</button>
-                                <input type="hidden" id="price-min" name="price_min" value="700000">
-                                <input type="hidden" id="price-max" name="price_max" value="4000000">
+                                <input type="hidden" id="price-min" name="price_min">
+                                <input type="hidden" id="price-max" name="price_max">
                             </form>
                         </div>
                         <div class="widget_list">

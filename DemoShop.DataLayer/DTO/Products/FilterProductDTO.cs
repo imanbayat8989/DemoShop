@@ -22,6 +22,8 @@ namespace DemoShop.DataLayer.DTO.Products
 
         public List<Product> Products { get; set; }
 
+        public List<long> SelectedProductCategories { get; set; }
+
         #endregion
 
         #region methods

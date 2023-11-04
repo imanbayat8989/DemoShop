@@ -23,6 +23,7 @@ namespace DemoShop.Web.Controllers
         public async Task<IActionResult> FilterProducts(FilterProductDTO filter)
         {
             var products = await _productService.FilterProducts(filter);
+            ViewBag.ProductCategories = await _productService.GetAllActiveProductCategories();
 
             return View(products);
         }
