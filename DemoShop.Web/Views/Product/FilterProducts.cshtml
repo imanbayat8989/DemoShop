@@ -6,6 +6,32 @@
     var productCategories = ViewBag.ProductCategories as List<ProductCategory>;
 }
 
+@section scripts
+    {
+    <script>
+        /*---slider-range here---*/
+        $("#slider-range").slider({
+            range: true,
+            min: @Model.FilterMinPrice,
+            max: @Model.FilterMaxPrice,
+            step: @Model.PriceStep,
+            values: [@Model.SelectedMinPrice, @Model.SelectedMaxPrice],
+            slide: function (event, ui) {
+                var $value0 = ui.values[0].toLocaleString();
+                var $value1 = ui.values[1].toLocaleString();
+                $("#amount").val($value1 + " تومان - " + $value0 + " تومان");
+                $("#price-min").val(ui.values[0]);
+                $("#price-max").val(ui.values[1]);
+            }
+        });
+        var $value0 = $("#slider-range").slider("values", 0).toLocaleString();
+        var $value1 = $("#slider-range").slider("values", 1).toLocaleString();
+        $("#amount").val($value1 + " تومان - " + $value0 + " تومان");
+        $("#price-min").val($("#slider-range").slider("values", 0));
+        $("#price-max").val($("#slider-range").slider("values", 1));
+    </script>
+}
+
 <div class="breadcrumbs_area">
     <div class="container">
         <div class="row">
@@ -24,6 +50,9 @@
 
 
 <form asp-area="" asp-controller="Product" asp-action="FilterProducts" method="get" id="filter-form">
+    <input type="hidden" asp-for="PageId" />
+    <input type="hidden" asp-for="FilterMinPrice" />
+    <input type="hidden" asp-for="FilterMaxPrice" />
     <input type="hidden" asp-for="PageId" />
     <div class="shop_area shop_reverse mt-60 mb-60">
         <div class="container">
@@ -61,8 +90,8 @@
                                 <div id="slider-range"></div>
                                 <input type="text" id="amount">
                                 <button type="submit">فیلتر</button>
-                                <input type="hidden" id="price-min" name="price_min">
-                                <input type="hidden" id="price-max" name="price_max">
+                                <input type="hidden" id="price-min" asp-for="SelectedMinPrice">
+                                <input type="hidden" id="price-max" asp-for="SelectedMaxPrice">
 
                             </div>
                             <div class="widget_list">
@@ -278,3 +307,4 @@
         </div>
     </div>
 </form>
+

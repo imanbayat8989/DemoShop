@@ -18,6 +18,16 @@ namespace DemoShop.DataLayer.DTO.Products
 
         public long? SellerId { get; set; }
 
+        public int FilterMinPrice { get; set; }
+
+        public int FilterMaxPrice { get; set; }
+
+        public int SelectedMinPrice { get; set; }
+
+        public int SelectedMaxPrice { get; set; }
+
+        public int PriceStep { get; set; } = 100000;
+
         public FilterProductState FilterProductState { get; set; }
 
         public List<Product> Products { get; set; }
