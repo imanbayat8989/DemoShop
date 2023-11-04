@@ -84,7 +84,7 @@ $("[main_category_checkbox]").on('change',
 $('#add_color_button').on('click',
     function (e) {
         e.preventDefault();
-        var colorName = $('#product_color_name_input').val().trim();
+        var colorName = $('#product_color_name_input').val();
         var colorPrice = $('#product_color_price_input').val();
         if (colorName !== '' && colorPrice !== '') {
             var currentColorsCount = $('#list_of_product_colors tr');
@@ -107,13 +107,9 @@ $('#add_color_button').on('click',
                 ShowMessage('اخطار', 'رنگ وارد شده تکراری می باشد', 'warning');
                 $('#product_color_name_input').val('').focus();
             }
-
-
-
         } else {
             ShowMessage('اخطار', 'لطفا نام رنگ و قیمت آن را به درستی وارد نمایید', 'warning');
         }
-
     }
 );
 
@@ -135,3 +131,8 @@ function reOrderProductColorHiddenInputs() {
         $(hiddenPrice).attr('name', 'ProductColors[' + index + '].Price');
     });
 }
+
+
+$('#OrderBy').on('change', function () {
+    $('#filter-form').submit();
+});

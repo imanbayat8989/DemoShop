@@ -12,6 +12,15 @@ namespace DemoShop.DataLayer.DTO.Products
 {
     public class FilterProductDTO: BasePaging
     {
+        #region constructor
+
+        public FilterProductDTO()
+        {
+            OrderBy = FilterProductOrderBy.CreateData_Des;
+        }
+
+        #endregion
+
         #region properteis
 
         public string ProductTitle { get; set; }
@@ -29,6 +38,8 @@ namespace DemoShop.DataLayer.DTO.Products
         public int PriceStep { get; set; } = 100000;
 
         public FilterProductState FilterProductState { get; set; }
+
+        public FilterProductOrderBy OrderBy { get; set; }
 
         public List<Product> Products { get; set; }
 
@@ -74,5 +85,17 @@ namespace DemoShop.DataLayer.DTO.Products
         Active,
         [Display(Name = "غیر فعال")]
         NotActive
+    }
+
+    public enum FilterProductOrderBy
+    {
+        [Display(Name = "تاریخ ( نزولی )")]
+        CreateData_Des,
+        [Display(Name = "تاریخ ( صعودی )")]
+        CreateDate_Asc,
+        [Display(Name = "قیمت ( نزولی )")]
+        Price_Des,
+        [Display(Name = "قیمت ( صعودی )")]
+        Price_Asc,
     }
 }

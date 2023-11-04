@@ -1,4 +1,5 @@
 ﻿@using DemoShop.Application.Utils
+@using DemoShop.DataLayer.DTO.Products
 @using DemoShop.DataLayer.Entities.Product
 @model DemoShop.DataLayer.DTO.Products.FilterProductDTO
 @{
@@ -195,17 +196,9 @@
                             <button data-role="grid_list" type="button" class="btn-list" data-toggle="tooltip" title="" data-original-title="لیست"></button>
                         </div>
                         <div class="niceselect_container">
-
                             <label>ترتیب:</label>
-                            <select class="select_option" name="orderby" id="short" style="display: none;">
-                                <option selected="" value="1">امتیاز متوسط</option>
-                                <option value="2">محبوبیت</option>
-                                <option value="3">تعداد فروش</option>
-                                <option value="4">قیمت صعودی</option>
-                                <option value="5">قیمت نزولی</option>
-                                <option value="6">نام محصول</option>
+                            <select class="select_option" asp-for="OrderBy" asp-items="@Html.GetEnumSelectList<FilterProductOrderBy>()">
                             </select>
-                            <div class="nice-select select_option" tabindex="0"><span class="current">امتیاز متوسط</span><ul class="list"><li data-value="1" class="option selected focus">امتیاز متوسط</li><li data-value="2" class="option">محبوبیت</li><li data-value="3" class="option">تعداد فروش</li><li data-value="4" class="option">قیمت صعودی</li><li data-value="5" class="option">قیمت نزولی</li><li data-value="6" class="option">نام محصول</li></ul></div>
                         </div>
                         <div class="page_amount">
                             <p>@Model.GetCurrentPaging().GetCurrentPagingStatus() محصول</p>

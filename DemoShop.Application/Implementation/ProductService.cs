@@ -246,6 +246,22 @@ namespace DemoShop.Application.Implementation
                     break;
             }
 
+            switch (filter.OrderBy)
+            {
+                case FilterProductOrderBy.CreateData_Des:
+                    query = query.OrderByDescending(s => s.CreateDate);
+                    break;
+                case FilterProductOrderBy.CreateDate_Asc:
+                    query = query.OrderBy(s => s.CreateDate);
+                    break;
+                case FilterProductOrderBy.Price_Des:
+                    query = query.OrderByDescending(s => s.Price);
+                    break;
+                case FilterProductOrderBy.Price_Asc:
+                    query = query.OrderBy(s => s.Price);
+                    break;
+            }
+
             #endregion
 
             #region filter
