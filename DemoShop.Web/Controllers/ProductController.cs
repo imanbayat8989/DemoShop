@@ -20,6 +20,7 @@ namespace DemoShop.Web.Controllers
         #region filter products
 
         [HttpGet("products")]
+        [HttpGet("products/{Category}")]
         public async Task<IActionResult> FilterProducts(FilterProductDTO filter)
         {
             filter.TakeEntity = 9;

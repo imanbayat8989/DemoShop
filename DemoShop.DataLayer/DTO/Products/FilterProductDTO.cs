@@ -25,6 +25,8 @@ namespace DemoShop.DataLayer.DTO.Products
 
         public string ProductTitle { get; set; }
 
+        public string Category { get; set; }
+
         public long? SellerId { get; set; }
 
         public int FilterMinPrice { get; set; }

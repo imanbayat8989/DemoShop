@@ -221,7 +221,10 @@ namespace DemoShop.Application.Implementation
 
         public async Task<FilterProductDTO> FilterProducts(FilterProductDTO filter)
         {
-            var query = _productRepository.GetQuery().AsQueryable();
+            var query = _productRepository.GetQuery()
+                .Include(s => s.ProductSelectedCategories)
+                .ThenInclude(s => s.ProductCategory)
+                .AsQueryable();
 
             #region state
 
@@ -280,6 +283,9 @@ namespace DemoShop.Application.Implementation
             query = query.Where(s => s.Price >= filter.SelectedMinPrice);
             query = query.Where(s => s.Price <= filter.SelectedMaxPrice);
 
+            if (!string.IsNullOrEmpty(filter.Category))
+                query = query.Where(s =>
+                    s.ProductSelectedCategories.Any(f => f.ProductCategory.UrlName == filter.Category));
 
             #endregion
 

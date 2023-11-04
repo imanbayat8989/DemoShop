@@ -39,9 +39,8 @@
             <div class="col-12">
                 <div class="breadcrumb_content">
                     <ul>
-                        <li><a href="index.html">خانه</a></li>
-                        <li>دوربین و ویدیو </li>
-                        <li>فروشگاه</li>
+                        <li><a href="/">خانه</a></li>
+                        <li>محصولات</li>
                     </ul>
                 </div>
             </div>
@@ -67,6 +66,12 @@
                                 @if (productCategories != null && productCategories.Any())
                                 {
                                     <ul>
+                                        <li class="">
+                                            <a asp-area="" asp-controller="Product" asp-action="FilterProducts" asp-route-Category="">همه</a>
+                                        </li>
+
+
+
                                         @foreach (var mainCategory in productCategories.Where(s => s.ParentId == null))
                                         {
                                             <li class="widget_sub_categories">
@@ -76,7 +81,7 @@
                                                     <ul class="widget_dropdown_categories" category-dropdown-list="@mainCategory.Id">
                                                         @foreach (var subCategory in productCategories.Where(s => s.ParentId == mainCategory.Id))
                                                         {
-                                                            <li><a href="#">@subCategory.Title</a></li>
+                                                            <li><a asp-area="" asp-controller="Product" asp-action="FilterProducts" asp-route-Category="@subCategory.UrlName">@subCategory.Title</a></li>
                                                         }
                                                     </ul>
                                                 }
@@ -94,90 +99,6 @@
                                 <input type="hidden" id="price-min" asp-for="SelectedMinPrice">
                                 <input type="hidden" id="price-max" asp-for="SelectedMaxPrice">
 
-                            </div>
-                            <div class="widget_list">
-                                <h2>مقایسه محصولات</h2>
-                                <div class="recent_product_container">
-                                    <article class="recent_product_list">
-                                        <figure>
-                                            <div class="product_thumb">
-                                                <a href="product-details.html"><img src="/img/product/product1.jpg" alt=""></a>
-                                            </div>
-                                            <div class="product_content">
-                                                <h3><a href="product-details.html">گوشی موبایل شیائومی</a></h3>
-                                                <div class="product_ratings">
-                                                    <ul>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="old_price">70,000 تومان</span>
-                                                    <span class="current_price">65,000 تومان</span>
-                                                </div>
-                                            </div>
-                                        </figure>
-                                    </article>
-                                    <article class="recent_product_list">
-                                        <figure>
-                                            <div class="product_thumb">
-                                                <a href="product-details.html"><img src="/img/product/product2.jpg" alt=""></a>
-                                            </div>
-                                            <div class="product_content">
-                                                <h3><a href="product-details.html">هندزفری بیسیم سونی</a></h3>
-                                                <div class="product_ratings">
-                                                    <ul>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="old_price">70,000 تومان</span>
-                                                    <span class="current_price">65,000 تومان</span>
-                                                </div>
-                                            </div>
-                                        </figure>
-                                    </article>
-                                    <article class="recent_product_list">
-                                        <figure>
-                                            <div class="product_thumb">
-                                                <a href="product-details.html"><img src="/img/product/product24.jpg" alt=""></a>
-                                            </div>
-                                            <div class="product_content">
-                                                <h3><a href="product-details.html">اسپیکر بلوتوثی Anker</a></h3>
-                                                <div class="product_ratings">
-                                                    <ul>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="ion-android-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="old_price">70,000 تومان</span>
-                                                    <span class="current_price">65,000 تومان</span>
-                                                </div>
-                                            </div>
-                                        </figure>
-                                    </article>
-                                </div>
-                            </div>
-                            <div class="widget_list tags_widget">
-                                <h2>برچسب های محصولات</h2>
-                                <div class="tag_cloud">
-                                    <a href="#">بلوز</a>
-                                    <a href="#">لورم ایپسوم</a>
-                                    <a href="#">مد و زیبایی</a>
-                                    <a href="#">لورم ایپسوم</a>
-                                    <a href="#">لپ تاپ</a>
-                                </div>
                             </div>
                         </div>
                     </aside>
@@ -287,6 +208,14 @@
                                     </article>
                                 </div>
                             }
+                        }
+                        else
+                        {
+                            <div class="col-md-12">
+                                <div class="alert alert-warning">
+                                    <p>هیچ محصولی یافت نشد</p>
+                                </div>
+                            </div>
                         }
                     </div>
 
