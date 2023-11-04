@@ -23,10 +23,10 @@ namespace DemoShop.Web.Controllers
         public async Task<IActionResult> FilterProducts(FilterProductDTO filter)
         {
             filter.TakeEntity = 9;
-            var products = await _productService.FilterProducts(filter);
+            filter = await _productService.FilterProducts(filter);
             ViewBag.ProductCategories = await _productService.GetAllActiveProductCategories();
-
-            return View(products);
+            if (filter.PageId > filter.GetLastPage()) return NotFound();
+            return View(filter);
         }
 
         #endregion

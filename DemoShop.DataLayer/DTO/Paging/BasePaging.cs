@@ -29,6 +29,11 @@ namespace DemoShop.DataLayer.DTO.Paging
 
         public int SkipEntity { get; set; }
 
+        public int GetLastPage()
+        {
+            return (int)Math.Ceiling(AllEntitiesCount / (double)TakeEntity);
+        }
+
         public int HowManyShowPageAfterAndBefore { get; set; }
 
         public string GetCurrentPagingStatus()
@@ -39,7 +44,7 @@ namespace DemoShop.DataLayer.DTO.Paging
             if (EndPage > 1)
             {
                 startItem = (PageId - 1) * TakeEntity + 1;
-                endItem = PageId * TakeEntity;
+                endItem = PageId * TakeEntity > AllEntitiesCount ? AllEntitiesCount : PageId * TakeEntity;
             }
 
             return $"نمایش {startItem}-{endItem} از {AllEntitiesCount}";
