@@ -24,6 +24,7 @@ namespace DemoShop.Web.Controllers
         public async Task<IActionResult> FilterProducts(FilterProductDTO filter)
         {
             filter.TakeEntity = 9;
+            filter.FilterProductState = FilterProductState.Accepted;
             filter = await _productService.FilterProducts(filter);
             ViewBag.ProductCategories = await _productService.GetAllActiveProductCategories();
             if (filter.PageId > filter.GetLastPage() && filter.GetLastPage() != 0) return NotFound();

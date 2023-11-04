@@ -124,7 +124,7 @@ namespace DemoShop.Application.Implementation
                 ProductColors = await _productColorRepository
                     .GetQuery().AsQueryable()
                     .Where(s => !s.IsDeleted && s.ProductId == productId)
-                    .Select(s => new CreateProductColorDTO { Price = s.Price, ColorName = s.ColorName }).ToListAsync(),
+                    .Select(s => new CreateProductColorDTO { Price = s.Price, ColorName = s.ColorName, ColorCode = s.ColorCode }).ToListAsync(),
                 SelectedCategories = await _productSelectedCategoryRepository.GetQuery().AsQueryable()
                     .Where(s => s.ProductId == productId).Select(s => s.ProductCategoryId).ToListAsync()
             };
@@ -186,13 +186,14 @@ namespace DemoShop.Application.Implementation
 
                 foreach (var productColor in colors)
                 {
-                    if (!productSelectedColors.Any(s => s.ColorName == productColor.ColorName))
+                    if (productSelectedColors.All(s => s.ColorName != productColor.ColorName))
                     {
                         productSelectedColors.Add(new ProductColor
                         {
                             ColorName = productColor.ColorName,
                             Price = productColor.Price,
-                            ProductId = productId
+                            ProductId = productId,
+                            ColorCode = productColor.ColorCode
                         });
                     }
                 }
@@ -226,6 +227,9 @@ namespace DemoShop.Application.Implementation
                 .ThenInclude(s => s.ProductCategory)
                 .AsQueryable();
 
+            var expensiveProduct = await query.OrderByDescending(s => s.Price).FirstOrDefaultAsync();
+            filter.FilterMaxPrice = expensiveProduct.Price;
+
             #region state
 
             switch (filter.FilterProductState)
@@ -239,7 +243,7 @@ namespace DemoShop.Application.Implementation
                     query = query.Where(s => !s.IsActive && s.ProductAcceptanceState == ProductAcceptanceState.Accepted);
                     break;
                 case FilterProductState.Accepted:
-                    query = query.Where(s => s.ProductAcceptanceState == ProductAcceptanceState.Accepted);
+                    query = query.Where(s => s.IsActive && s.ProductAcceptanceState == ProductAcceptanceState.Accepted);
                     break;
                 case FilterProductState.Rejected:
                     query = query.Where(s => s.ProductAcceptanceState == ProductAcceptanceState.Rejected);
@@ -274,9 +278,6 @@ namespace DemoShop.Application.Implementation
 
             if (filter.SellerId != null && filter.SellerId != 0)
                 query = query.Where(s => s.SellerId == filter.SellerId.Value);
-
-            var expensiveProduct = await query.OrderByDescending(s => s.Price).FirstOrDefaultAsync();
-            filter.FilterMaxPrice = expensiveProduct.Price;
 
             if (filter.SelectedMaxPrice == 0) filter.SelectedMaxPrice = expensiveProduct.Price;
 
