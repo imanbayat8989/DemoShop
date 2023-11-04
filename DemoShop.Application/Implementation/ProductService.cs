@@ -385,6 +385,35 @@ namespace DemoShop.Application.Implementation
             return CreateOrEditProductGalleryResult.Success;
         }
 
+        public async Task<ProductDetailDTO> GetProductDetailById(long productId)
+        {
+            var product = await _productRepository.GetQuery()
+                .AsQueryable()
+                .Include(s => s.Seller)
+                .ThenInclude(s => s.User)
+                .Include(s => s.ProductSelectedCategories)
+                .ThenInclude(s => s.ProductCategory)
+                .Include(s => s.ProductGalleries)
+                .Include(s => s.ProductColors)
+                .SingleOrDefaultAsync(s => s.Id == productId);
+
+            if (product == null) return null;
+
+            return new ProductDetailDTO
+            {
+                Price = product.Price,
+                ImageName = product.ImageName,
+                Description = product.Description,
+                ShortDescription = product.ShortDescription,
+                Seller = product.Seller,
+                ProductCategories = product.ProductSelectedCategories.Select(s => s.ProductCategory).ToList(),
+                ProductGalleries = product.ProductGalleries.ToList(),
+                Title = product.Title,
+                ProductColors = product.ProductColors.ToList(),
+                SellerId = product.SellerId
+            };
+        }
+
         #endregion
 
         #region product categories

@@ -37,6 +37,7 @@ namespace DemoShop.Application.Interface
 
         Task<CreateOrEditProductGalleryResult> EditProductGallery(long galleryId, long sellerId,
             CreateOrEditProductGalleryDTO gallery);
+        Task<ProductDetailDTO> GetProductDetailById(long productId);
 
         #endregion
 

@@ -135,8 +135,12 @@
                                     <article class="single_product">
                                         <figure>
                                             <div class="product_thumb">
-                                                <a class="primary_img" href="product-details.html"><img src="@(PathExtensions.ProductImage + product.ImageName)" alt=""></a>
-                                                <a class="secondary_img" href="product-details.html"><img src="@(PathExtensions.ProductImage + product.ImageName)" alt=""></a>
+                                                <a class="primary_img" asp-controller="Product" asp-action="ProductDetail" asp-route-productId="@product.Id" asp-route-title="@product.Title.FixTextForUrl()">
+                                                    <img src="@(PathExtensions.ProductImage + product.ImageName)" alt="">
+                                                </a>
+                                                <a class="secondary_img" asp-controller="Product" asp-action="ProductDetail" asp-route-productId="@product.Id" asp-route-title="@product.Title.FixTextForUrl()">
+                                                    <img src="@(PathExtensions.ProductImage + product.ImageName)" alt="">
+                                                </a>
                                                 <div class="label_product">
                                                     <span class="label_sale">فروش</span>
                                                 </div>
