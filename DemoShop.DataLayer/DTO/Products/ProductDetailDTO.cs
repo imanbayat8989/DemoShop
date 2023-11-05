@@ -11,6 +11,8 @@ namespace DemoShop.DataLayer.DTO.Products
 {
     public class ProductDetailDTO
     {
+        public long ProductId { get; set; }
+
         public long SellerId { get; set; }
 
         [Display(Name = "نام محصول")]

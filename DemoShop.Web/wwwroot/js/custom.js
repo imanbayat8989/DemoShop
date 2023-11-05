@@ -196,11 +196,30 @@ $('#OrderBy').on('change', function () {
     $('#filter-form').submit();
 });
 
-function changeProductPriceBasedOnColor(priceOfColor, colorName) {
+function changeProductPriceBasedOnColor(colorId, priceOfColor, colorName) {
+    console.log(colorId, priceOfColor, colorName);
     var basePrice = parseInt($('#ProductBasePrice').val(), 0);
     $('.current_price').html((basePrice + priceOfColor) + ' تومان' + ' ( ' + colorName + ' )');
+    $('#add_product_to_order_ProductColorId').val(colorId);
+}
+
+$('#number_of_products_in_basket').on('change', function (e) {
+    var numberOfProducts = parseInt(e.target.value, 0);
+    $('#add_product_to_order_Count').val(numberOfProducts);
+});
+
+function changeCountOfProduct(e) {
+    console.log(e);
 }
 
 function onSuccessAddProductToOrder(res) {
-    console.log(res);
+    if (res.status === 'Success') {
+        ShowMessage('اعلان', res.message);
+    } else {
+        ShowMessage('اعلان', res.message, 'warning');
+    }
 }
+
+$('#submitOrderForm').on('click', function () {
+    $('#addProductToOrderForm').submit();
+});
