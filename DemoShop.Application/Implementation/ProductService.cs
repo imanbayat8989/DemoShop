@@ -407,6 +407,7 @@ namespace DemoShop.Application.Implementation
                 .ThenInclude(s => s.ProductCategory)
                 .Include(s => s.ProductGalleries)
                 .Include(s => s.ProductColors)
+                .Include(s => s.ProductFeatures)
                 .SingleOrDefaultAsync(s => s.Id == productId);
 
             if (product == null) return null;
@@ -422,7 +423,8 @@ namespace DemoShop.Application.Implementation
                 ProductGalleries = product.ProductGalleries.ToList(),
                 Title = product.Title,
                 ProductColors = product.ProductColors.ToList(),
-                SellerId = product.SellerId
+                SellerId = product.SellerId,
+                ProductFeatures = product.ProductFeatures.ToList()
             };
         }
 

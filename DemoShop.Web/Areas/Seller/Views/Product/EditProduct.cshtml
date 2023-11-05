@@ -60,8 +60,8 @@
                                                 var index = 0;
                                                 foreach (var feature in Model.ProductFeatures)
                                                 {
-                                                    <input type="hidden" value="@feature.Feature" name="ProductFeatures[@index].Feature" color-name-hidden-input="@feature.Feature-@feature.FeatureValue">
-                                                    <input type="hidden" value="@feature.FeatureValue" name="ProductFeatures[@index].FeatureValue" color-code-hidden-input="@feature.Feature-@feature.FeatureValue">
+                                                    <input type="hidden" value="@feature.Feature" name="ProductFeatures[@index].Feature" feature-hidden-input="@feature.Feature-@feature.FeatureValue">
+                                                    <input type="hidden" value="@feature.FeatureValue" name="ProductFeatures[@index].FeatureValue" feature-value-hidden-input="@feature.Feature-@feature.FeatureValue">
                                                     index += 1;
                                                 }
                                             }
@@ -191,10 +191,10 @@
                                                         {
                                                             foreach (var feature in Model.ProductFeatures)
                                                             {
-                                                                <tr color-table-item="@feature.Feature-@feature.FeatureValue">
+                                                                <tr feature-table-item="@feature.Feature-@feature.FeatureValue">
                                                                     <td> @feature.Feature </td>
                                                                     <td> @feature.FeatureValue </td>
-                                                                    <td> <a class="btn btn-danger text-white" onclick="removeProductColor('@feature.Feature-@feature.FeatureValue')">حذف</a> </td>
+                                                                    <td> <a class="btn btn-danger text-white" onclick="removeProductFeature('@feature.Feature-@feature.FeatureValue')">حذف</a> </td>
                                                                 </tr>
                                                             }
                                                         }

@@ -200,8 +200,6 @@ function reOrderProductFeatureHiddenInputs() {
         var featureValue = $('[feature-value-hidden-input="' + featureId + '"]');
         $(hiddenFeature).attr('name', 'ProductFeatures[' + index + '].Feature');
         $(featureValue).attr('name', 'ProductFeatures[' + index + '].FeatureValue');
-        console.log(hiddenFeature);
-        console.log(featureValue);
     });
 }
 
