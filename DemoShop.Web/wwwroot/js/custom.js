@@ -81,15 +81,6 @@ $("[main_category_checkbox]").on('change',
     });
 
 
-
-
-
-
-
-
-
-
-
 $('#add_color_button').on('click',
     function (e) {
         e.preventDefault();
@@ -126,7 +117,6 @@ $('#add_color_button').on('click',
     }
 );
 
-
 $('#add_feature_button').on('click',
     function (e) {
         e.preventDefault();
@@ -158,7 +148,6 @@ $('#add_feature_button').on('click',
         }
     }
 );
-
 
 function removeProductFeature(index) {
     console.log(index);
@@ -203,15 +192,15 @@ function reOrderProductFeatureHiddenInputs() {
     });
 }
 
-
-
-
 $('#OrderBy').on('change', function () {
     $('#filter-form').submit();
 });
 
-
 function changeProductPriceBasedOnColor(priceOfColor, colorName) {
     var basePrice = parseInt($('#ProductBasePrice').val(), 0);
     $('.current_price').html((basePrice + priceOfColor) + ' تومان' + ' ( ' + colorName + ' )');
+}
+
+function onSuccessAddProductToOrder(res) {
+    console.log(res);
 }
