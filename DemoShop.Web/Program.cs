@@ -28,6 +28,7 @@ builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IContactusService, ContactusService>();
 builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 #endregion
