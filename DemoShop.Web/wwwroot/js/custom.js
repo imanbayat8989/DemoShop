@@ -1,4 +1,17 @@
-﻿function ShowMessage(title, text, theme) {
+﻿function open_waiting(selector = 'body') {
+    $(selector).waitMe({
+        effect: 'facebook',
+        text: 'لطفا صبر کنید ...',
+        bg: 'rgba(255,255,255,0.7)',
+        color: '#000'
+    });
+}
+
+function close_waiting(selector = 'body') {
+    $(selector).waitMe('hide');
+}
+
+function ShowMessage(title, text, theme) {
     window.createNotification({
         closeOnClick: true,
         displayCloseButton: false,
@@ -218,8 +231,13 @@ function onSuccessAddProductToOrder(res) {
     } else {
         ShowMessage('اعلان', res.message, 'warning');
     }
+
+    setTimeout(function () {
+        close_waiting();
+    }, 3000);
 }
 
 $('#submitOrderForm').on('click', function () {
     $('#addProductToOrderForm').submit();
+    open_waiting();
 });
