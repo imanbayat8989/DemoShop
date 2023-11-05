@@ -1,4 +1,5 @@
-﻿using DemoShop.DataLayer.Entities.Orders;
+﻿using DemoShop.DataLayer.DTO.Orders;
+using DemoShop.DataLayer.Entities.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace DemoShop.Application.Interface
 
         Task<long> AddOrderForUser(long userId);
         Task<Order> GetUserLatestOpenOrder(long userId);
+
+        #endregion
+
+        #region order detail
+
+        Task AddProductToOpenOrder(long userId, AddProductToOrderDTO order);
 
         #endregion
     }
