@@ -412,6 +412,8 @@ namespace DemoShop.Application.Implementation
 
             if (product == null) return null;
 
+            var selectedCategoriesIds = product.ProductSelectedCategories.Select(f => f.ProductCategoryId).ToList();
+
             return new ProductDetailDTO
             {
                 Price = product.Price,
@@ -424,7 +426,11 @@ namespace DemoShop.Application.Implementation
                 Title = product.Title,
                 ProductColors = product.ProductColors.ToList(),
                 SellerId = product.SellerId,
-                ProductFeatures = product.ProductFeatures.ToList()
+                ProductFeatures = product.ProductFeatures.ToList(),
+                RelatedProducts = await _productRepository.GetQuery()
+                    .Include(s => s.ProductSelectedCategories)
+                    .Where(s => s.ProductSelectedCategories.Any(f => selectedCategoriesIds.Contains(f.ProductCategoryId)) && s.Id != productId && s.ProductAcceptanceState == ProductAcceptanceState.Accepted)
+                    .ToListAsync()
             };
         }
 
