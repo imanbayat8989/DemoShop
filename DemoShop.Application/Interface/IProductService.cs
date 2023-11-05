@@ -49,7 +49,7 @@ namespace DemoShop.Application.Interface
 
         #region product feature
 
-        Task CreateProductFeatures(List<CreateProductFeatureDTO> features);
+        Task CreateProductFeatures(long productId, List<CreateProductFeatureDTO> features);
         Task RemoveAllProductFeatures(long productId);
 
         #endregion

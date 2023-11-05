@@ -128,7 +128,14 @@ namespace DemoShop.Application.Implementation
                     .Where(s => !s.IsDeleted && s.ProductId == productId)
                     .Select(s => new CreateProductColorDTO { Price = s.Price, ColorName = s.ColorName, ColorCode = s.ColorCode }).ToListAsync(),
                 SelectedCategories = await _productSelectedCategoryRepository.GetQuery().AsQueryable()
-                    .Where(s => s.ProductId == productId).Select(s => s.ProductCategoryId).ToListAsync()
+                    .Where(s => s.ProductId == productId).Select(s => s.ProductCategoryId).ToListAsync(),
+                ProductFeatures = await _productFeatureRepository.GetQuery().AsQueryable()
+                    .Where(s => !s.IsDeleted && s.ProductId == productId)
+                    .Select(f => new CreateProductFeatureDTO
+                    {
+                        FeatureValue = f.FeatureValue,
+                        Feature = f.FeatureTitle
+                    }).ToListAsync()
             };
         }
 
@@ -165,6 +172,8 @@ namespace DemoShop.Application.Implementation
             await _productSelectedCategoryRepository.SaveChanges();
             await RemoveAllProductSelectedColors(product.Id);
             await AddProductSelectedColors(product.Id, product.ProductColors);
+            await RemoveAllProductFeatures(product.Id);
+            await CreateProductFeatures(product.Id, product.ProductFeatures);
             await _productColorRepository.SaveChanges();
 
             return EditProductResult.Success;
@@ -449,7 +458,7 @@ namespace DemoShop.Application.Implementation
 
         #region product feature
 
-        public async Task CreateProductFeatures(List<CreateProductFeatureDTO> features)
+        public async Task CreateProductFeatures(long productId, List<CreateProductFeatureDTO> features)
         {
             var newFeatures = new List<ProductFeature>();
             if (features != null && features.Any())
@@ -458,8 +467,8 @@ namespace DemoShop.Application.Implementation
                 {
                     newFeatures.Add(new ProductFeature()
                     {
-                        ProductId = feature.ProductId,
-                        FeatureTitle = feature.FeatureTitle,
+                        ProductId = productId,
+                        FeatureTitle = feature.Feature,
                         FeatureValue = feature.FeatureValue
                     });
                 }

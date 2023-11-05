@@ -138,8 +138,8 @@ $('#add_feature_button').on('click',
 
             var isExistsSelectedColor = $('[feature-hidden-input][value="' + feature + '"]');
             if (isExistsSelectedColor.length === 0) {
-                var featureNode = `<input type="hidden" value="${feature}"  name="ProductFeatures[${index}].ColorName" feature-hidden-input="${feature}-${featureValue}">`;
-                var featureValueNode = `<input type="hidden" value="${featureValue}"  name="ProductFeatures[${index}].Price" feature-hidden-input="${feature}-${featureValue}" >`;
+                var featureNode = `<input type="hidden" value="${feature}"  name="ProductFeatures[${index}].Feature" feature-hidden-input="${feature}-${featureValue}">`;
+                var featureValueNode = `<input type="hidden" value="${featureValue}"  name="ProductFeatures[${index}].FeatureValue" feature-value-hidden-input="${feature}-${featureValue}" >`;
                 $('#create_product_form').append(featureNode);
                 $('#create_product_form').append(featureValueNode);
 
@@ -151,7 +151,7 @@ $('#add_feature_button').on('click',
                 $('#product_feature_value_input').val('');
             } else {
                 ShowMessage('اخطار', 'ویژگی وارد شده تکراری می باشد', 'warning');
-                $('#product_color_name_input').val('').focus();
+                $('#product_feature_input').val('').focus();
             }
         } else {
             ShowMessage('اخطار', 'لطفا نام ویژگی و مقدار آن را به درستی وارد نمایید', 'warning');
@@ -165,9 +165,8 @@ function removeProductFeature(index) {
     $('[feature-hidden-input="' + index + '"]').remove();
     $('[feature-value-hidden-input="' + index + '"]').remove();
     $('[feature-table-item="' + index + '"]').remove();
+    reOrderProductFeatureHiddenInputs();
 }
-
-
 
 
 function removeProductColor(index) {
@@ -191,6 +190,22 @@ function reOrderProductColorHiddenInputs() {
         $(hiddenCode).attr('name', 'ProductColors[' + index + '].ColorCode');
     });
 }
+
+
+function reOrderProductFeatureHiddenInputs() {
+    var hiddenFeatures = $('[feature-hidden-input]');
+    $.each(hiddenFeatures, function (index, value) {
+        var hiddenFeature = $(value);
+        var featureId = $(value).attr('feature-hidden-input');
+        var featureValue = $('[feature-value-hidden-input="' + featureId + '"]');
+        $(hiddenFeature).attr('name', 'ProductFeatures[' + index + '].Feature');
+        $(featureValue).attr('name', 'ProductFeatures[' + index + '].FeatureValue');
+        console.log(hiddenFeature);
+        console.log(featureValue);
+    });
+}
+
+
 
 
 $('#OrderBy').on('change', function () {

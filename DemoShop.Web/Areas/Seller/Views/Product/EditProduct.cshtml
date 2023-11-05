@@ -54,6 +54,18 @@
                                                     index += 1;
                                                 }
                                             }
+
+                                            @if (Model.ProductFeatures != null && Model.ProductFeatures.Any())
+                                            {
+                                                var index = 0;
+                                                foreach (var feature in Model.ProductFeatures)
+                                                {
+                                                    <input type="hidden" value="@feature.Feature" name="ProductFeatures[@index].Feature" color-name-hidden-input="@feature.Feature-@feature.FeatureValue">
+                                                    <input type="hidden" value="@feature.FeatureValue" name="ProductFeatures[@index].FeatureValue" color-code-hidden-input="@feature.Feature-@feature.FeatureValue">
+                                                    index += 1;
+                                                }
+                                            }
+
                                             <label>نام محصول</label>
                                             <input asp-for="Title">
                                             <span class="text-danger" asp-validation-for="Title"></span>
@@ -175,6 +187,17 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="list_of_product_features">
+                                                        @if (Model.ProductFeatures != null && Model.ProductFeatures.Any())
+                                                        {
+                                                            foreach (var feature in Model.ProductFeatures)
+                                                            {
+                                                                <tr color-table-item="@feature.Feature-@feature.FeatureValue">
+                                                                    <td> @feature.Feature </td>
+                                                                    <td> @feature.FeatureValue </td>
+                                                                    <td> <a class="btn btn-danger text-white" onclick="removeProductColor('@feature.Feature-@feature.FeatureValue')">حذف</a> </td>
+                                                                </tr>
+                                                            }
+                                                        }
                                                     </tbody>
                                                 </table>
                                             </div>
