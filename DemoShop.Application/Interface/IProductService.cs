@@ -46,6 +46,13 @@ namespace DemoShop.Application.Interface
         Task<List<ProductCategory>> GetAllActiveProductCategories();
 
         #endregion
+
+        #region product feature
+
+        Task CreateProductFeatures(List<CreateProductFeatureDTO> features);
+        Task RemoveAllProductFeatures(long productId);
+
+        #endregion
     }
 }
 

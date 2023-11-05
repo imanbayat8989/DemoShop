@@ -26,14 +26,16 @@ namespace DemoShop.Application.Implementation
         private readonly IGenericRepository<ProductSelectedCategory> _productSelectedCategoryRepository;
         private readonly IGenericRepository<ProductColor> _productColorRepository;
         private readonly IGenericRepository<ProductGallery> _productGalleryRepository;
+        private readonly IGenericRepository<ProductFeature> _productFeatureRepository;
 
-        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository)
+        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductFeature> productFeatureRepository)
         {
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
             _productSelectedCategoryRepository = productSelectedCategoryRepository;
             _productColorRepository = productColorRepository;
             _productGalleryRepository = productGalleryRepository;
+            _productFeatureRepository = productFeatureRepository;
         }
 
         #endregion
@@ -445,6 +447,40 @@ namespace DemoShop.Application.Implementation
 
         #endregion
 
+        #region product feature
+
+        public async Task CreateProductFeatures(List<CreateProductFeatureDTO> features)
+        {
+            var newFeatures = new List<ProductFeature>();
+            if (features != null && features.Any())
+            {
+                foreach (var feature in features)
+                {
+                    newFeatures.Add(new ProductFeature()
+                    {
+                        ProductId = feature.ProductId,
+                        FeatureTitle = feature.FeatureTitle,
+                        FeatureValue = feature.FeatureValue
+                    });
+                }
+
+                await _productFeatureRepository.AddRangeEntities(newFeatures);
+                await _productFeatureRepository.SaveChanges();
+            }
+        }
+
+        public async Task RemoveAllProductFeatures(long productId)
+        {
+            var productFeatures = await _productFeatureRepository.GetQuery()
+                .Where(s => s.ProductId == productId)
+                .ToListAsync();
+
+            _productFeatureRepository.DeletePermanentEntities(productFeatures);
+            await _productFeatureRepository.SaveChanges();
+        }
+
+        #endregion
+
         #region dispose
 
         public async ValueTask DisposeAsync()
@@ -452,6 +488,9 @@ namespace DemoShop.Application.Implementation
             await _productCategoryRepository.DisposeAsync();
             await _productRepository.DisposeAsync();
             await _productSelectedCategoryRepository.DisposeAsync();
+            await _productFeatureRepository.DisposeAsync();
+            await _productSelectedCategoryRepository.DisposeAsync();
+            await _productColorRepository.DisposeAsync();
         }
 
 

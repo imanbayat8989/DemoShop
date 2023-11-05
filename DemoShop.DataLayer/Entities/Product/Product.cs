@@ -1,4 +1,5 @@
-﻿using DemoShop.DataLayer.Entities.common;
+﻿using DemoShop.DataLayer.DTO.Products;
+using DemoShop.DataLayer.Entities.common;
 using DemoShop.DataLayer.Entities.Store;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,7 @@ namespace DemoShop.DataLayer.Entities.Product
         public ICollection<ProductColor> ProductColors { get; set; }
         public ICollection<ProductGallery> ProductGalleries { get; set; }
         public Seller Seller { get; set; }
+        public ICollection<ProductFeature> ProductFeatures { get; set; }
 
         #endregion
     }
