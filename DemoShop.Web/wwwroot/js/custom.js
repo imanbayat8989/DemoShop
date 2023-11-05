@@ -81,6 +81,15 @@ $("[main_category_checkbox]").on('change',
     });
 
 
+
+
+
+
+
+
+
+
+
 $('#add_color_button').on('click',
     function (e) {
         e.preventDefault();
@@ -116,6 +125,50 @@ $('#add_color_button').on('click',
         }
     }
 );
+
+
+$('#add_feature_button').on('click',
+    function (e) {
+        e.preventDefault();
+        var feature = $('#product_feature_input').val();
+        var featureValue = $('#product_feature_value_input').val();
+        if (feature !== '' && featureValue !== '') {
+            var currentFeaturesCount = $('#list_of_product_features tr');
+            var index = currentFeaturesCount.length;
+
+            var isExistsSelectedColor = $('[feature-hidden-input][value="' + feature + '"]');
+            if (isExistsSelectedColor.length === 0) {
+                var featureNode = `<input type="hidden" value="${feature}"  name="ProductFeatures[${index}].ColorName" feature-hidden-input="${feature}-${featureValue}">`;
+                var featureValueNode = `<input type="hidden" value="${featureValue}"  name="ProductFeatures[${index}].Price" feature-hidden-input="${feature}-${featureValue}" >`;
+                $('#create_product_form').append(featureNode);
+                $('#create_product_form').append(featureValueNode);
+
+                var featureTableNode = `<tr feature-table-item="${feature}-${featureValue}"> <td> ${feature} </td>  <td> ${featureValue} </td>  <td> <a class="btn btn-danger text-white" onclick="removeProductFeature('${feature}-${featureValue}')">حذف</a> </td>  </tr>`;
+                $('#list_of_product_features').append(featureTableNode);
+
+
+                $('#product_feature_input').val('');
+                $('#product_feature_value_input').val('');
+            } else {
+                ShowMessage('اخطار', 'ویژگی وارد شده تکراری می باشد', 'warning');
+                $('#product_color_name_input').val('').focus();
+            }
+        } else {
+            ShowMessage('اخطار', 'لطفا نام ویژگی و مقدار آن را به درستی وارد نمایید', 'warning');
+        }
+    }
+);
+
+
+function removeProductFeature(index) {
+    console.log(index);
+    $('[feature-hidden-input="' + index + '"]').remove();
+    $('[feature-value-hidden-input="' + index + '"]').remove();
+    $('[feature-table-item="' + index + '"]').remove();
+}
+
+
+
 
 function removeProductColor(index) {
     $('[color-name-hidden-input="' + index + '"]').remove();

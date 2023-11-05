@@ -90,7 +90,7 @@ namespace DemoShop.Web.Areas.Seller.Controllers
         [HttpPost("edit-product/{productId}"), ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProduct(EditProductDTO product, IFormFile productImage)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 var res = await _productService.EditSellerProduct(product, User.GetUserId(), productImage);
 
