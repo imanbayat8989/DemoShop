@@ -1,5 +1,6 @@
 ﻿using DemoShop.DataLayer.DTO.Products;
 using DemoShop.DataLayer.Entities.common;
+using DemoShop.DataLayer.Entities.Orders;
 using DemoShop.DataLayer.Entities.Store;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Xml.Linq;
 
 namespace DemoShop.DataLayer.Entities.Product
 {
-    public class Product : BaseEntities
+    public class TProducts : BaseEntities
     {
         #region properties
 
@@ -57,6 +58,7 @@ namespace DemoShop.DataLayer.Entities.Product
         public ICollection<ProductGallery> ProductGalleries { get; set; }
         public Seller Seller { get; set; }
         public ICollection<ProductFeature> ProductFeatures { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
 
         #endregion
     }

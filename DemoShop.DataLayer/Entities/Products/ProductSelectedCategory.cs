@@ -19,7 +19,7 @@ namespace DemoShop.DataLayer.Entities.Product
 
         #region relations
 
-        public Product Product { get; set; }
+        public TProducts Product { get; set; }
 
         public ProductCategory ProductCategory { get; set; }
 

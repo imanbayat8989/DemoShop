@@ -30,7 +30,7 @@ namespace DemoShop.Application.Interface
         #region product gallery
 
         Task<List<ProductGallery>> GetAllProductGalleries(long productId);
-        Task<Product> GetProductBySellerOwnerId(long productId, long userId);
+        Task<TProducts> GetProductBySellerOwnerId(long productId, long userId);
         Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long sellerId);
         Task<CreateOrEditProductGalleryResult> CreateProductGallery(CreateOrEditProductGalleryDTO gallery, long productId, long sellerId);
         Task<CreateOrEditProductGalleryDTO> GetProductGalleryForEdit(long galleryId, long sellerId);

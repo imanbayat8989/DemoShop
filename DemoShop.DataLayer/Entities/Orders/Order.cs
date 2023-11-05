@@ -1,5 +1,4 @@
 ﻿using DemoShop.DataLayer.Entities.common;
-using DemoShop.DataLayer.Entities.Product;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,29 +7,32 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DemoShop.DataLayer.DTO.Products
+namespace DemoShop.DataLayer.Entities.Orders
 {
-    public class ProductFeature : BaseEntities
+    public class Order : BaseEntities
     {
         #region properties
 
-        public long ProductId { get; set; }
+        public long UserId { get; set; }
 
-        [Display(Name = "عنوان ویژگی")]
+        public DateTime? PaymentDate { get; set; }
+
+        public bool IsPaid { get; set; }
+
+        [Display(Name = "کد پیگیری")]
         [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
         [MaxLength(300, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
-        public string FeatureTitle { get; set; }
+        public string TracingCode { get; set; }
 
-        [Display(Name = "مقدار ویژگی")]
+        [Display(Name = "کد پیگیری")]
         [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
-        [MaxLength(300, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
-        public string FeatureValue { get; set; }
+        public string Description { get; set; }
 
         #endregion
 
         #region relations
 
-        public TProducts Product { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
 
         #endregion
     }

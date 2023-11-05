@@ -45,6 +45,6 @@ namespace DemoShop.DataLayer.DTO.Products
 
         public List<ProductFeature> ProductFeatures { get; set; }
 
-        public List<Product> RelatedProducts { get; set; }
+        public List<TProducts> RelatedProducts { get; set; }
     }
 }

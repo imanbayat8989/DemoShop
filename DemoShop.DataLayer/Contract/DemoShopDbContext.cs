@@ -1,6 +1,7 @@
 ﻿using DemoShop.DataLayer.DTO.Products;
 using DemoShop.DataLayer.Entities.Account;
 using DemoShop.DataLayer.Entities.Contacts;
+using DemoShop.DataLayer.Entities.Orders;
 using DemoShop.DataLayer.Entities.Product;
 using DemoShop.DataLayer.Entities.Site;
 using DemoShop.DataLayer.Entities.Store;
@@ -48,7 +49,7 @@ namespace DemoShop.DataLayer.Contract
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<TProducts> Products { get; set; }
 
         public DbSet<ProductGallery> ProductGalleries { get; set; }
 
@@ -57,6 +58,14 @@ namespace DemoShop.DataLayer.Contract
         public DbSet<ProductColor> ProductColors { get; set; }
 
         public DbSet<ProductFeature> ProductFeatures { get; set; }
+
+        #endregion
+
+        #region order
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         #endregion
 
