@@ -46,6 +46,9 @@ namespace DemoShop.Application.Implementation
 
             var userOpenOrder = await _orderRepository.GetQuery()
                 .Include(s => s.OrderDetails)
+                .ThenInclude(s => s.ProductColor)
+                .Include(s => s.OrderDetails)
+                .ThenInclude(s => s.Productse)
                 .SingleOrDefaultAsync(s => s.UserId == userId && !s.IsPaid);
 
             return userOpenOrder;

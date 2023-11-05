@@ -1,0 +1,67 @@
+﻿@using DemoShop.Application.Utils
+@model DemoShop.DataLayer.Entities.Orders.Order
+
+@{
+    var totalPrice = 0;
+    if (Model.OrderDetails != null && Model.OrderDetails.Any())
+    {
+        foreach (var detail in Model.OrderDetails)
+        {
+            totalPrice += detail.Count * (detail.Productse.Price + detail.ProductColor.Price);
+        }
+    }
+}
+
+<div class="middel_right_info">
+    <div class="header_wishlist">
+        <a href="wishlist.html"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+        <span class="wishlist_quantity">3</span>
+    </div>
+    <div class="mini_cart_wrapper">
+        <a href="javascript:void(0)"><i class="fa fa-shopping-bag" aria-hidden="true"></i> <i class="fa fa-angle-down"></i></a>
+        <span class="cart_quantity">@Model.OrderDetails.Count</span>
+        <!--mini cart-->
+        <div class="mini_cart">
+            <div class="cart_items_container">
+                @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                {
+                    foreach (var detail in Model.OrderDetails)
+                    {
+                        <div class="cart_item">
+                            <div class="cart_img">
+                                <a asp-controller="Product" asp-action="ProductDetail" asp-route-productId="@detail.ProductId" asp-route-title="@detail.Productse.Title"><img src="@(PathExtensions.ProductThumbnailImage + detail.Productse.ImageName)" alt=""></a>
+                            </div>
+                            <div class="cart_info">
+                                <a asp-controller="Product" asp-action="ProductDetail" asp-route-productId="@detail.ProductId" asp-route-title="@detail.Productse.Title">
+                                    @detail.Productse.Title - @detail.ProductColor.ColorName
+                                </a>
+                                <p>تعداد: @detail.Count × <span> @((detail.Productse.Price + detail.ProductColor?.Price)?.ToString("#,0")) تومان </span></p>
+                            </div>
+                            <div class="cart_remove">
+                                <a href="#"><i class="ion-android-close"></i></a>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="mini_cart_table">
+                <div class="cart_total mt-10">
+                    <span>جمع کل:</span>
+                    <span class="price">@totalPrice.ToString("#,0") تومان </span>
+                </div>
+            </div>
+
+            <div class="mini_cart_footer">
+                <div class="cart_button">
+                    <a href="cart.html">مشاهده سبد</a>
+                </div>
+                <div class="cart_button">
+                    <a href="checkout.html">پرداخت</a>
+                </div>
+
+            </div>
+
+        </div>
+        <!--mini cart end-->
+    </div>
+</div>

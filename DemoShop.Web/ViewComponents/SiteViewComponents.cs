@@ -1,4 +1,5 @@
 ﻿using DemoShop.Application.Interface;
+using DemoShop.Web.PresentationExtensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoShop.Web.ViewComponents
@@ -71,6 +72,26 @@ namespace DemoShop.Web.ViewComponents
         {
             var sliders = await _siteService.GetAllActiveSliders();
             return View("HomeSlider", sliders);
+        }
+    }
+
+    #endregion
+
+    #region user order
+
+    public class UserOrderViewComponent : ViewComponent
+    {
+        private readonly IOrderService _orderService;
+
+        public UserOrderViewComponent(IOrderService orderService)
+        {
+            _orderService = orderService;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var openOrder = await _orderService.GetUserLatestOpenOrder(User.GetUserId());
+            return View("UserOrder", openOrder);
         }
     }
 

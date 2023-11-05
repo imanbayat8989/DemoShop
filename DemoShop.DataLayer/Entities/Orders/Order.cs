@@ -24,7 +24,7 @@ namespace DemoShop.DataLayer.Entities.Orders
         public string TracingCode { get; set; }
 
         [Display(Name = "کد پیگیری")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         #endregion
 
