@@ -54,6 +54,23 @@ namespace DemoShop.Application.Implementation
             return userOpenOrder;
         }
 
+        public async Task<int> GetTotalOrderPriceForPayment(long userId)
+        {
+            var userOpenOrder = await GetUserLatestOpenOrder(userId);
+            int totalPrice = 0;
+
+            foreach (var detail in userOpenOrder.OrderDetails)
+            {
+                var oneProductPrice = detail.ProductColor != null
+                    ? detail.Product.Price + detail.ProductColor.Price
+                    : detail.Product.Price;
+
+                totalPrice += detail.Count * oneProductPrice;
+            }
+
+            return totalPrice;
+        }
+
         #endregion
 
         #region order detail

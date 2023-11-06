@@ -41,13 +41,16 @@ namespace DemoShop.DataLayer.Entities.Products
         public string Description { get; set; }
 
         [Display(Name = "پیام تایید/عدم تایید")]
-        public string? ProductAcceptOrRejectDescription { get; set; }
+        public string ProductAcceptOrRejectDescription { get; set; }
 
         [Display(Name = "فعال / غیرفعال")]
         public bool IsActive { get; set; }
 
         [Display(Name = "وضعیت")]
         public ProductAcceptanceState ProductAcceptanceState { get; set; }
+
+        [Display(Name = "درصد سایت")]
+        public int SiteProfit { get; set; }
 
         #endregion
 
