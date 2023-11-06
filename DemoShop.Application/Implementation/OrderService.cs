@@ -63,7 +63,7 @@ namespace DemoShop.Application.Implementation
             var openOrder = await GetUserLatestOpenOrder(userId);
 
             var similarOrder = openOrder.OrderDetails.SingleOrDefault(s =>
-                s.ProductId == order.ProductId && s.ProductColorId == order.ProductColorId);
+                s.ProductId == order.ProductColorId && s.ProductColorId == order.ProductColorId);
 
             if (similarOrder == null)
             {
