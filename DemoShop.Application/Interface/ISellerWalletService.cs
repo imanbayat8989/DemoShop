@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DemoShop.DataLayer.DTO.SellerWallet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
