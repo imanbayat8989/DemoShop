@@ -49,6 +49,7 @@ namespace DemoShop.Application.Implementation
                 .SingleOrDefaultAsync(s => s.UserId == userId && !s.IsPaid);
 
             return userOpenOrder;
+
         }
 
         #endregion
