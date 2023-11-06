@@ -85,6 +85,28 @@ namespace DemoShop.Application.Implementation
             }
         }
 
+        public async Task<UserOpenOrderDTO> GetUserOpenOrderDetail(long userId)
+        {
+            var userOpenOrder = await GetUserLatestOpenOrder(userId);
+
+            return new UserOpenOrderDTO
+            {
+                UserId = userId,
+                Description = userOpenOrder.Description,
+                Details = userOpenOrder.OrderDetails.Select(s => new UserOpenOrderDetailItemDTO
+                {
+                    Count = s.Count,
+                    ColorName = s.ProductColor?.ColorName,
+                    ProductColorId = s.ProductColorId,
+                    ProductColorPrice = s.ProductColor?.Price ?? 0,
+                    ProductId = s.ProductId,
+                    ProductPrice = s.Product.Price,
+                    ProductTitle = s.Product.Title,
+                    ProductImageName = s.Product.ImageName
+                }).ToList()
+            };
+        }
+
         #endregion
 
         #region dispose

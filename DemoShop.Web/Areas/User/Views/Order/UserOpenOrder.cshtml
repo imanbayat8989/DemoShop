@@ -1,5 +1,5 @@
 ﻿@using DemoShop.Application.Utils
-@model DemoShop.DataLayer.Entities.ProductOrder.Order
+@model DemoShop.DataLayer.DTO.Orders.UserOpenOrderDTO
 @{
     ViewData["Title"] = "سبد خرید";
 }
@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="table_desc">
                         <div class="cart_page table-responsive">
-                            @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                            @if (Model.Details != null && Model.Details.Any())
                             {
                                 <table>
                                     <thead>
@@ -40,20 +40,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var detail in Model.OrderDetails)
+                                        @foreach (var detail in Model.Details)
                                         {
                                             <tr>
                                                 <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
                                                 <td class="product_thumb">
-                                                    <a href="#"><img src="@(PathExtensions.ProductThumbnailImage + detail.Product.ImageName)" alt=""></a>
+                                                    <a href="#"><img src="@(PathExtensions.ProductThumbnailImage + detail.ProductImageName)" alt=""></a>
                                                 </td>
-                                                <td class="product_name"><a href="#">@detail.Product.Title</a></td>
-                                                <td class="product-price">@detail.Product.Price.ToString("#,0") تومان</td>
+                                                <td class="product_name"><a href="#">@detail.ProductTitle</a></td>
+                                                <td class="product-price">@((detail.ProductPrice + detail.ProductColorPrice).ToString("#,0")) تومان</td>
                                                 <td class="product_quantity">
                                                     <label>تعداد</label>
                                                     <input min="1" value="@detail.Count" type="number">
                                                 </td>
-                                                <td class="product_total">@(detail.Count * detail.Product.Price) تومان</td>
+                                                <td class="product_total">@(detail.Count * ((detail.ProductPrice + detail.ProductColorPrice))) تومان</td>
 
                                             </tr>
                                         }
@@ -87,7 +87,7 @@
                             <div class="coupon_inner">
                                 <div class="cart_subtotal">
                                     <p>جمع اجزا</p>
-                                    <p class="cart_amount">@Model.OrderDetails?.Sum(s => s.Count * s.Product.Price).ToString("#,0") تومان</p>
+                                    <p class="cart_amount">@Model.GetTotalPrice().ToString("#,0") تومان</p>
                                 </div>
                                 <div class="cart_subtotal ">
                                     <p>تخفیف</p>
@@ -97,7 +97,7 @@
 
                                 <div class="cart_subtotal has-border">
                                     <p>جمع کل</p>
-                                    <p class="cart_amount">@Model.OrderDetails?.Sum(s => s.Count * s.Product.Price).ToString("#,0") تومان</p>
+                                    <p class="cart_amount">@Model.GetTotalPrice().ToString("#,0") تومان</p>
                                 </div>
                                 <div class="checkout_btn">
                                     <a href="#">پرداخت</a>
