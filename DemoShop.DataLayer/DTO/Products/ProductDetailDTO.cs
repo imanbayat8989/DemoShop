@@ -1,4 +1,4 @@
-﻿using DemoShop.DataLayer.Entities.Product;
+﻿using DemoShop.DataLayer.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -47,6 +47,6 @@ namespace DemoShop.DataLayer.DTO.Products
 
         public List<ProductFeature> ProductFeatures { get; set; }
 
-        public List<TProducts> RelatedProducts { get; set; }
+        public List<Entities.Products.Product> RelatedProducts { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using DemoShop.DataLayer.DTO.Paging;
-using DemoShop.DataLayer.Entities.Product;
+using DemoShop.DataLayer.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -43,7 +43,7 @@ namespace DemoShop.DataLayer.DTO.Products
 
         public FilterProductOrderBy OrderBy { get; set; }
 
-        public List<TProducts> Products { get; set; }
+        public List<Entities.Products.Product> Products { get; set; }
 
         public List<long> SelectedProductCategories { get; set; }
 
@@ -51,7 +51,7 @@ namespace DemoShop.DataLayer.DTO.Products
 
         #region methods
 
-        public FilterProductDTO SetProducts(List<TProducts> products)
+        public FilterProductDTO SetProducts(List<Entities.Products.Product> products)
         {
             this.Products = products;
             return this;

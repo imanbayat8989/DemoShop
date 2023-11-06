@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DemoShop.DataLayer.Entities.Product
+namespace DemoShop.DataLayer.Entities.Products
 {
     public class ProductSelectedCategory : BaseEntities
     {
@@ -19,7 +19,7 @@ namespace DemoShop.DataLayer.Entities.Product
 
         #region relations
 
-        public TProducts Product { get; set; }
+        public Product Product { get; set; }
 
         public ProductCategory ProductCategory { get; set; }
 

@@ -264,7 +264,7 @@ namespace DemoShop.DataLayer.Migrations
                     b.ToTable("TicketMessages");
                 });
 
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Orders.Order", b =>
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.ProductOrder.Order", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -276,7 +276,6 @@ namespace DemoShop.DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -292,7 +291,6 @@ namespace DemoShop.DataLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TracingCode")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
@@ -304,7 +302,7 @@ namespace DemoShop.DataLayer.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Orders.OrderDetail", b =>
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.ProductOrder.OrderDetail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -339,168 +337,18 @@ namespace DemoShop.DataLayer.Migrations
                     b.Property<int>("ProductPrice")
                         .HasColumnType("int");
 
-                    b.Property<long>("ProductseId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductColorId");
 
-                    b.HasIndex("ProductseId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductCategory", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("ParentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("UrlName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("ProductCategories");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductColor", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("ColorCode")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("ColorName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductColors");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductGallery", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DisplayPriority")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageName")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductGalleries");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductSelectedCategory", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ProductCategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductCategoryId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductSelectedCategories");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.TProducts", b =>
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.Product", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -556,6 +404,153 @@ namespace DemoShop.DataLayer.Migrations
                     b.HasIndex("SellerId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UrlName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("ProductCategories");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductColor", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("ColorCode")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ColorName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductColors");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductGallery", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DisplayPriority")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductGalleries");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductSelectedCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ProductCategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductCategoryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductSelectedCategories");
                 });
 
             modelBuilder.Entity("DemoShop.DataLayer.Entities.Site.SiteBanner", b =>
@@ -765,7 +760,7 @@ namespace DemoShop.DataLayer.Migrations
 
             modelBuilder.Entity("DemoShop.DataLayer.DTO.Products.ProductFeature", b =>
                 {
-                    b.HasOne("DemoShop.DataLayer.Entities.Product.TProducts", "Product")
+                    b.HasOne("DemoShop.DataLayer.Entities.Products.Product", "Product")
                         .WithMany("ProductFeatures")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -814,84 +809,33 @@ namespace DemoShop.DataLayer.Migrations
                     b.Navigation("Ticket");
                 });
 
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Orders.OrderDetail", b =>
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.ProductOrder.OrderDetail", b =>
                 {
-                    b.HasOne("DemoShop.DataLayer.Entities.Orders.Order", "Order")
+                    b.HasOne("DemoShop.DataLayer.Entities.ProductOrder.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DemoShop.DataLayer.Entities.Product.ProductColor", "ProductColor")
+                    b.HasOne("DemoShop.DataLayer.Entities.Products.ProductColor", "ProductColor")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductColorId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("DemoShop.DataLayer.Entities.Product.TProducts", "Productse")
+                    b.HasOne("DemoShop.DataLayer.Entities.Products.Product", "Product")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("ProductseId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");
 
+                    b.Navigation("Product");
+
                     b.Navigation("ProductColor");
-
-                    b.Navigation("Productse");
                 });
 
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductCategory", b =>
-                {
-                    b.HasOne("DemoShop.DataLayer.Entities.Product.ProductCategory", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductColor", b =>
-                {
-                    b.HasOne("DemoShop.DataLayer.Entities.Product.TProducts", "Product")
-                        .WithMany("ProductColors")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductGallery", b =>
-                {
-                    b.HasOne("DemoShop.DataLayer.Entities.Product.TProducts", "Product")
-                        .WithMany("ProductGalleries")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductSelectedCategory", b =>
-                {
-                    b.HasOne("DemoShop.DataLayer.Entities.Product.ProductCategory", "ProductCategory")
-                        .WithMany("ProductSelectedCategories")
-                        .HasForeignKey("ProductCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DemoShop.DataLayer.Entities.Product.TProducts", "Product")
-                        .WithMany("ProductSelectedCategories")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ProductCategory");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.TProducts", b =>
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.Product", b =>
                 {
                     b.HasOne("DemoShop.DataLayer.Entities.Store.Seller", "Seller")
                         .WithMany()
@@ -900,6 +844,57 @@ namespace DemoShop.DataLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductCategory", b =>
+                {
+                    b.HasOne("DemoShop.DataLayer.Entities.Products.ProductCategory", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductColor", b =>
+                {
+                    b.HasOne("DemoShop.DataLayer.Entities.Products.Product", "Product")
+                        .WithMany("ProductColors")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductGallery", b =>
+                {
+                    b.HasOne("DemoShop.DataLayer.Entities.Products.Product", "Product")
+                        .WithMany("ProductGalleries")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductSelectedCategory", b =>
+                {
+                    b.HasOne("DemoShop.DataLayer.Entities.Products.ProductCategory", "ProductCategory")
+                        .WithMany("ProductSelectedCategories")
+                        .HasForeignKey("ProductCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DemoShop.DataLayer.Entities.Products.Product", "Product")
+                        .WithMany("ProductSelectedCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductCategory");
                 });
 
             modelBuilder.Entity("DemoShop.DataLayer.Entities.Store.Seller", b =>
@@ -929,22 +924,12 @@ namespace DemoShop.DataLayer.Migrations
                     b.Navigation("TicketMessages");
                 });
 
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Orders.Order", b =>
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.ProductOrder.Order", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductCategory", b =>
-                {
-                    b.Navigation("ProductSelectedCategories");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.ProductColor", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("DemoShop.DataLayer.Entities.Product.TProducts", b =>
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.Product", b =>
                 {
                     b.Navigation("OrderDetails");
 
@@ -955,6 +940,16 @@ namespace DemoShop.DataLayer.Migrations
                     b.Navigation("ProductGalleries");
 
                     b.Navigation("ProductSelectedCategories");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductCategory", b =>
+                {
+                    b.Navigation("ProductSelectedCategories");
+                });
+
+            modelBuilder.Entity("DemoShop.DataLayer.Entities.Products.ProductColor", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

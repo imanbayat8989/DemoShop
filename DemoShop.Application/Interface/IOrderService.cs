@@ -1,5 +1,5 @@
 ﻿using DemoShop.DataLayer.DTO.Orders;
-using DemoShop.DataLayer.Entities.Orders;
+using DemoShop.DataLayer.Entities.ProductOrder;
 using System;
 using System.Collections.Generic;
 using System.Linq;

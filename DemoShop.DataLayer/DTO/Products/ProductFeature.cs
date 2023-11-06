@@ -1,5 +1,5 @@
 ﻿using DemoShop.DataLayer.Entities.common;
-using DemoShop.DataLayer.Entities.Product;
+using DemoShop.DataLayer.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,7 +30,7 @@ namespace DemoShop.DataLayer.DTO.Products
 
         #region relations
 
-        public TProducts Product { get; set; }
+        public Entities.Products.Product Product { get; set; }
 
         #endregion
     }

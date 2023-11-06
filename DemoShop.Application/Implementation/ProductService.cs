@@ -4,7 +4,7 @@ using DemoShop.Application.Utils;
 using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Paging;
 using DemoShop.DataLayer.DTO.Products;
-using DemoShop.DataLayer.Entities.Product;
+using DemoShop.DataLayer.Entities.Products;
 using DemoShop.DataLayer.Repository;
 
 using Microsoft.AspNetCore.Http;
@@ -21,14 +21,14 @@ namespace DemoShop.Application.Implementation
     {
         #region constructor
 
-        private readonly IGenericRepository<TProducts> _productRepository;
+        private readonly IGenericRepository<Product> _productRepository;
         private readonly IGenericRepository<ProductCategory> _productCategoryRepository;
         private readonly IGenericRepository<ProductSelectedCategory> _productSelectedCategoryRepository;
         private readonly IGenericRepository<ProductColor> _productColorRepository;
         private readonly IGenericRepository<ProductGallery> _productGalleryRepository;
         private readonly IGenericRepository<ProductFeature> _productFeatureRepository;
 
-        public ProductService(IGenericRepository<TProducts> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductFeature> productFeatureRepository)
+        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductFeature> productFeatureRepository)
         {
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
@@ -53,7 +53,7 @@ namespace DemoShop.Application.Implementation
             if (res)
             {
                 // create product
-                var newProduct = new TProducts
+                var newProduct = new Product
                 {
                     Title = product.Title,
                     Price = product.Price,
@@ -321,7 +321,7 @@ namespace DemoShop.Application.Implementation
                 .Where(s => s.ProductId == productId).ToListAsync();
         }
 
-        public async Task<TProducts> GetProductBySellerOwnerId(long productId, long userId)
+        public async Task<Product> GetProductBySellerOwnerId(long productId, long userId)
         {
             return await _productRepository.GetQuery()
                 .Include(s => s.Seller)

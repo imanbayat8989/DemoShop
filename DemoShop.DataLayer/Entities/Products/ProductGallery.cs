@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DemoShop.DataLayer.Entities.Product
+namespace DemoShop.DataLayer.Entities.Products
 {
     public class ProductGallery : BaseEntities
     {
@@ -26,7 +26,7 @@ namespace DemoShop.DataLayer.Entities.Product
 
         #region relations
 
-        public TProducts Product { get; set; }
+        public Product Product { get; set; }
 
         #endregion
     }

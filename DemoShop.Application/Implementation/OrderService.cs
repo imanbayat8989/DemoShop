@@ -1,6 +1,6 @@
 ﻿using DemoShop.Application.Interface;
 using DemoShop.DataLayer.DTO.Orders;
-using DemoShop.DataLayer.Entities.Orders;
+using DemoShop.DataLayer.Entities.ProductOrder;
 using DemoShop.DataLayer.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -46,10 +46,12 @@ namespace DemoShop.Application.Implementation
 
             var userOpenOrder = await _orderRepository.GetQuery()
                 .Include(s => s.OrderDetails)
+                .ThenInclude(s => s.ProductColor)
+                .Include(s => s.OrderDetails)
+                .ThenInclude(s => s.Product)
                 .SingleOrDefaultAsync(s => s.UserId == userId && !s.IsPaid);
 
             return userOpenOrder;
-
         }
 
         #endregion

@@ -1,5 +1,5 @@
 ﻿using DemoShop.DataLayer.Entities.common;
-using DemoShop.DataLayer.Entities.Orders;
+using DemoShop.DataLayer.Entities.ProductOrder;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DemoShop.DataLayer.Entities.Product
+namespace DemoShop.DataLayer.Entities.Products
 {
     public class ProductColor : BaseEntities
     {
@@ -32,7 +32,7 @@ namespace DemoShop.DataLayer.Entities.Product
 
         #region relations
 
-        public TProducts Product { get; set; }
+        public Product Product { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
 
         #endregion

@@ -1,6 +1,6 @@
 ﻿using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Products;
-using DemoShop.DataLayer.Entities.Product;
+using DemoShop.DataLayer.Entities.Products;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace DemoShop.Application.Interface
         #region product gallery
 
         Task<List<ProductGallery>> GetAllProductGalleries(long productId);
-        Task<TProducts> GetProductBySellerOwnerId(long productId, long userId);
+        Task<Product> GetProductBySellerOwnerId(long productId, long userId);
         Task<List<ProductGallery>> GetAllProductGalleriesInSellerPanel(long productId, long sellerId);
         Task<CreateOrEditProductGalleryResult> CreateProductGallery(CreateOrEditProductGalleryDTO gallery, long productId, long sellerId);
         Task<CreateOrEditProductGalleryDTO> GetProductGalleryForEdit(long galleryId, long sellerId);

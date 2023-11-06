@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DemoShop.DataLayer.Entities.Product
+namespace DemoShop.DataLayer.Entities.Products
 {
     public class ProductCategory : BaseEntities
     {
