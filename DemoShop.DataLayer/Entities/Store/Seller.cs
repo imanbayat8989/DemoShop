@@ -1,5 +1,6 @@
 ﻿using DemoShop.DataLayer.Entities.Account;
 using DemoShop.DataLayer.Entities.common;
+using DemoShop.DataLayer.Entities.Wallet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -51,6 +52,7 @@ namespace DemoShop.DataLayer.Entities.Store
         #region relations
 
         public User User { get; set; }
+        public ICollection<SellerWallet> SellerWallets { get; set; }
 
         #endregion
     }

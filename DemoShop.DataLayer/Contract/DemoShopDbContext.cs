@@ -5,6 +5,7 @@ using DemoShop.DataLayer.Entities.ProductOrder;
 using DemoShop.DataLayer.Entities.Products;
 using DemoShop.DataLayer.Entities.Site;
 using DemoShop.DataLayer.Entities.Store;
+using DemoShop.DataLayer.Entities.Wallet;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -66,6 +67,11 @@ namespace DemoShop.DataLayer.Contract
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        #endregion
+        #region wallet
+
+        public DbSet<SellerWallet> SellerWallets { get; set; }
 
         #endregion
 
