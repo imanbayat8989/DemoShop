@@ -14,6 +14,8 @@ namespace DemoShop.Application.Interface
 
         Task<long> AddOrderForUser(long userId);
         Task<Order> GetUserLatestOpenOrder(long userId);
+        Task<int> GetTotalOrderPriceForPayment(long userId);
+        Task PayOrderProductPriceToSeller(long userId);
 
         #endregion
 

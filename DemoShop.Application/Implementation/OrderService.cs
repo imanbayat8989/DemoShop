@@ -1,6 +1,7 @@
 ﻿using DemoShop.Application.Interface;
 using DemoShop.DataLayer.DTO.Orders;
 using DemoShop.DataLayer.Entities.ProductOrder;
+using DemoShop.DataLayer.Entities.Wallet;
 using DemoShop.DataLayer.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,11 +18,13 @@ namespace DemoShop.Application.Implementation
 
         private readonly IGenericRepository<Order> _orderRepository;
         private readonly IGenericRepository<OrderDetail> _orderDetailRepository;
+        private readonly ISellerWalletService _sellerWalletService;
 
-        public OrderService(IGenericRepository<Order> orderRepository, IGenericRepository<OrderDetail> orderDetailRepository)
+        public OrderService(IGenericRepository<Order> orderRepository, IGenericRepository<OrderDetail> orderDetailRepository, ISellerWalletService sellerWalletService)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
+            _sellerWalletService = sellerWalletService;
         }
 
         #endregion
@@ -69,6 +72,36 @@ namespace DemoShop.Application.Implementation
             }
 
             return totalPrice;
+        }
+
+        public async Task PayOrderProductPriceToSeller(long userId)
+        {
+            var openOrder = await GetUserLatestOpenOrder(userId);
+
+            foreach (var detail in openOrder.OrderDetails)
+            {
+                var productPrice = detail.Product.Price;
+                var productColorPrice = detail.ProductColor?.Price ?? 0;
+                var discount = 0;
+                var totalPrice = detail.Count * (productPrice + productColorPrice) - discount;
+
+                await _sellerWalletService.AddWallet(new SellerWallet
+                {
+                    SellerId = detail.Product.SellerId,
+                    Price = (int)Math.Ceiling(totalPrice * detail.Product.SiteProfit / (double)100),
+                    TransactionType = TransactionType.Deposit,
+                    Description = $"پرداخت مبلغ {totalPrice} تومان جهت فروش {detail.Product.Title} به تعداد {detail.Count} عدد با سهم تهیین شده ی {100 - detail.Product.SiteProfit} درصد"
+                });
+
+                detail.ProductPrice = totalPrice;
+                detail.ProductColorPrice = productColorPrice;
+                _orderDetailRepository.EditEntity(detail);
+            }
+
+            openOrder.IsPaid = true;
+            // todo: set description and tracing code in order
+            _orderRepository.EditEntity(openOrder);
+            await _orderRepository.SaveChanges();
         }
 
         #endregion

@@ -55,6 +55,12 @@ namespace DemoShop.Application.Implementation
             return filter.SetSellerWallets(wallets).SetPaging(pager);
         }
 
+        public async Task AddWallet(SellerWallet wallet)
+        {
+            await _sellerWalletRepository.AddEntity(wallet);
+            await _sellerWalletRepository.SaveChanges();
+        }
+
         #endregion
     }
 }

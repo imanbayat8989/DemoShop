@@ -1,4 +1,5 @@
 ﻿using DemoShop.DataLayer.DTO.SellerWallet;
+using DemoShop.DataLayer.Entities.Wallet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace DemoShop.Application.Interface
         #region wallet
 
         Task<FilterSellerWalletDTO> FilterSellerWallet(FilterSellerWalletDTO filter);
+        Task AddWallet(SellerWallet wallet);
 
         #endregion
     }
