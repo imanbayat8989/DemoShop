@@ -59,7 +59,7 @@
                                                 <td class="product-price">
                                                     @detail.GetOrderDetailWithDiscountPrice()
                                                 </td>
-                                                <td class="product_total">@(detail.Count * detail.ProductPrice + detail.ProductColorPrice) تومان</td>
+                                                <td class="product_total">@detail.GetTotalAmountByDiscount().ToString("#,0") تومان</td>
 
                                             </tr>
                                         }
@@ -97,16 +97,16 @@
                                 </div>
                                 <div class="cart_subtotal ">
                                     <p>تخفیف</p>
-                                    <p class="cart_amount">0 تومان</p>
+                                    <p class="cart_amount">@Model.GetTotalDiscounts().ToString("#,0") تومان</p>
                                 </div>
                                 <a href="#">محاسبه هزینه</a>
 
                                 <div class="cart_subtotal has-border">
                                     <p>جمع کل</p>
-                                    <p class="cart_amount">@Model.GetTotalPrice().ToString("#,0") تومان</p>
+                                    <p class="cart_amount">@((Model.GetTotalPrice() - Model.GetTotalDiscounts()).ToString("#,0")) تومان</p>
                                 </div>
                                 <div class="checkout_btn">
-                                    <a href="#">پرداخت</a>
+                                    <a asp-area="User" asp-controller="Order" asp-action="PayUserOrderPrice">پرداخت</a>
                                 </div>
                             </div>
                         </div>

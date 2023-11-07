@@ -25,5 +25,30 @@ namespace DemoShop.DataLayer.DTO.Orders
 
         public string ColorName { get; set; }
         public int? DiscountPercentage { get; set; }
+        public int GetOrderDetailWithDiscountPriceAmount()
+        {
+            if (this.DiscountPercentage != null)
+            {
+                return (this.ProductPrice + this.ProductColorPrice) * this.DiscountPercentage.Value / 100 * this.Count;
+            }
+
+            return 0;
+        }
+
+        public int GetTotalAmountByDiscount()
+        {
+            return (ProductPrice + ProductColorPrice) * Count - this.GetOrderDetailWithDiscountPriceAmount();
+        }
+
+
+        public string GetOrderDetailWithDiscountPrice()
+        {
+            if (this.DiscountPercentage != null)
+            {
+                return this.GetOrderDetailWithDiscountPriceAmount().ToString("#,0 تومان");
+            }
+
+            return "------";
+        }
     }
 }

@@ -8,6 +8,11 @@ namespace DemoShop.Application.Utils
 {
     public static class PathExtensions
     {
+        #region domain address
+
+        public static string DomainAddress = "https://localhost:44373";
+
+        #endregion
         #region default images
 
         public static string DefaultAvatar = "/img/defaults/avatar.jpg";

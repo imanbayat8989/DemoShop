@@ -1,4 +1,6 @@
 ﻿using DemoShop.Application.Interface;
+using DemoShop.Application.Utils;
+using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Orders;
 using DemoShop.Web.Http;
 using DemoShop.Web.PresentationExtensions;
@@ -13,11 +15,13 @@ namespace DemoShop.Web.Areas.User.Controllers
 
         private readonly IOrderService _orderService;
         private readonly IUserService _userService;
+        //private readonly IPaymentService _paymentService;
 
         public OrderController(IOrderService orderService, IUserService userService)
         {
             _orderService = orderService;
             _userService = userService;
+            //_paymentService = paymentService;
         }
 
         #endregion
@@ -64,12 +68,51 @@ namespace DemoShop.Web.Areas.User.Controllers
 
         #endregion
 
+        //#region pay order
+
+        //[HttpGet("pay-order")]
+        //public async Task<IActionResult> PayUserOrderPrice()
+        //{
+        //    var openOrderAmount = await _orderService.GetTotalOrderPriceForPayment(User.GetUserId());
+
+        //    string callbackUrl = PathExtensions.DomainAddress + Url.RouteUrl("ZarinpalPaymentResult");
+
+        //    string redirectUrl = "";
+
+        //    var status = _paymentService.CreatePaymentRequest(
+        //        null,
+        //        openOrderAmount,
+        //        "تکمیل فرایند خرید از سایت",
+        //        callbackUrl,
+        //       ref redirectUrl);
+
+        //    if (status == PaymentStatus.St100)
+        //    {
+        //        return Redirect(redirectUrl);
+        //    }
+
+        //    return RedirectToAction("UserOpenOrder");
+        //}
+
+        //#endregion
+
+        #region call back zarinpal
+
+        [AllowAnonymous]
+        [HttpGet("payment-result", Name = "ZarinpalPaymentResult")]
+        public async Task<IActionResult> CallBackZarinPal()
+        {
+            return View();
+        }
+
+        #endregion
+
         #region open order partial
 
         [HttpGet("change-detail-count/{detailId}/{count}")]
         public async Task<IActionResult> ChangeDetailCount(long detailId, int count)
         {
-            await Task.Delay(2000);
+            // await Task.Delay(500);
             await _orderService.ChangeOrderDetailCount(detailId, User.GetUserId(), count);
             var openOrder = await _orderService.GetUserOpenOrderDetail(User.GetUserId());
             return PartialView(openOrder);

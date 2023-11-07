@@ -18,5 +18,10 @@ namespace DemoShop.DataLayer.DTO.Orders
         {
             return Details.Sum(s => (s.ProductPrice + s.ProductColorPrice) * s.Count);
         }
+
+        public int GetTotalDiscounts()
+        {
+            return Details.Sum(s => s.GetOrderDetailWithDiscountPriceAmount());
+        }
     }
 }
