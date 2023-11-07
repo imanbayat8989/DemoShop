@@ -250,9 +250,24 @@ function removeProductFromOrder(detailId) {
 
 function changeOpenOrderDetailCount(event, detailId) {
     open_waiting();
-    console.log(detailId);
     $.get('/user/change-detail-count/' + detailId + '/' + event.target.value).then(res => {
         $('#user-open-order-wrapper').html(res);
         close_waiting();
     });
 }
+
+function checkDetailCount() {
+    $('input[order-detail-count]').on('change', function (event) {
+        open_waiting();
+        var detailId = $(this).attr('order-detail-count');
+        console.log(detailId);
+        console.log(event);
+        $.get('/user/change-detail-count/' + detailId + '/' + event.target.value).then(res => {
+            $('#user-open-order-wrapper').html(res);
+            close_waiting();
+            checkDetailCount();
+        });
+    });
+}
+
+checkDetailCount();

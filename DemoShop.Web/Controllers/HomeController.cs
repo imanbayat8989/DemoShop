@@ -1,6 +1,7 @@
 ﻿using DemoShop.Application.Implementation;
 using DemoShop.Application.Interface;
 using DemoShop.DataLayer.DTO.Account;
+using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Contacts;
 using DemoShop.DataLayer.Entities.Site;
 using DemoShop.Web.Models;
@@ -18,12 +19,16 @@ namespace DemoShop.Web.Controllers
         private readonly IContactusService _contactService;
         private readonly ICaptchaValidator _captchaValidator;
         private readonly ISiteService _siteService;
+        private readonly IUserService _userService;
+   
 
-        public HomeController(IContactusService contactService, ICaptchaValidator captchaValidator, ISiteService siteService)
+        public HomeController(IContactusService contactService, ICaptchaValidator captchaValidator, ISiteService siteService, IUserService userService)
         {
             _contactService = contactService;
             _captchaValidator = captchaValidator;
             _siteService = siteService;
+            _userService = userService;
+           
         }
 
         #endregion
@@ -40,6 +45,7 @@ namespace DemoShop.Web.Controllers
                     BannerPlacement.Home_3
                 });
 
+           
             return View();
         }
 
