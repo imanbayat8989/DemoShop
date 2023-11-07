@@ -1,4 +1,5 @@
-﻿using DemoShop.Application.Interface;
+﻿using DemoShop.Application.Implementation;
+using DemoShop.Application.Interface;
 using DemoShop.Application.Utils;
 using DemoShop.DataLayer.DTO.Common;
 using DemoShop.DataLayer.DTO.Orders;
@@ -96,16 +97,35 @@ namespace DemoShop.Web.Areas.User.Controllers
 
         //#endregion
 
-        #region call back zarinpal
+        //#region call back zarinpal
 
-        [AllowAnonymous]
-        [HttpGet("payment-result", Name = "ZarinpalPaymentResult")]
-        public async Task<IActionResult> CallBackZarinPal()
-        {
-            return View();
-        }
+        //[AllowAnonymous]
+        //[HttpGet("payment-result", Name = "ZarinpalPaymentResult")]
+        //public async Task<IActionResult> CallBackZarinPal()
+        //{
+        //    string authority = _paymentService.GetAuthorityCodeFromCallback(HttpContext);
+        //    if (authority == "")
+        //    {
+        //        TempData[WarningMessage] = "عملیات پرداخت با شکست مواجه شد";
+        //        return View();
+        //    }
 
-        #endregion
+        //    var openOrderAmount = await _orderService.GetTotalOrderPriceForPayment(User.GetUserId());
+        //    long refId = 0;
+        //    var res = _paymentService.PaymentVerification(null, authority, openOrderAmount, ref refId);
+        //    if (res == PaymentStatus.St100)
+        //    {
+        //        TempData[SuccessMessage] = "پرداخت شما با موفقیت انجام شد";
+        //        TempData[InfoMessage] = "کد پیگیری شما : " + refId;
+        //        await _orderService.PayOrderProductPriceToSeller(User.GetUserId(), refId);
+
+        //        return View();
+        //    }
+
+        //    return View();
+        //}
+
+        //#endregion
 
         #region open order partial
 

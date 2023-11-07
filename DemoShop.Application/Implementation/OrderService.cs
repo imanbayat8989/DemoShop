@@ -1,6 +1,7 @@
 ﻿using DemoShop.Application.Interface;
 using DemoShop.DataLayer.DTO.Orders;
 using DemoShop.DataLayer.Entities.ProductOrder;
+using DemoShop.DataLayer.Entities.Products;
 using DemoShop.DataLayer.Entities.Wallet;
 using DemoShop.DataLayer.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +20,14 @@ namespace DemoShop.Application.Implementation
         private readonly IGenericRepository<Order> _orderRepository;
         private readonly IGenericRepository<OrderDetail> _orderDetailRepository;
         private readonly ISellerWalletService _sellerWalletService;
+        private readonly IGenericRepository<ProductDiscount> _productDiscountRepository;
 
-        public OrderService(IGenericRepository<Order> orderRepository, IGenericRepository<OrderDetail> orderDetailRepository, ISellerWalletService sellerWalletService)
+        public OrderService(IGenericRepository<Order> orderRepository, IGenericRepository<OrderDetail> orderDetailRepository, ISellerWalletService sellerWalletService, IGenericRepository<ProductDiscount> productDiscountRepository)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
             _sellerWalletService = sellerWalletService;
+            _productDiscountRepository = productDiscountRepository;
         }
 
         #endregion
@@ -75,7 +78,7 @@ namespace DemoShop.Application.Implementation
             return totalPrice;
         }
 
-        public async Task PayOrderProductPriceToSeller(long userId)
+        public async Task PayOrderProductPriceToSeller(long userId, long refId)
         {
             var openOrder = await GetUserLatestOpenOrder(userId);
 
@@ -84,23 +87,34 @@ namespace DemoShop.Application.Implementation
                 var productPrice = detail.Product.Price;
                 var productColorPrice = detail.ProductColor?.Price ?? 0;
                 var discount = 0;
-                var totalPrice = detail.Count * (productPrice + productColorPrice) - discount;
+                var totalPrice = detail.Count * (productPrice + productColorPrice);
+                var productDiscount = await _productDiscountRepository.GetQuery()
+                    .Include(s => s.ProductDiscountUses)
+                    .FirstOrDefaultAsync(s =>
+                        s.ProductId == detail.ProductId && s.DiscountNumber - s.ProductDiscountUses.Count > 0);
+
+                if (productDiscount != null)
+                {
+                    discount = (int)Math.Ceiling(totalPrice * productDiscount.Percentage / (decimal)100);
+                }
+
+                var totalPriceWithDiscount = totalPrice - discount;
 
                 await _sellerWalletService.AddWallet(new SellerWallet
                 {
                     SellerId = detail.Product.SellerId,
-                    Price = (int)Math.Ceiling(totalPrice * detail.Product.SiteProfit / (double)100),
+                    Price = (int)Math.Ceiling(totalPriceWithDiscount * detail.Product.SiteProfit / (double)100),
                     TransactionType = TransactionType.Deposit,
-                    Description = $"پرداخت مبلغ {totalPrice} تومان جهت فروش {detail.Product.Title} به تعداد {detail.Count} عدد با سهم تهیین شده ی {100 - detail.Product.SiteProfit} درصد"
+                    Description = $"پرداخت مبلغ {totalPriceWithDiscount} تومان جهت فروش {detail.Product.Title} به تعداد {detail.Count} عدد با سهم تهیین شده ی {100 - detail.Product.SiteProfit} درصد"
                 });
 
-                detail.ProductPrice = totalPrice;
+                detail.ProductPrice = totalPriceWithDiscount;
                 detail.ProductColorPrice = productColorPrice;
                 _orderDetailRepository.EditEntity(detail);
             }
 
             openOrder.IsPaid = true;
-            // todo: set description and tracing code in order
+            openOrder.TracingCode = refId.ToString();
             _orderRepository.EditEntity(openOrder);
             await _orderRepository.SaveChanges();
         }
