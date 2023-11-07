@@ -62,6 +62,14 @@ namespace DemoShop.DataLayer.Contract
 
         #endregion
 
+        #region propduct discount
+
+        public DbSet<ProductDiscount> ProductDiscounts { get; set; }
+
+        public DbSet<ProductDiscountUse> ProductDiscountUses { get; set; }
+
+        #endregion
+
         #region order
 
         public DbSet<Order> Orders { get; set; }
@@ -69,6 +77,7 @@ namespace DemoShop.DataLayer.Contract
         public DbSet<OrderDetail> OrderDetails { get; set; }
 
         #endregion
+
         #region wallet
 
         public DbSet<SellerWallet> SellerWallets { get; set; }
