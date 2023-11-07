@@ -21,9 +21,10 @@ namespace DemoShop.Application.Interface
 
         #region order detail
 
+        Task ChangeOrderDetailCount(long detailId, long userId, int count);
         Task AddProductToOpenOrder(long userId, AddProductToOrderDTO order);
-
         Task<UserOpenOrderDTO> GetUserOpenOrderDetail(long userId);
+        Task<bool> RemoveOrderDetail(long detailId, long userId);
 
         #endregion
     }

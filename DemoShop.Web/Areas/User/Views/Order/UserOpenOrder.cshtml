@@ -45,7 +45,7 @@
                                         @foreach (var detail in Model.Details)
                                         {
                                             <tr>
-                                                <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                                <td class="product_remove"><a onclick="removeProductFromOrder(@detail.DetailId)"><i class="fa fa-trash-o"></i></a></td>
                                                 <td class="product_thumb">
                                                     <a href="#"><img src="@(PathExtensions.ProductThumbnailImage + detail.ProductImageName)" alt=""></a>
                                                 </td>

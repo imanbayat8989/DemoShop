@@ -8,6 +8,7 @@ namespace DemoShop.DataLayer.DTO.Orders
 {
     public class UserOpenOrderDetailItemDTO
     {
+        public long DetailId { get; set; }
         public long ProductId { get; set; }
 
         public string ProductTitle { get; set; }

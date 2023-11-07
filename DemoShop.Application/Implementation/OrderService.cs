@@ -105,6 +105,24 @@ namespace DemoShop.Application.Implementation
             await _orderRepository.SaveChanges();
         }
 
+        public async Task ChangeOrderDetailCount(long detailId, long userId, int count)
+        {
+            var userOpenOrder = await GetUserLatestOpenOrder(userId);
+            var detail = userOpenOrder.OrderDetails.SingleOrDefault(s => s.Id == detailId);
+            if (detail != null)
+            {
+                if (count > 0)
+                {
+                    detail.Count = count;
+                }
+                else
+                {
+                    _orderDetailRepository.DeleteEntity(detail);
+                }
+                await _orderDetailRepository.SaveChanges();
+            }
+        }
+
         #endregion
 
         #region order detail
@@ -144,21 +162,36 @@ namespace DemoShop.Application.Implementation
             {
                 UserId = userId,
                 Description = userOpenOrder.Description,
-                Details = userOpenOrder.OrderDetails.Select(s => new UserOpenOrderDetailItemDTO
-                {
-                    Count = s.Count,
-                    ColorName = s.ProductColor?.ColorName,
-                    ProductColorId = s.ProductColorId,
-                    ProductColorPrice = s.ProductColor?.Price ?? 0,
-                    ProductId = s.ProductId,
-                    ProductPrice = s.Product.Price,
-                    ProductTitle = s.Product.Title,
-                    ProductImageName = s.Product.ImageName,
-                    DiscountPercentage = s.Product.ProductDiscounts
+                Details = userOpenOrder.OrderDetails
+                    .Where(s => !s.IsDeleted)
+                    .Select(s => new UserOpenOrderDetailItemDTO
+                    {
+                        DetailId = s.Id,
+                        Count = s.Count,
+                        ColorName = s.ProductColor?.ColorName,
+                        ProductColorId = s.ProductColorId,
+                        ProductColorPrice = s.ProductColor?.Price ?? 0,
+                        ProductId = s.ProductId,
+                        ProductPrice = s.Product.Price,
+                        ProductTitle = s.Product.Title,
+                        ProductImageName = s.Product.ImageName,
+                        DiscountPercentage = s.Product.ProductDiscounts
                         .OrderByDescending(a => a.CreateDate)
                         .FirstOrDefault(a => a.ExpireDate > DateTime.Now)?.Percentage
-                }).ToList()
+                    }).ToList()
             };
+        }
+
+        public async Task<bool> RemoveOrderDetail(long detailId, long userId)
+        {
+            var openOrder = await GetUserLatestOpenOrder(userId);
+            var orderDetail = openOrder.OrderDetails.SingleOrDefault(s => s.Id == detailId);
+            if (orderDetail == null) return false;
+
+            _orderDetailRepository.DeleteEntity(orderDetail);
+            await _orderDetailRepository.SaveChanges();
+
+            return true;
         }
 
         #endregion
