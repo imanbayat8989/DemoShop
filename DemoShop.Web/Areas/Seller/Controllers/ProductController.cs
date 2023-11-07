@@ -90,7 +90,7 @@ namespace DemoShop.Web.Areas.Seller.Controllers
         [HttpPost("edit-product/{productId}"), ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProduct(EditProductDTO product, IFormFile productImage)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var res = await _productService.EditSellerProduct(product, User.GetUserId(), productImage);
 
@@ -110,6 +110,18 @@ namespace DemoShop.Web.Areas.Seller.Controllers
 
             ViewBag.Categories = await _productService.GetAllActiveProductCategories();
             return View(product);
+        }
+
+        #endregion
+
+        #region get products json
+
+        [HttpGet("products-autocomplete")]
+        public async Task<IActionResult> GetSellerProductsJson(string productName)
+        {
+            var seller = await _sellerService.GetLastActiveSellerByUserId(User.GetUserId());
+            var data = await _productService.FilterProductsForSellerByProductName(seller.Id, productName);
+            return new JsonResult(data);
         }
 
         #endregion

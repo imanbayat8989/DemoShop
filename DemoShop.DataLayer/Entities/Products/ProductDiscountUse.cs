@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DemoShop.DataLayer.DTO.Products
+namespace DemoShop.DataLayer.Entities.Products
 {
     public class ProductDiscountUse : BaseEntities
     {

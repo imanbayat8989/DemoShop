@@ -24,6 +24,7 @@ namespace DemoShop.Application.Interface
         Task RemoveAllProductSelectedColors(long productId);
         Task AddProductSelectedColors(long productId, List<CreateProductColorDTO> colors);
         Task AddProductSelectedCategories(long productId, List<long> selectedCategories);
+        Task<List<Product>> FilterProductsForSellerByProductName(long sellerId, string productName);
 
         #endregion
 

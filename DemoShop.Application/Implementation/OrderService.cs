@@ -52,6 +52,7 @@ namespace DemoShop.Application.Implementation
                 .ThenInclude(s => s.ProductColor)
                 .Include(s => s.OrderDetails)
                 .ThenInclude(s => s.Product)
+                .ThenInclude(s => s.ProductDiscounts)
                 .SingleOrDefaultAsync(s => s.UserId == userId && !s.IsPaid);
 
             return userOpenOrder;
@@ -152,7 +153,10 @@ namespace DemoShop.Application.Implementation
                     ProductId = s.ProductId,
                     ProductPrice = s.Product.Price,
                     ProductTitle = s.Product.Title,
-                    ProductImageName = s.Product.ImageName
+                    ProductImageName = s.Product.ImageName,
+                    DiscountPercentage = s.Product.ProductDiscounts
+                        .OrderByDescending(a => a.CreateDate)
+                        .FirstOrDefault(a => a.ExpireDate > DateTime.Now)?.Percentage
                 }).ToList()
             };
         }

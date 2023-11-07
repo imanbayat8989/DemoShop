@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace DemoShop.DataLayer.Contract
 {
-	public class DemoShopDbContext: DbContext
+    public class DemoShopDbContext: DbContext
 	{
         public DemoShopDbContext(DbContextOptions<DemoShopDbContext> options) : base(options) { }
         #region account

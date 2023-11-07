@@ -1,5 +1,4 @@
 ﻿using DemoShop.DataLayer.Entities.common;
-using DemoShop.DataLayer.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DemoShop.DataLayer.DTO.Products
+namespace DemoShop.DataLayer.Entities.Products
 {
     public class ProductDiscount : BaseEntities
     {

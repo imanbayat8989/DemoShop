@@ -1,4 +1,5 @@
 ﻿@using DemoShop.Application.Utils
+@using DemoShop.Application.EntiiesExtensions
 @model DemoShop.DataLayer.DTO.Orders.UserOpenOrderDTO
 @{
     ViewData["Title"] = "سبد خرید";
@@ -36,6 +37,7 @@
                                             <th class="product_name">محصول</th>
                                             <th class="product-price">قیمت</th>
                                             <th class="product_quantity">تعداد</th>
+                                            <th class="product-price">تخفیف</th>
                                             <th class="product_total">جمع کل</th>
                                         </tr>
                                     </thead>
@@ -49,11 +51,15 @@
                                                 </td>
                                                 <td class="product_name"><a href="#">@detail.ProductTitle</a></td>
                                                 <td class="product-price">@((detail.ProductPrice + detail.ProductColorPrice).ToString("#,0")) تومان</td>
+
                                                 <td class="product_quantity">
                                                     <label>تعداد</label>
                                                     <input min="1" value="@detail.Count" type="number">
                                                 </td>
-                                                <td class="product_total">@(detail.Count * ((detail.ProductPrice + detail.ProductColorPrice))) تومان</td>
+                                                <td class="product-price">
+                                                    @detail.GetOrderDetailWithDiscountPrice()
+                                                </td>
+                                                <td class="product_total">@(detail.Count * detail.ProductPrice + detail.ProductColorPrice) تومان</td>
 
                                             </tr>
                                         }

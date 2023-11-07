@@ -23,5 +23,6 @@ namespace DemoShop.DataLayer.DTO.Orders
         public int ProductColorPrice { get; set; }
 
         public string ColorName { get; set; }
+        public int? DiscountPercentage { get; set; }
     }
 }

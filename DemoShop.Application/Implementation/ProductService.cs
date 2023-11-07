@@ -231,6 +231,15 @@ namespace DemoShop.Application.Implementation
             }
         }
 
+        public async Task<List<Product>> FilterProductsForSellerByProductName(long sellerId, string productName)
+        {
+            return await _productRepository.GetQuery()
+                .AsQueryable()
+                .Where(s =>
+                    s.SellerId == sellerId &&
+                    EF.Functions.Like(s.Title, $"%{productName}%")).ToListAsync();
+        }
+
         public async Task<FilterProductDTO> FilterProducts(FilterProductDTO filter)
         {
             var query = _productRepository.GetQuery()
