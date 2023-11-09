@@ -484,7 +484,27 @@ namespace DemoShop.Application.Implementation
                 .Where(s => s.IsActive && !s.IsDeleted).ToListAsync();
         }
 
+        public async Task<List<Product>> GetCategoryProductsByCategoryName(string categoryName, int count = 12)
+        {
+            var category = await _productCategoryRepository.GetQuery().SingleOrDefaultAsync(s => s.UrlName == categoryName);
+            if (category == null) return null;
+            return await _productSelectedCategoryRepository.GetQuery()
+                .AsQueryable()
+                .Include(s => s.Product)
+                .Where(s => s.ProductCategoryId == category.Id && s.Product.IsActive && !s.Product.IsDeleted)
+                .Select(s => s.Product)
+                .OrderByDescending(s => s.CreateDate)
+                .Distinct()
+                .Take(count)
+                .ToListAsync();
+        }
 
+        public async Task<ProductCategory> GetProductCategoryByUrlName(string productCategoryUrlName)
+        {
+            return await _productCategoryRepository.GetQuery()
+                .AsQueryable()
+                .SingleOrDefaultAsync(s => s.UrlName == productCategoryUrlName);
+        }
 
         #endregion
 

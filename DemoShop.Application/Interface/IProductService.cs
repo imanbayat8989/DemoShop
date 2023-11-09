@@ -46,6 +46,8 @@ namespace DemoShop.Application.Interface
 
         Task<List<ProductCategory>> GetAllProductCategoriesByParentId(long? parentId);
         Task<List<ProductCategory>> GetAllActiveProductCategories();
+        Task<List<Product>> GetCategoryProductsByCategoryName(string categoryName, int count = 12);
+        Task<ProductCategory> GetProductCategoryByUrlName(string productCategoryUrlName);
 
         #endregion
 
