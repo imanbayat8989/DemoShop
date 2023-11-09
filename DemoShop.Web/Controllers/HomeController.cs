@@ -19,16 +19,14 @@ namespace DemoShop.Web.Controllers
         private readonly IContactusService _contactService;
         private readonly ICaptchaValidator _captchaValidator;
         private readonly ISiteService _siteService;
-        private readonly IUserService _userService;
-   
+        private readonly IProductService _productService;
 
-        public HomeController(IContactusService contactService, ICaptchaValidator captchaValidator, ISiteService siteService, IUserService userService)
+        public HomeController(IContactusService contactService, ICaptchaValidator captchaValidator, ISiteService siteService, IProductService productService)
         {
             _contactService = contactService;
             _captchaValidator = captchaValidator;
             _siteService = siteService;
-            _userService = userService;
-           
+            _productService = productService;
         }
 
         #endregion
@@ -45,7 +43,8 @@ namespace DemoShop.Web.Controllers
                     BannerPlacement.Home_3
                 });
 
-           
+            ViewData["OffProducts"] = await _productService.GetAllOffProducts(12);
+
             return View();
         }
 

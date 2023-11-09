@@ -27,8 +27,9 @@ namespace DemoShop.Application.Implementation
         private readonly IGenericRepository<ProductColor> _productColorRepository;
         private readonly IGenericRepository<ProductGallery> _productGalleryRepository;
         private readonly IGenericRepository<ProductFeature> _productFeatureRepository;
+        private readonly IGenericRepository<ProductDiscount> _prodductDiscountRepository;
 
-        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductFeature> productFeatureRepository)
+        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductColor> productColorRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductFeature> productFeatureRepository, IGenericRepository<ProductDiscount> prodductDiscountRepository)
         {
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
@@ -36,6 +37,7 @@ namespace DemoShop.Application.Implementation
             _productColorRepository = productColorRepository;
             _productGalleryRepository = productGalleryRepository;
             _productFeatureRepository = productFeatureRepository;
+            _prodductDiscountRepository = prodductDiscountRepository;
         }
 
         #endregion
@@ -238,6 +240,18 @@ namespace DemoShop.Application.Implementation
                 .Where(s =>
                     s.SellerId == sellerId &&
                     EF.Functions.Like(s.Title, $"%{productName}%")).ToListAsync();
+        }
+
+        public async Task<List<ProductDiscount>> GetAllOffProducts(int take)
+        {
+            return await _prodductDiscountRepository.GetQuery().AsQueryable()
+                .Include(s => s.Product)
+                .Where(s => s.ExpireDate >= DateTime.Now)
+                .OrderByDescending(s => s.ExpireDate)
+                .Skip(0)
+                .Take(take)
+                .Distinct()
+                .ToListAsync();
         }
 
         public async Task<FilterProductDTO> FilterProducts(FilterProductDTO filter)
