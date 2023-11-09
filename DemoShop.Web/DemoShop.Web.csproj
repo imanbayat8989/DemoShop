@@ -27,4 +27,8 @@
     <ProjectReference Include="..\DemoShop.DataLayer\DemoShop.DataLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\new-date-picker\" />
+  </ItemGroup>
+
 </Project>
