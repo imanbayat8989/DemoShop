@@ -16,14 +16,21 @@ namespace DemoShop.Web.Areas.User.Controllers
 
         private readonly IOrderService _orderService;
         private readonly IUserService _userService;
-        //private readonly IPaymentService _paymentService;
 
         public OrderController(IOrderService orderService, IUserService userService)
         {
             _orderService = orderService;
             _userService = userService;
-            //_paymentService = paymentService;
         }
+
+        //private readonly IPaymentService _paymentService;
+
+        //public OrderController(IOrderService orderService, IUserService userService, IPaymentService paymentService)
+        //{
+        //    _orderService = orderService;
+        //    _userService = userService;
+        //    _paymentService = paymentService;
+        //}
 
         #endregion
 
@@ -120,6 +127,10 @@ namespace DemoShop.Web.Areas.User.Controllers
         //        await _orderService.PayOrderProductPriceToSeller(User.GetUserId(), refId);
 
         //        return View();
+        //    }
+        //    else
+        //    {
+        //        TempData[WarningMessage] = "عملیات پرداخت با خطا مواجه شد";
         //    }
 
         //    return View();

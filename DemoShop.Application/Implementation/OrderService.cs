@@ -21,13 +21,15 @@ namespace DemoShop.Application.Implementation
         private readonly IGenericRepository<OrderDetail> _orderDetailRepository;
         private readonly ISellerWalletService _sellerWalletService;
         private readonly IGenericRepository<ProductDiscount> _productDiscountRepository;
+        private readonly IGenericRepository<ProductDiscountUse> _productDiscountUseRepository;
 
-        public OrderService(IGenericRepository<Order> orderRepository, IGenericRepository<OrderDetail> orderDetailRepository, ISellerWalletService sellerWalletService, IGenericRepository<ProductDiscount> productDiscountRepository)
+        public OrderService(IGenericRepository<Order> orderRepository, IGenericRepository<OrderDetail> orderDetailRepository, ISellerWalletService sellerWalletService, IGenericRepository<ProductDiscount> productDiscountRepository, IGenericRepository<ProductDiscountUse> productDiscountUseRepository)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
             _sellerWalletService = sellerWalletService;
             _productDiscountRepository = productDiscountRepository;
+            _productDiscountUseRepository = productDiscountUseRepository;
         }
 
         #endregion
@@ -65,6 +67,8 @@ namespace DemoShop.Application.Implementation
         {
             var userOpenOrder = await GetUserLatestOpenOrder(userId);
             int totalPrice = 0;
+            int discount = 0;
+
 
             foreach (var detail in userOpenOrder.OrderDetails)
             {
@@ -72,7 +76,18 @@ namespace DemoShop.Application.Implementation
                     ? detail.Product.Price + detail.ProductColor.Price
                     : detail.Product.Price;
 
-                totalPrice += detail.Count * oneProductPrice;
+                var productDiscount = await _productDiscountRepository.GetQuery()
+                    .Include(s => s.ProductDiscountUses)
+                    .OrderByDescending(s => s.CreateDate)
+                    .FirstOrDefaultAsync(s =>
+                        s.ProductId == detail.ProductId && s.DiscountNumber - s.ProductDiscountUses.Count > 0);
+
+                if (productDiscount != null)
+                {
+                    discount = (int)Math.Ceiling(oneProductPrice * productDiscount.Percentage / (decimal)100);
+                }
+
+                totalPrice += detail.Count * (oneProductPrice - discount);
             }
 
             return totalPrice;
@@ -90,12 +105,21 @@ namespace DemoShop.Application.Implementation
                 var totalPrice = detail.Count * (productPrice + productColorPrice);
                 var productDiscount = await _productDiscountRepository.GetQuery()
                     .Include(s => s.ProductDiscountUses)
+                    .OrderByDescending(s => s.CreateDate)
                     .FirstOrDefaultAsync(s =>
                         s.ProductId == detail.ProductId && s.DiscountNumber - s.ProductDiscountUses.Count > 0);
 
                 if (productDiscount != null)
                 {
                     discount = (int)Math.Ceiling(totalPrice * productDiscount.Percentage / (decimal)100);
+
+                    var newDiscountUse = new ProductDiscountUse
+                    {
+                        UserId = userId,
+                        ProductDiscountId = productDiscount.Id,
+                    };
+
+                    await _productDiscountUseRepository.AddEntity(newDiscountUse);
                 }
 
                 var totalPriceWithDiscount = totalPrice - discount;
@@ -103,7 +127,7 @@ namespace DemoShop.Application.Implementation
                 await _sellerWalletService.AddWallet(new SellerWallet
                 {
                     SellerId = detail.Product.SellerId,
-                    Price = (int)Math.Ceiling(totalPriceWithDiscount * detail.Product.SiteProfit / (double)100),
+                    Price = (int)Math.Ceiling(totalPriceWithDiscount * (100 - detail.Product.SiteProfit) / (double)100),
                     TransactionType = TransactionType.Deposit,
                     Description = $"پرداخت مبلغ {totalPriceWithDiscount} تومان جهت فروش {detail.Product.Title} به تعداد {detail.Count} عدد با سهم تهیین شده ی {100 - detail.Product.SiteProfit} درصد"
                 });
@@ -115,6 +139,7 @@ namespace DemoShop.Application.Implementation
 
             openOrder.IsPaid = true;
             openOrder.TracingCode = refId.ToString();
+            openOrder.PaymentDate = DateTime.Now;
             _orderRepository.EditEntity(openOrder);
             await _orderRepository.SaveChanges();
         }
