@@ -1,15 +1,8 @@
 ﻿@using DemoShop.Application.Utils
-@model DemoShop.DataLayer.Entities.ProductOrder.Order
+@model DemoShop.DataLayer.DTO.Orders.UserOpenOrderDTO
 
 @{
-    var totalPrice = 0;
-    if (Model.OrderDetails != null && Model.OrderDetails.Any())
-    {
-        foreach (var detail in Model.OrderDetails)
-        {
-            totalPrice += detail.Count * (detail.Product.Price + detail.ProductColor.Price);
-        }
-    }
+    var totalPrice = Model.GetTotalPrice();
 }
 
 <div class="middel_right_info">
@@ -19,23 +12,23 @@
     </div>
     <div class="mini_cart_wrapper">
         <a href="javascript:void(0)"><i class="fa fa-shopping-bag" aria-hidden="true"></i> <i class="fa fa-angle-down"></i></a>
-        <span class="cart_quantity">@Model.OrderDetails.Count</span>
+        <span class="cart_quantity">@Model.Details.Count</span>
         <!--mini cart-->
         <div class="mini_cart">
             <div class="cart_items_container">
-                @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                @if (Model.Details != null && Model.Details.Any())
                 {
-                    foreach (var detail in Model.OrderDetails)
+                    foreach (var detail in Model.Details)
                     {
                         <div class="cart_item">
                             <div class="cart_img">
-                                <a asp-controller="Product" asp-action="ProductDetail" asp-route-productId="@detail.ProductId" asp-route-title="@detail.Product.Title"><img src="@(PathExtensions.ProductThumbnailImage + detail.Product.ImageName)" alt=""></a>
+                                <a asp-controller="Product" asp-action="ProductDetail" asp-route-productId="@detail.ProductId" asp-route-title="@detail.ProductTitle"><img src="@(PathExtensions.ProductThumbnailImage + detail.ProductImageName)" alt=""></a>
                             </div>
                             <div class="cart_info">
-                                <a asp-controller="Product" asp-action="ProductDetail" asp-route-productId="@detail.ProductId" asp-route-title="@detail.Product.Title">
-                                    @detail.Product.Title - @detail.ProductColor.ColorName
+                                <a asp-controller="Product" asp-action="ProductDetail" asp-route-productId="@detail.ProductId" asp-route-title="@detail.ProductTitle">
+                                    @detail.ProductTitle - @detail.ColorName
                                 </a>
-                                <p>تعداد: @detail.Count × <span> @((detail.Product.Price + detail.ProductColor?.Price)?.ToString("#,0")) تومان </span></p>
+                                <p>تعداد: @detail.Count × <span> @((detail.ProductPrice + detail.ProductColorPrice).ToString("#,0")) تومان </span></p>
                             </div>
                             <div class="cart_remove">
                                 <a href="#"><i class="ion-android-close"></i></a>
@@ -53,7 +46,7 @@
 
             <div class="mini_cart_footer">
                 <div class="cart_button">
-                    <a href="cart.html">مشاهده سبد</a>
+                    <a asp-area="User" asp-controller="Order" asp-action="UserOpenOrder">مشاهده سبد</a>
                 </div>
                 <div class="cart_button">
                     <a href="checkout.html">پرداخت</a>
